@@ -1,0 +1,11 @@
+
+> @2dvan/api@ build C:\02_Coding\02_Projects\2DVanProj\apps\api
+> nest build && prisma generate
+
+Environment variables loaded from prisma\.env
+Prisma schema loaded from prisma\schema.prisma
+Error: 
+EPERM: operation not permitted, rename 'C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@prisma+client@6.17.1_prism_0f3e51022084b755e6e5bbd56889ea0f\node_modules\.prisma\client\query_engine-windows.dll.node.tmp29288' -> 'C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@prisma+client@6.17.1_prism_0f3e51022084b755e6e5bbd56889ea0f\node_modules\.prisma\client\query_engine-windows.dll.node'
+
+
+ ELIFECYCLE  Command failed with exit code 1.

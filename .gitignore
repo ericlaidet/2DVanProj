@@ -1,0 +1,5 @@
+# .gitignore
+apps/api/prisma/.env
+*.env
+node_modules/
+dist/

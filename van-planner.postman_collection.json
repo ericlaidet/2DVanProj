@@ -1,0 +1,109 @@
+{
+  "info": {
+    "name": "Van Planner API",
+    "_postman_id": "f4a25f32-5b8f-4d6e-b543-1234567890ab",
+    "description": "Collection pour tester l'API NestJS (Auth + Plans)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/auth/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "register"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Plans - Get all",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/plans",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["plans"]
+        }
+      }
+    },
+    {
+      "name": "Plans - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/plans",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["plans"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Plan Test\",\n  \"jsonData\": [{ \"type\": \"square\", \"x\": 10, \"y\": 20 }]\n}"
+        }
+      }
+    },
+    {
+      "name": "Plans - Delete by ID",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/plans/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["plans", "1"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+// apps/api/prisma/schema.prisma
+
+enum VanType {
+  VOLKSWAGEN_ID_BUZZ
+  RENAULT_KANGOO_EXPRESS
+  FIAT_DOBLO
+  MERCEDES_VITO
+  FORD_TRANSIT_CUSTOM_L1
+  RENAULT_MASTER_L2H2
+  CITROEN_JUMPER_L2H2
+  MERCEDES_SPRINTER_L3H2
+  FIAT_DUCATO_L3H2
+  IVECO_DAILY_35S14_L2H2
+  MAN_TGE_L3H2
+  MERCEDES_SPRINTER_L4H2
+  VOLKSWAGEN_CRAFTER_L4H2
+  MERCEDES_SPRINTER_L5H2
+  VOLKSWAGEN_CRAFTER_L5H2
+  RENAULT_MASTER_L3H2
+  CITROEN_JUMPER_L3H2
+  MAN_TGE_L4H2
+  IVECO_DAILY_35S14_L3H2
+  MERCEDES_SPRINTER_L3H2_MINI_BUS
+  VOLKSWAGEN_CRAFTER_L3H2_MINI_BUS
+}
+
+enum SubscriptionType {
+  FREE
+  PRO1
+  PRO2
+  PRO3
+}
+
+model Van {
+  id          Int      @id @default(autoincrement())
+  vanType     VanType  @unique
+  displayName String
+  category    String
+  length      Int
+  width       Int
+
+  planVans    PlanVan[]
+}
+
+model User {
+  id           Int              @id @default(autoincrement())
+  email        String           @unique
+  password     String
+  name         String
+  subscription SubscriptionType
+  settings	   Json?
+  sessions     Session[]
+  plans        Plan[]
+  aiUsages     AIUsage[]
+}
+
+model Plan {
+  id        Int       @id @default(autoincrement())
+  name      String
+  jsonData  Json
+  createdAt DateTime  @default(now())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  expiresAt DateTime?
+  planVans  PlanVan[]
+
+  @@index([userId])
+}
+
+model PlanVan {
+  planId Int
+  vanId  Int
+  plan   Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  van    Van  @relation(fields: [vanId], references: [id])
+
+  @@id([planId, vanId])
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model AIUsage {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  action    String
+  tokens    Int
+  cost      Float
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

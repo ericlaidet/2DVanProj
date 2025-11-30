@@ -1,0 +1,54 @@
+.rename-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+  width: 300px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #000;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+button.cancel {
+  background-color: #e0e0e0;
+  border: 1px solid #aaa;
+  color: #000;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+button.confirm {
+  background-color: #e0e0e0;
+  border: 1px solid #aaa;
+  color: #000;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+button.cancel:hover,
+button.confirm:hover {
+  background-color: #d0d0d0;
+}

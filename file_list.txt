@@ -1,0 +1,689 @@
+--
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/vanplanner"
+PORT=3000
+# Secret pour la signature des tokens JWT
+JWT_SECRET=supersecret
+
+
+
+
+--
+{
+	"name": "api",
+	"private": true,
+	"scripts": {
+		"start:dev": "nest start --watch",
+		"start": "nest start",
+		"build": "nest build"
+	},
+	"dependencies": {
+		"@nestjs/common": "^10.0.0",
+		"@nestjs/core": "^10.0.0",
+		"@nestjs/graphql": "^12.0.0",
+		"@nestjs/jwt": "^11.0.0",
+		"@nestjs/passport": "^11.0.5",
+		"@nestjs/platform-express": "^10.0.0",
+		"bcrypt": "^6.0.0",
+		"bcryptjs": "^3.0.2",
+		"dotenv": "^16.3.1",
+		"graphql": "^16.8.0",
+		"passport": "^0.7.0",
+		"passport-jwt": "^4.0.1"
+	},
+	"devDependencies": {
+		"@nestjs/cli": "^10.0.0",
+		"@prisma/client": "^6.16.2",
+		"@types/bcrypt": "^6.0.0",
+		"@types/express": "^5.0.3",
+		"@types/passport-jwt": "^4.0.1",
+		"class-transformer": "^0.5.1",
+		"class-validator": "^0.14.2",
+		"prisma": "^6.16.2",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.9.2"
+	}
+}
+
+
+
+--
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2020",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+
+
+
+--
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.apiFetch = apiFetch;
+function apiFetch(path, options = {}) {
+    const token = localStorage.getItem('token');
+    const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+    return fetch(`http://localhost:3000${path}`, { ...options, headers });
+}
+//# sourceMappingURL=api.js.map.
+.
+.
+.
+--
+{"version":3,"file":"api.js","sourceRoot":"","sources":["../src/api.ts"],"names":[],"mappings":";;AAAA,4BASC;AATD,SAAgB,QAAQ,CAAC,IAAY,EAAE,UAAuB,EAAE;IAC9D,MAAM,KAAK,GAAG,YAAY,CAAC,OAAO,CAAC,OAAO,CAAC,CAAC;IAE5C,MAAM,OAAO,GAAG;QACd,cAAc,EAAE,kBAAkB;QAClC,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,EAAE,aAAa,EAAE,UAAU,KAAK,EAAE,EAAE,CAAC,CAAC,CAAC,EAAE,CAAC;KACvD,CAAC;IAEF,OAAO,KAAK,CAAC,wBAAwB,IAAI,EAAE,EAAE,EAAE,GAAG,OAAO,EAAE,OAAO,EAAE,CAAC,CAAC;AACxE,CAAC"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppController = void 0;
+const common_1 = require("@nestjs/common");
+let AppController = class AppController {
+    root() {
+        return { message: 'Backend fonctionne !' };
+    }
+};
+exports.AppController = AppController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "root", null);
+exports.AppController = AppController = __decorate([
+    (0, common_1.Controller)()
+], AppController);
+//# sourceMappingURL=app.controller.js.map.
+.
+.
+.
+--
+{"version":3,"file":"app.controller.js","sourceRoot":"","sources":["../src/app.controller.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,2CAAiD;AAG1C,IAAM,aAAa,GAAnB,MAAM,aAAa;IAExB,IAAI;QACF,OAAO,EAAE,OAAO,EAAE,sBAAsB,EAAE,CAAC;IAC7C,CAAC;CACF,CAAA;AALY,sCAAa;AAExB;IADC,IAAA,YAAG,GAAE;;;;yCAGL;wBAJU,aAAa;IADzB,IAAA,mBAAU,GAAE;GACA,aAAa,CAKzB"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppModule = void 0;
+const common_1 = require("@nestjs/common");
+const auth_module_1 = require("./auth/auth.module");
+const app_controller_1 = require("./app.controller");
+const plans_module_1 = require("./plans/plans.module");
+let AppModule = class AppModule {
+};
+exports.AppModule = AppModule;
+exports.AppModule = AppModule = __decorate([
+    (0, common_1.Module)({
+        imports: [auth_module_1.AuthModule, plans_module_1.PlansModule],
+        controllers: [app_controller_1.AppController],
+    })
+], AppModule);
+//# sourceMappingURL=app.module.js.map.
+.
+.
+.
+--
+{"version":3,"file":"app.module.js","sourceRoot":"","sources":["../src/app.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAwC;AACxC,oDAAgD;AAChD,qDAAiD;AACjD,uDAAmD;AAO5C,IAAM,SAAS,GAAf,MAAM,SAAS;CAAG,CAAA;AAAZ,8BAAS;oBAAT,SAAS;IAJrB,IAAA,eAAM,EAAC;QACN,OAAO,EAAE,CAAC,wBAAU,EAAE,0BAAW,CAAC;QAClC,WAAW,EAAE,CAAC,8BAAa,CAAC;KAC7B,CAAC;GACW,SAAS,CAAG"}.
+.
+.
+.
+--
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const core_1 = require("@nestjs/core");
+const app_module_1 = require("./app.module");
+async function bootstrap() {
+    const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    // Autoriser le frontend Vite à communiquer avec le backend
+    app.enableCors({
+        origin: 'http://localhost:5173',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    });
+    await app.listen(3000);
+    console.log(`🚀 Server running on: ${await app.getUrl()}`);
+}
+bootstrap();
+//# sourceMappingURL=main.js.map.
+.
+.
+.
+--
+{"version":3,"file":"main.js","sourceRoot":"","sources":["../src/main.ts"],"names":[],"mappings":";;AAAA,uCAA2C;AAC3C,6CAAyC;AAEzC,KAAK,UAAU,SAAS;IACtB,MAAM,GAAG,GAAG,MAAM,kBAAW,CAAC,MAAM,CAAC,sBAAS,CAAC,CAAC;IAEhD,2DAA2D;IAC3D,GAAG,CAAC,UAAU,CAAC;QACb,MAAM,EAAE,uBAAuB;QAC/B,OAAO,EAAE,wCAAwC;KAClD,CAAC,CAAC;IAEH,MAAM,GAAG,CAAC,MAAM,CAAC,IAAI,CAAC,CAAC;IACvB,OAAO,CAAC,GAAG,CAAC,yBAAyB,MAAM,GAAG,CAAC,MAAM,EAAE,EAAE,CAAC,CAAC;AAC7D,CAAC;AAED,SAAS,EAAE,CAAC"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PrismaModule = void 0;
+const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("./prisma.service");
+let PrismaModule = class PrismaModule {
+};
+exports.PrismaModule = PrismaModule;
+exports.PrismaModule = PrismaModule = __decorate([
+    (0, common_1.Global)(),
+    (0, common_1.Module)({
+        providers: [prisma_service_1.PrismaService],
+        exports: [prisma_service_1.PrismaService],
+    })
+], PrismaModule);
+//# sourceMappingURL=prisma.module.js.map.
+.
+.
+.
+--
+{"version":3,"file":"prisma.module.js","sourceRoot":"","sources":["../src/prisma.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAgD;AAChD,qDAAiD;AAO1C,IAAM,YAAY,GAAlB,MAAM,YAAY;CAAG,CAAA;AAAf,oCAAY;uBAAZ,YAAY;IALxB,IAAA,eAAM,GAAE;IACR,IAAA,eAAM,EAAC;QACN,SAAS,EAAE,CAAC,8BAAa,CAAC;QAC1B,OAAO,EAAE,CAAC,8BAAa,CAAC;KACzB,CAAC;GACW,YAAY,CAAG"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PrismaService = void 0;
+/*
+Même si simple, indiquer que Prisma est le client DB, et qu’il est injecté partout via constructor(private prisma: PrismaService)
+Mentionner la connexion à PostgreSQL via .env
+*/
+const common_1 = require("@nestjs/common");
+const client_1 = require("@prisma/client");
+let PrismaService = class PrismaService extends client_1.PrismaClient {
+    constructor() {
+        super();
+    }
+    async onModuleInit() {
+        await this.$connect();
+        console.log('✅ Prisma connecté');
+    }
+    async onModuleDestroy() {
+        await this.$disconnect();
+        console.log('❌ Prisma déconnecté');
+    }
+};
+exports.PrismaService = PrismaService;
+exports.PrismaService = PrismaService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [])
+], PrismaService);
+//# sourceMappingURL=prisma.service.js.map.
+.
+.
+.
+--
+{"version":3,"file":"prisma.service.js","sourceRoot":"","sources":["../src/prisma.service.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA;;;EAGE;AACF,2CAA2E;AAC3E,2CAA8C;AAGvC,IAAM,aAAa,GAAnB,MAAM,aAAc,SAAQ,qBAAY;IAC7C;QACE,KAAK,EAAE,CAAC;IACV,CAAC;IAED,KAAK,CAAC,YAAY;QAChB,MAAM,IAAI,CAAC,QAAQ,EAAE,CAAC;QACtB,OAAO,CAAC,GAAG,CAAC,mBAAmB,CAAC,CAAC;IACnC,CAAC;IAED,KAAK,CAAC,eAAe;QACnB,MAAM,IAAI,CAAC,WAAW,EAAE,CAAC;QACzB,OAAO,CAAC,GAAG,CAAC,qBAAqB,CAAC,CAAC;IACrC,CAAC;CACF,CAAA;AAdY,sCAAa;wBAAb,aAAa;IADzB,IAAA,mBAAU,GAAE;;GACA,aAAa,CAczB"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthController = void 0;
+const common_1 = require("@nestjs/common");
+const auth_service_1 = require("./auth.service");
+const register_dto_1 = require("./dto/register.dto");
+const jwt_guard_1 = require("./jwt.guard");
+const jwt_1 = require("@nestjs/jwt");
+const prisma_service_1 = require("../prisma.service");
+let AuthController = class AuthController {
+    constructor(authService, prisma, jwtService) {
+        this.authService = authService;
+        this.prisma = prisma;
+        this.jwtService = jwtService;
+    }
+    /**
+     * Route d'inscription
+     * POST /auth/register
+     * body: { email, password, name }
+     * Retourne l'utilisateur créé (sans le mot de passe)
+     */
+    async register(dto) {
+        return this.authService.register(dto.email, dto.password, dto.name);
+    }
+    /**
+     * Route de login
+     * POST /auth/login
+     * body: { email, password }
+     * Retourne un JWT si les identifiants sont corrects
+     */
+    async login(body) {
+        const user = await this.authService.validateUser(body.email, body.password);
+        if (!user)
+            throw new common_1.UnauthorizedException('Nom, email ou mot de passe incorrect');
+        const token = await this.authService.generateToken(user.id);
+        return { access_token: token, user };
+    }
+    async logout(req) {
+        const authHeader = req.headers.authorization;
+        if (!authHeader)
+            return { success: true };
+        const token = authHeader.split(' ')[1];
+        await this.authService.revokeToken(token);
+        return { success: true };
+    }
+    /**
+     * Route test protégée par JWT
+     * GET /auth/profile
+     */
+    profile(req) {
+        return req.user;
+    }
+    /**
+     * Vérifie si un nom est déjà utilisé
+     * GET /auth/check-username/:name
+     * Retourne { available: true } si le nom n'existe pas
+     */
+    async checkUsername(name) {
+        const user = await this.prisma.user.findFirst({ where: { name } });
+        return { available: !user };
+    }
+    /**
+     * Vérifie si un email est déjà utilisé
+     * GET /auth/check-email/:email
+     * Retourne { available: true } si l'email n'existe pas
+     */
+    async checkEmail(email) {
+        const user = await this.prisma.user.findUnique({ where: { email } });
+        return { available: !user };
+    }
+};
+exports.AuthController = AuthController;
+__decorate([
+    (0, common_1.Post)('register'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [register_dto_1.RegisterDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.Post)('login'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "logout", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('profile'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "profile", null);
+__decorate([
+    (0, common_1.Get)('check-username/:name'),
+    __param(0, (0, common_1.Param)('name')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "checkUsername", null);
+__decorate([
+    (0, common_1.Get)('check-email/:email'),
+    __param(0, (0, common_1.Param)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "checkEmail", null);
+exports.AuthController = AuthController = __decorate([
+    (0, common_1.Controller)('auth'),
+    __metadata("design:paramtypes", [auth_service_1.AuthService,
+        prisma_service_1.PrismaService,
+        jwt_1.JwtService])
+], AuthController);
+//# sourceMappingURL=auth.controller.js.map.
+.
+.
+.
+--
+{"version":3,"file":"auth.controller.js","sourceRoot":"","sources":["../../src/auth/auth.controller.ts"],"names":[],"mappings":"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"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthModule = void 0;
+const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
+const passport_1 = require("@nestjs/passport");
+const auth_service_1 = require("./auth.service");
+const auth_controller_1 = require("./auth.controller");
+const prisma_module_1 = require("../prisma.module");
+const jwt_strategy_1 = require("./jwt.strategy");
+let AuthModule = class AuthModule {
+};
+exports.AuthModule = AuthModule;
+exports.AuthModule = AuthModule = __decorate([
+    (0, common_1.Module)({
+        imports: [
+            prisma_module_1.PrismaModule,
+            passport_1.PassportModule,
+            jwt_1.JwtModule.register({
+                secret: process.env.JWT_SECRET || 'supersecret', // 👈 idem JwtStrategy
+                signOptions: { expiresIn: '8h' },
+            }),
+            prisma_module_1.PrismaModule, // très important, sinon AuthService ne trouve pas PrismaService
+        ],
+        controllers: [auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy],
+        exports: [auth_service_1.AuthService],
+    })
+], AuthModule);
+//# sourceMappingURL=auth.module.js.map.
+.
+.
+.
+--
+{"version":3,"file":"auth.module.js","sourceRoot":"","sources":["../../src/auth/auth.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAwC;AACxC,qCAAwC;AACxC,+CAAkD;AAClD,iDAA6C;AAC7C,uDAAmD;AACnD,oDAAgD;AAChD,iDAA6C;AAgBtC,IAAM,UAAU,GAAhB,MAAM,UAAU;CAAG,CAAA;AAAb,gCAAU;qBAAV,UAAU;IAdtB,IAAA,eAAM,EAAC;QACN,OAAO,EAAE;YACP,4BAAY;YACZ,yBAAc;YACd,eAAS,CAAC,QAAQ,CAAC;gBACjB,MAAM,EAAE,OAAO,CAAC,GAAG,CAAC,UAAU,IAAI,aAAa,EAAE,sBAAsB;gBACvE,WAAW,EAAE,EAAE,SAAS,EAAE,IAAI,EAAE;aACjC,CAAC;YACF,4BAAY,EAAE,gEAAgE;SAC/E;QACD,WAAW,EAAE,CAAC,gCAAc,CAAC;QAC7B,SAAS,EAAE,CAAC,0BAAW,EAAE,0BAAW,CAAC;QACrC,OAAO,EAAE,CAAC,0BAAW,CAAC;KACvB,CAAC;GACW,UAAU,CAAG"}.
+.
+.
+.
+--
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthService = void 0;
+const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
+const bcrypt = __importStar(require("bcrypt"));
+const prisma_service_1 = require("../prisma.service");
+let AuthService = class AuthService {
+    constructor(jwtService, prisma) {
+        this.jwtService = jwtService;
+        this.prisma = prisma;
+    }
+    async register(email, password, name) {
+        // Vérifier email et nom
+        const existingEmail = await this.prisma.user.findUnique({ where: { email } });
+        if (existingEmail)
+            throw new common_1.ConflictException('Cet email est déjà utilisé');
+        const existingName = await this.prisma.user.findFirst({ where: { name } });
+        if (existingName)
+            throw new common_1.ConflictException('Ce nom est déjà utilisé');
+        // Hasher le mot de passe
+        const hashed = await bcrypt.hash(password, 10);
+        const createdUser = await this.prisma.user.create({
+            data: { email, password: hashed, name, subscription: 'FREE' }, // ⚠ Ajouter subscription par défaut
+        });
+        // Retourner l'utilisateur sans le password
+        const { password: _, ...safeUser } = createdUser;
+        return safeUser;
+    }
+    async login(email, password) {
+        const user = await this.prisma.user.findUnique({ where: { email } });
+        if (!user || !user.password)
+            throw new Error('Utilisateur non trouvé ou mot de passe manquant');
+        const isValid = await bcrypt.compare(password, user.password);
+        if (!isValid)
+            throw new Error('Mot de passe incorrect');
+        const token = await this.generateToken(user.id);
+        // ⚠ Retourner subscription et id pour le frontend
+        const { password: _, ...safeUser } = user;
+        return { access_token: token, user: safeUser };
+    }
+    async validateUser(email, password) {
+        const user = await this.prisma.user.findFirst({ where: { email } });
+        if (!user)
+            return null;
+        const passwordValid = await bcrypt.compare(password, user.password);
+        if (!passwordValid)
+            return null;
+        return { id: user.id, name: user.name, email: user.email, subscription: user.subscription };
+    }
+    async generateToken(userId) {
+        const payload = { sub: userId };
+        const expiresInHours = 8;
+        // Générer le JWT
+        const token = this.jwtService.sign(payload, { expiresIn: `${expiresInHours}h` });
+        // Définir la date d'expiration côté serveur
+        const expiresAt = new Date();
+        expiresAt.setHours(expiresAt.getHours() + expiresInHours);
+        // Crée une session dans la DB
+        await this.prisma.session.create({
+            data: { userId, token, expiresAt },
+        });
+        return token;
+    }
+    async revokeToken(token) {
+        await this.prisma.session.deleteMany({ where: { token } });
+    }
+};
+exports.AuthService = AuthService;
+exports.AuthService = AuthService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [jwt_1.JwtService,
+        prisma_service_1.PrismaService])
+], AuthService);
+//# sourceMappingURL=auth.service.js.map.
+.
+.
+.
+--
+{"version":3,"file":"auth.service.js","sourceRoot":"","sources":["../../src/auth/auth.service.ts"],"names":[],"mappings":"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"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.JwtAuthGuard = void 0;
+const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
+};
+exports.JwtAuthGuard = JwtAuthGuard;
+exports.JwtAuthGuard = JwtAuthGuard = __decorate([
+    (0, common_1.Injectable)()
+], JwtAuthGuard);
+//# sourceMappingURL=jwt-auth.guard.js.map.
+.
+.
+.
+--
+{"version":3,"file":"jwt-auth.guard.js","sourceRoot":"","sources":["../../src/auth/jwt-auth.guard.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAA4C;AAC5C,+CAA6C;AAGtC,IAAM,YAAY,GAAlB,MAAM,YAAa,SAAQ,IAAA,oBAAS,EAAC,KAAK,CAAC;CAAG,CAAA;AAAxC,oCAAY;uBAAZ,YAAY;IADxB,IAAA,mBAAU,GAAE;GACA,YAAY,CAA4B"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.JwtAuthGuard = void 0;
+const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
+};
+exports.JwtAuthGuard = JwtAuthGuard;
+exports.JwtAuthGuard = JwtAuthGuard = __decorate([
+    (0, common_1.Injectable)()
+], JwtAuthGuard);
+//# sourceMappingURL=jwt.guard.js.map.
+.
+.
+.
+--
+{"version":3,"file":"jwt.guard.js","sourceRoot":"","sources":["../../src/auth/jwt.guard.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAA4C;AAC5C,+CAA6C;AAGtC,IAAM,YAAY,GAAlB,MAAM,YAAa,SAAQ,IAAA,oBAAS,EAAC,KAAK,CAAC;CAAG,CAAA;AAAxC,oCAAY;uBAAZ,YAAY;IADxB,IAAA,mBAAU,GAAE;GACA,YAAY,CAA4B"}.
+.
+.
+.
+--
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.JwtStrategy = void 0;
+const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+const passport_jwt_1 = require("passport-jwt");
+const prisma_service_1 = require("../prisma.service");
+let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
+    constructor(prisma) {
+        super({
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: process.env.JWT_SECRET || 'supersecret',
+            passReqToCallback: true, // ⚡ permet de récupérer le token brut
+        });
+        this.prisma = prisma;
+    }
+    async validate(req, payload) {
+        const authHeader = req.headers.authorization;
+        if (!authHeader)
+            throw new common_1.UnauthorizedException('Token manquant');
+        const token = authHeader.split(' ')[1];
+        // Vérifier session dans DB
+        const session = await this.prisma.session.findFirst({
+            where: { token },
+        });
+        if (!session || session.expiresAt < new Date())
+            throw new common_1.UnauthorizedException('Token expiré ou révoqué');
+        // Vérifier utilisateur
+        const user = await this.prisma.user.findUnique({ where: { id: payload.sub } });
+        if (!user)
+            throw new common_1.UnauthorizedException('Utilisateur introuvable');
+        return { userId: user.id, email: user.email, subscription: user.subscription };
+    }
+};
+exports.JwtStrategy = JwtStrategy;
+exports.JwtStrategy = JwtStrategy = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+], JwtStrategy);
+//# sourceMappingURL=jwt.strategy.js.map.
+.
+.
+.
+--
+{"version":3,"file":"jwt.strategy.js","sourceRoot":"","sources":["../../src/auth/jwt.strategy.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,2CAAmE;AACnE,+CAAoD;AACpD,+CAAoD;AACpD,sDAAkD;AAG3C,IAAM,WAAW,GAAjB,MAAM,WAAY,SAAQ,IAAA,2BAAgB,EAAC,uBAAQ,CAAC;IACzD,YAAoB,MAAqB;QACvC,KAAK,CAAC;YACJ,cAAc,EAAE,yBAAU,CAAC,2BAA2B,EAAE;YACxD,gBAAgB,EAAE,KAAK;YACvB,WAAW,EAAE,OAAO,CAAC,GAAG,CAAC,UAAU,IAAI,aAAa;YACpD,iBAAiB,EAAE,IAAI,EAAE,sCAAsC;SAChE,CAAC,CAAC;QANe,WAAM,GAAN,MAAM,CAAe;IAOzC,CAAC;IAED,KAAK,CAAC,QAAQ,CAAC,GAAQ,EAAE,OAAY;QACnC,MAAM,UAAU,GAAG,GAAG,CAAC,OAAO,CAAC,aAAa,CAAC;QAC7C,IAAI,CAAC,UAAU;YAAE,MAAM,IAAI,8BAAqB,CAAC,gBAAgB,CAAC,CAAC;QACnE,MAAM,KAAK,GAAG,UAAU,CAAC,KAAK,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC;QAEvC,2BAA2B;QAC3B,MAAM,OAAO,GAAG,MAAM,IAAI,CAAC,MAAM,CAAC,OAAO,CAAC,SAAS,CAAC;YAClD,KAAK,EAAE,EAAE,KAAK,EAAE;SACjB,CAAC,CAAC;QACH,IAAI,CAAC,OAAO,IAAI,OAAO,CAAC,SAAS,GAAG,IAAI,IAAI,EAAE;YAAE,MAAM,IAAI,8BAAqB,CAAC,yBAAyB,CAAC,CAAC;QAE3G,uBAAuB;QACvB,MAAM,IAAI,GAAG,MAAM,IAAI,CAAC,MAAM,CAAC,IAAI,CAAC,UAAU,CAAC,EAAE,KAAK,EAAE,EAAE,EAAE,EAAE,OAAO,CAAC,GAAG,EAAE,EAAE,CAAC,CAAC;QAC/E,IAAI,CAAC,IAAI;YAAE,MAAM,IAAI,8BAAqB,CAAC,yBAAyB,CAAC,CAAC;QAEtE,OAAO,EAAE,MAAM,EAAE,IAAI,CAAC,EAAE,EAAE,KAAK,EAAE,IAAI,CAAC,KAAK,EAAE,YAAY,EAAE,IAAI,CAAC,YAAY,EAAE,CAAC;IACjF,CAAC;CACF,CAAA;AA3BY,kCAAW;sBAAX,WAAW;IADvB,IAAA,mBAAU,GAAE;qCAEiB,8BAAa;GAD9B,WAAW,CA2BvB"}.
+.
+.
+.
+--

@@ -1,0 +1,901 @@
+/* ========================================
+   🎨 VAN PLANNER LAYOUT - WIREFRAME DESIGN
+   Layout: Header + Grid (60% Left Canvas | 40% Right Sidebar)
+======================================== */
+
+/* ====== RESET & BASE ====== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: #1f2937;
+  background: #f3f4f6;
+  line-height: 1.5;
+}
+
+/* ========================================
+   📋 HEADER - Nouveau design
+======================================== */
+.app-header-new {
+  background: #ffffff;
+  border-bottom: 2px solid #e5e7eb;
+  padding: 1rem 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.header-content-new {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header-title-new {
+  text-align: center;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.user-info-new {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.user-info-new strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.header-nav-new {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-btn-new {
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-btn-new:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.nav-btn-logout {
+  background: #374151;
+  color: #ffffff;
+}
+
+.nav-btn-logout:hover {
+  background: #1f2937;
+}
+
+/* ========================================
+   🗂️ LAYOUT GRID - 60/40 Split
+======================================== */
+.van-planner-layout-new {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f9fafb;
+}
+
+.layout-wrapper {
+  flex: 1;
+  overflow: hidden;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: calc(100vh - 100px);
+}
+
+/* ========================================
+   📐 COLONNE GAUCHE - WORKSPACE VAN (60%)
+======================================== */
+.workspace-left {
+  background: #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+}
+
+.workspace-header {
+  margin-bottom: 0.5rem;
+}
+
+/* ✨ NOUVEAU : Header avec toggle */
+.workspace-header-with-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.workspace-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Van Controls */
+.van-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.van-selector-container {
+  background: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.selector-label-block {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+/* Dimension Info */
+.dimension-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.dimension-label {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.dimension-value {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ✅ CORRECTION 2: Canvas Zone - Hauteur optimisée */
+.canvas-container {
+  overflow: hidden;
+  flex: 1;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 0.5rem; /* ✅ Réduit de 1rem à 0.5rem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px; /* ✅ Réduit de 400px à 300px */
+  border: 2px solid #d1d5db;
+}
+
+.van-canvas {
+  width: 100%;
+  height: 100%; /* ✅ Ajout pour occuper toute la hauteur */
+  display: flex;
+  align-items: center; /* ✅ Centrage vertical */
+  justify-content: center;
+}
+
+.konvajs-content {
+  width: 100%;
+  height: auto;
+  max-height: 100%; /* ✅ Ajout pour limiter la hauteur */
+}
+
+.konvajs-content canvas {
+  width: 100%;
+  height: auto;
+  display: block; /* ✅ Supprime l'espace en bas */
+}
+
+.canvas-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Plans Container - SOUS LE CANVAS */
+.plans-container-bottom {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #d1d5db;
+}
+
+.plans-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #374151;
+}
+
+.plans-list-selector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.plan-selector {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.plan-selector:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.rename-btn {
+  flex-shrink: 0;
+}
+
+.no-plans-message {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+.plans-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ========================================
+   📋 COLONNE DROITE - SIDEBAR (40%)
+======================================== */
+.sidebar-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+}
+
+/* Cards communes */
+.prompt-section,
+.palette-card,
+.plans-card {
+  background: #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* ✅ Changé de flex-start à stretch */
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+.subsection-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #374151;
+}
+
+.subtitle-inline {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-left: 0.5rem;
+}
+
+/* ========================================
+   🤖 PROMPT IA CARD
+======================================== */
+/* ✅ CORRECTION 3: Prompt row occupe tout l'espace */
+.prompt-row {
+  width: 100%; /* ✅ Ajout */
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prompt-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  resize: vertical;
+  background: #ffffff;
+}
+
+.prompt-textarea-inline {
+  flex: 1;
+  min-width: 0;
+}
+
+.prompt-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.prompt-textarea:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.action-buttons-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  width: 130px;
+}
+
+/* Options inline */
+.prompt-options-line {
+  width: 100%; /* ✅ Ajout */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.6rem;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.checkbox-label,
+.selector-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #374151;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.875rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.separator {
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.selector-input {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #fff;
+  font: inherit;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.selector-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.pro-notice {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+
+.pro-notice p {
+  margin: 0;
+  color: #92400e;
+}
+
+/* AI SUGGESTION BOX */
+.ai-suggestion {
+  background: #eff6ff;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.suggestion-explanation {
+  font-size: 0.875rem;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.suggestion-alternatives,
+.suggestion-improvements {
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
+}
+
+.suggestion-alternatives strong,
+.suggestion-improvements strong {
+  color: #1e40af;
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.suggestion-alternatives ul,
+.suggestion-improvements ul {
+  margin: 0.25rem 0 0 1.25rem;
+  padding: 0;
+  list-style-type: disc;
+}
+
+.apply-suggestion-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+/* ========================================
+   🎨 PALETTE D'OBJETS
+======================================== */
+
+/* ✅ CORRECTION 1: Grille d'éléments prédéfinis */
+.predefined-elements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.element-card {
+  background: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.element-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+.element-card.selected {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.element-icon {
+  font-size: 1.5rem;
+}
+
+.element-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.element-dimensions {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Liste éléments - SELECT BOX (fallback) */
+.elements-select-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  width: 100%; /* ✅ Ajout */
+}
+
+.element-select {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.element-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Dimensions inline row */
+.dimensions-row-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  width: 100%; /* ✅ Ajout */
+}
+
+.form-label {
+  font-weight: 500;
+  color: #374151;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+.form-input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.form-input.short {
+  width: 150px;
+  flex-shrink: 0;
+}
+
+/* Color Section Block */
+.color-section-block {
+  width: 100%; /* ✅ Changé de 50% à 100% */
+  margin-bottom: 1rem;
+  background: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.color-title-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+/* Palette couleurs - BIEN VISIBLE */
+.color-palette {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap; /* ✅ Ajout */
+}
+
+.color-swatch {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-swatch:active {
+  transform: scale(1.05);
+}
+
+/* Custom Element Row */
+.custom-element-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+  width: 100%; /* ✅ Ajout */
+}
+
+/* ========================================
+   📘 BUTTONS
+======================================== */
+.btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   📱 RESPONSIVE
+======================================== */
+@media (max-width: 1200px) {
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-right {
+    max-height: none;
+  }
+
+  .workspace-left {
+    max-height: none;
+  }
+
+  .predefined-elements-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content-new {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header-nav-new {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn-new {
+    flex: 1;
+  }
+
+  .prompt-row {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .action-buttons-inline {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .plans-actions {
+    flex-direction: column;
+  }
+
+  .color-palette {
+    flex-wrap: wrap;
+  }
+
+  .predefined-elements-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========================================
+   🌙 MODE SOMBRE - VAN PLANNER
+======================================== */
+
+/* Layout principal */
+body.dark-theme .van-planner-layout-new {
+  background: #121212;
+}
+
+body.dark-theme .layout-wrapper {
+  background: #121212;
+}
+
+/* Header */
+body.dark-theme .app-header-new {
+  background: #1e1e1e;
+  border-bottom-color: #333;
+}
+
+body.dark-theme .header-title-new,
+body.dark-theme .workspace-title {
+  color: #ffffff;
+}
+
+body.dark-theme .user-info-new {
+  color: #9ca3af;
+}
+
+body.dark-theme .user-info-new strong {
+  color: #e0e0e0;
+}
+
+body.dark-theme .nav-btn-new {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.dark-theme .nav-btn-new:hover {
+  background: #374151;
+}
+
+/* Colonnes principales */
+body.dark-theme .workspace-left,
+body.dark-theme .sidebar-right {
+  background: #1a1a1a;
+}
+
+/* Cards/Sections */
+body.dark-theme .prompt-section,
+body.dark-theme .palette-card,
+body.dark-theme .plans-card,
+body.dark-theme .van-selector-container,
+body.dark-theme .dimension-info,
+body.dark-theme .color-section-block,
+body.dark-theme .prompt-options-line {
+  background: #2a2a2a;
+  border-color: #404040;
+}
+
+/* Canvas */
+body.dark-theme .canvas-container {
+  background: #2a2a2a;
+  border-color: #404040;
+}
+
+/* Titres */
+body.dark-theme .section-title,
+body.dark-theme .subsection-title,
+body.dark-theme .plans-title,
+body.dark-theme .workspace-title,
+body.dark-theme .color-title-label {
+  color: #ffffff;
+}
+
+body.dark-theme .dimension-label,
+body.dark-theme .form-label,
+body.dark-theme .subtitle-inline {
+  color: #9ca3af;
+}
+
+body.dark-theme .dimension-value {
+  color: #e0e0e0;
+}
+
+/* Empty canvas */
+body.dark-theme .canvas-empty {
+  color: #6b7280;
+}
+
+/* ✅ Grille éléments prédéfinis - Mode sombre */
+body.dark-theme .element-card {
+  background: #2a2a2a;
+  border-color: #404040;
+}
+
+body.dark-theme .element-card:hover {
+  border-color: #3b82f6;
+}
+
+body.dark-theme .element-card.selected {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+}
+
+body.dark-theme .element-name {
+  color: #e0e0e0;
+}
+
+body.dark-theme .element-dimensions {
+  color: #9ca3af;
+}
+
+/* AI Suggestion */
+body.dark-theme .ai-suggestion {
+  background: #1e3a5f;
+  border-color: #2563eb;
+}
+
+body.dark-theme .suggestion-title {
+  color: #60a5fa;
+}
+
+body.dark-theme .suggestion-explanation {
+  color: #d1d5db;
+}
+
+/* Pro notice */
+body.dark-theme .pro-notice {
+  background: #422006;
+  border-color: #d97706;
+}
+
+body.dark-theme .pro-notice p {
+  color: #fbbf24;
+}
+
+/* Plans container */
+body.dark-theme .plans-container-bottom {
+  border-top-color: #404040;
+}
+
+body.dark-theme .no-plans-message {
+  color: #6b7280;
+}

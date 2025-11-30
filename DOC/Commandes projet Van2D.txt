@@ -1,0 +1,9 @@
+Supprimer node_modules - commande sous Windows
+Remove-Item -Recurse -Force node_modules
+
+Supprimer node_modules des répertoires api et web - commande sous Windows
+Get-ChildItem -Recurse -Directory -Filter node_modules | Remove-Item -Recurse -Force
+
+
+Phrase prompt IA:
+je veux un lit transversal à l'arrière, une kitchenette compact côté droit, et beaucoup de rangements

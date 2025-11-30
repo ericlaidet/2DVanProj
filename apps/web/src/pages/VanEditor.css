@@ -1,0 +1,113 @@
+.van-editor {
+  background-color: #f5f5f5;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  min-height: 100vh;
+}
+
+.van-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.van-editor-header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.user-info {
+  font-size: 0.95rem;
+}
+
+.link {
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.van-editor-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.van-editor-nav button {
+  background-color: #e4e4e4;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.van-editor-nav button:hover {
+  background-color: #d2d2d2;
+}
+
+.van-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.van-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.prompt textarea {
+  width: 100%;
+  min-height: 80px;
+  margin-top: 5px;
+  padding: 8px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.options button {
+  background-color: #eee;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.options button:hover {
+  background-color: #ddd;
+}
+
+.workspace-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.workspace-area {
+  background: #e0e0e0;
+  border-radius: 8px;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  font-style: italic;
+}

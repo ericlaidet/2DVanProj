@@ -1,0 +1,317 @@
+/* ===============================
+   🚐 MODAL VAN SELECTOR
+   Harmonisé avec le style général
+================================= */
+
+/* Bouton ouverture modal */
+.open-modal-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.open-modal-btn:hover {
+  background-color: #005fcc;
+}
+
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Contenu du modal */
+.modal-content {
+  background-color: #fff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+  width: 90%;
+  max-width: 800px; /* plus large pour 4 colonnes */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  font-family: system-ui, sans-serif;
+}
+
+.modal-content h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: #222;
+  text-align: center;
+}
+
+/* ===============================
+   🚐 GRILLE DE VANS (responsive)
+================================= */
+.van-selector {
+  display: grid;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+/* Grand écran : 4 colonnes */
+@media (min-width: 1400px) {
+  .van-selector {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Desktop moyen : 3 colonnes */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .van-selector {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablette / mobile : 2 colonnes */
+@media (max-width: 1023px) {
+  .van-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Carte van */
+.van-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.van-card:hover {
+  border-color: #007bff;
+  transform: translateY(-2px);
+}
+
+.van-card.selected {
+  border-color: #007bff;
+  background-color: #e8f1ff;
+}
+
+/* Image / placeholder */
+.van-card__image {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.van-card__image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Placeholder emoji si pas d'image */
+.van-card__placeholder {
+  font-size: 1.8rem;
+  color: #888;
+}
+
+/* Texte */
+.van-card__info {
+  padding: 0.5rem;
+}
+
+.van-card__info h3 {
+  font-size: 0.95rem;
+  margin: 0.3rem 0;
+  color: #222;
+}
+
+.van-category {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.van-dimensions {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+/* Bouton fermer */
+.close-modal-btn {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.4rem 1rem;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.close-modal-btn:hover {
+  background-color: #ddd;
+}
+
+/* ===============================
+   🎛️ FILTRES DU MODAL
+================================= */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+  align-items: flex-end;
+  background-color: #f5f5f5;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.filter-group label {
+  font-weight: 500;
+}
+
+.filter-group select {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  min-width: 140px;
+  background-color: white;
+}
+
+.van-card__img {
+  width: 100%;
+  height: 90px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ===============================
+   🌙 MODE SOMBRE - VAN SELECTOR
+================================= */
+
+/* Modal overlay - plus sombre */
+body.dark-theme .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* Contenu du modal */
+body.dark-theme .modal-content {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+body.dark-theme .modal-content h2 {
+  color: #ffffff;
+}
+
+/* Barre de filtres */
+body.dark-theme .filter-bar {
+  background-color: #2a2a2a;
+  border-color: #404040;
+}
+
+body.dark-theme .filter-group {
+  color: #e0e0e0;
+}
+
+body.dark-theme .filter-group label {
+  color: #e0e0e0;
+}
+
+body.dark-theme .filter-group select {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ccc;
+}
+
+/* Cartes van */
+body.dark-theme .van-card {
+  background-color: #2a2a2a;
+  border-color: #404040;
+}
+
+body.dark-theme .van-card:hover {
+  border-color: #3b82f6;
+  background-color: #374151;
+}
+
+body.dark-theme .van-card.selected {
+  border-color: #3b82f6;
+  background-color: #1e3a5f;
+}
+
+body.dark-theme .van-card__image {
+  background-color: #1a1a1a;
+  border-bottom-color: #404040;
+}
+
+body.dark-theme .van-card__placeholder {
+  color: #6b7280;
+}
+
+/* Texte des cartes */
+body.dark-theme .van-card__info h3 {
+  color: #ffffff;
+}
+
+body.dark-theme .van-category {
+  color: #9ca3af;
+}
+
+body.dark-theme .van-dimensions {
+  color: #6b7280;
+}
+
+/* Boutons */
+body.dark-theme .open-modal-btn {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+body.dark-theme .open-modal-btn:hover {
+  background-color: #2563eb;
+}
+
+body.dark-theme .close-modal-btn {
+  background-color: #2a2a2a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+body.dark-theme .close-modal-btn:hover {
+  background-color: #374151;
+}
+
+/* Message vide */
+body.dark-theme .van-selector__empty {
+  color: #9ca3af;
+}

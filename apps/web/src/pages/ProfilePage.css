@@ -1,0 +1,247 @@
+/* Ajoutez ces styles à votre ProfilePage.css existant */
+
+/* Indicateurs de disponibilité */
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checking {
+  font-size: 0.85em;
+  color: #666;
+  font-style: italic;
+}
+
+.available {
+  color: #10b981;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.unavailable {
+  color: #ef4444;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+/* Message d'aide sous les inputs */
+.form-group small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.85em;
+  color: #666;
+  font-style: italic;
+}
+
+/* Bouton de changement de plan */
+.change-plan-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.2s;
+}
+
+.change-plan-btn:hover {
+  background: #2563eb;
+}
+
+/* Style des infos d'abonnement */
+.subscription-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+.info-label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.info-value {
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.info-value[data-subscription="PRO1"],
+.info-value[data-subscription="PRO2"],
+.info-value[data-subscription="PRO3"] {
+  background: #10b981;
+  color: white;
+}
+
+.info-value[data-subscription="FREE"] {
+  background: #9ca3af;
+  color: white;
+}
+
+/* Animations pour les inputs */
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Bouton retour */
+.back-btn {
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: #4b5563;
+}
+
+/* Sections du profil */
+.profile-section {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1f2937;
+  font-size: 1.25em;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+
+/* Bouton de sauvegarde */
+.save-btn {
+  padding: 10px 20px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #059669;
+}
+
+.save-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Container principal */
+.profile-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile-page h2 {
+  color: #1f2937;
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95em;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+/* ========================================
+   🌙 MODE SOMBRE - PROFILE PAGE
+======================================== */
+body.dark-theme .profile-page {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-theme .profile-page h2 {
+  color: #ffffff;
+}
+
+body.dark-theme .profile-section {
+  background: #1e1e1e;
+  border: 1px solid #404040;
+}
+
+body.dark-theme .profile-section h3 {
+  color: #ffffff;
+  border-bottom-color: #404040;
+}
+
+body.dark-theme .form-group label {
+  color: #e0e0e0;
+}
+
+body.dark-theme .form-group small {
+  color: #9ca3af;
+}
+
+body.dark-theme .info-row {
+  background: #2a2a2a;
+  border: 1px solid #404040;
+}
+
+body.dark-theme .info-label {
+  color: #9ca3af;
+}
+
+body.dark-theme .info-value {
+  background: #374151;
+  color: #e0e0e0;
+}
+
+body.dark-theme .back-btn {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.dark-theme .back-btn:hover {
+  background: #374151;
+}

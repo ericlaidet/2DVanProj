@@ -1,0 +1,291 @@
+
+> web@ dev C:\02_Coding\02_Projects\2DVanProj\apps\web
+> vite
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+  [32m[1mVITE[22m v5.4.20[39m  [2mready in [0m[1m2231[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m21:54:13[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/login.css[22m
+[2m21:57:32[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/login.css[22m
+[2m22:02:29[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:06:38[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:07:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:07:14[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\02_Coding\02_Projects\2DVanProj\apps\web\src\components\layout\VanPlannerLayout.tsx: Unexpected token, expected "..." (370:79)
+
+[0m [90m 368 |[31m                     [33m<[31m[33mtextarea[31m
+ [90m 369 |[31m                       value[33m=[31m{prompt}
+[31m[1m>[22m[31m[90m 370 |[31m                       {[90m/* Left group: Couchage checkbox + Personnes dropdown */[31m}
+ [90m     |[31m                                                                                [31m[1m^[22m[31m
+ [90m 371 |[31m                     [33m<[31m[33mlabel[31m className[33m=[31m[32m"checkbox-label"[31m[33m>[31m
+ [90m 372 |[31m                       [33m<[31m[33minput[31m
+ [90m 373 |[31m                         type[33m=[31m[32m"checkbox"[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/02_Coding/02_Projects/2DVanProj/apps/web/src/components/layout/VanPlannerLayout.tsx[39m:370:79
+[33m  379|                      </label>
+  380|  
+  381|                      <label className="selector-label">
+     |   ^
+  382|                        Personnes:
+  383|                        <select[39m
+      at constructor (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:367:19)
+      at TypeScriptParserMixin.raise (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6630:19)
+      at TypeScriptParserMixin.unexpected (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6650:16)
+      at TypeScriptParserMixin.expect (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6930:12)
+      at TypeScriptParserMixin.jsxParseAttribute (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4678:12)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4700:28)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10067:18)
+      at TypeScriptParserMixin.jsxParseOpeningElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4695:17)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4719:33)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4731:32)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4731:32)
+      at TypeScriptParserMixin.jsxParseElement (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4782:17)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4792:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9795:39
+      at TypeScriptParserMixin.tryParse (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6938:20)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9795:18)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12436:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12503:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11683:28)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11335:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4797:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12436:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10895:30)
+      at TypeScriptParserMixin.parseConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9631:18)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10889:17)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)
+      at TypeScriptParserMixin.parseExpressionBase (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10788:23)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10784:39
+[2m22:07:44[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:08:00[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:08:22[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:12:34[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:12:35[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\02_Coding\02_Projects\2DVanProj\apps\web\src\components\layout\VanPlannerLayout.tsx: Unexpected token (60:2)
+
+[0m [90m 58 |[31m     { name[33m:[31m [32m'Bureau'[31m[33m,[31m width[33m:[31m [35m1200[31m[33m,[31m height[33m:[31m [35m600[31m }[33m,[31m
+ [90m 59 |[31m     { name[33m:[31m [32m'Lit'[31m[33m,[31m width[33m:[31m [35m2000[31m[33m,[31m height[33m:[31m [35m1400[31m }[33m,[31m
+[31m[1m>[22m[31m[90m 60 |[31m   [36mconst[31m handleGenerateLayout [33m=[31m [36masync[31m () [33m=>[31m {
+ [90m    |[31m   [31m[1m^[22m[31m
+ [90m 61 |[31m     [36mif[31m ([33m![31mvanType) [36mreturn[31m notify[33m.[31merror([32m"Sélectionnez d'abord un type de van"[31m)[33m;[31m
+ [90m 62 |[31m     [36mif[31m ([33m![31mprompt[33m.[31mtrim()) [36mreturn[31m notify[33m.[31merror([32m"Décrivez votre aménagement souhaité"[31m)[33m;[31m
+ [90m 63 |[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/02_Coding/02_Projects/2DVanProj/apps/web/src/components/layout/VanPlannerLayout.tsx[39m:60:2
+[33m  59 |      { name: 'Lit', width: 2000, height: 1400 },
+  60 |    const handleGenerateLayout = async () => {
+  61 |      if (!vanType) return notify.error("Sélectionnez d'abord un type de van");
+     |                  ^
+  62 |      if (!prompt.trim()) return notify.error("Décrivez votre aménagement souhaité");
+  63 |  [39m
+      at constructor (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:367:19)
+      at TypeScriptParserMixin.raise (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6630:19)
+      at TypeScriptParserMixin.unexpected (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6650:16)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11451:16)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4797:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12436:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12503:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12185:18)
+      at TypeScriptParserMixin.parseExprList (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12160:22)
+      at TypeScriptParserMixin.parseArrayLike (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12067:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9273:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11339:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4797:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12431:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseVar (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:13393:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:13239:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9498:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12860:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9532:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12776:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12756:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:13325:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:13318:10)
+      at TypeScriptParserMixin.parseBlock (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:13306:10)
+      at TypeScriptParserMixin.parseFunctionBody (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12110:24)
+      at TypeScriptParserMixin.parseArrowExpression (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12085:10)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11695:12)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11335:23)
+[2m22:12:56[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:13:41[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:13:42[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\02_Coding\02_Projects\2DVanProj\apps\web\src\components\layout\VanPlannerLayout.tsx: Unexpected token, expected "..." (408:23)
+
+[0m [90m 406 |[31m                       onChange[33m=[31m{(e) [33m=>[31m setPrompt(e[33m.[31mtarget[33m.[31mvalue)}
+ [90m 407 |[31m                       placeholder[33m=[31m[32m"Ex: je veux un lit transversal à l'arrière, une kitchenette compacte côté droit..."[31m
+[31m[1m>[22m[31m[90m 408 |[31m                       {aiLoading [33m?[31m [32m'⏳ Génération...'[31m [33m:[31m [32m'Générer layout'[31m}
+ [90m     |[31m                        [31m[1m^[22m[31m
+ [90m 409 |[31m                       [33m<[31m[33m/[31m[33mButton[31m[33m>[31m
+ [90m 410 |[31m                 [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m 411 |[31m             [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/02_Coding/02_Projects/2DVanProj/apps/web/src/components/layout/VanPlannerLayout.tsx[39m:408:23
+[33m  417|                    type="checkbox"
+  418|                    checked={hasCuisine}
+  419|                    onChange={(e) => setHasCuisine(e.target.checked)}
+     |                                                       ^
+  420|                    disabled={aiLoading}
+  421|                  />[39m
+      at constructor (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:367:19)
+      at TypeScriptParserMixin.raise (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6630:19)
+      at TypeScriptParserMixin.unexpected (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6650:16)
+      at TypeScriptParserMixin.expect (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6930:12)
+      at TypeScriptParserMixin.jsxParseAttribute (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4678:12)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4700:28)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10067:18)
+      at TypeScriptParserMixin.jsxParseOpeningElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4695:17)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4719:33)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4731:32)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4731:32)
+      at TypeScriptParserMixin.jsxParseElement (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4782:17)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4792:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9795:39
+      at TypeScriptParserMixin.tryParse (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6938:20)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9795:18)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12436:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12503:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11683:28)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11335:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4797:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12436:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10895:30)
+      at TypeScriptParserMixin.parseConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9631:18)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10889:17)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)
+      at TypeScriptParserMixin.parseExpressionBase (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10788:23)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10784:39
+[2m22:13:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:14:05[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:14:31[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/VanPlannerLayout.tsx[22m
+[2m22:14:31[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\02_Coding\02_Projects\2DVanProj\apps\web\src\components\layout\VanPlannerLayout.tsx: Unexpected token (392:20)
+
+[0m [90m 390 |[31m                       onChange[33m=[31m{(e) [33m=>[31m setPrompt(e[33m.[31mtarget[33m.[31mvalue)}
+ [90m 391 |[31m                       placeholder[33m=[31m[32m"Ex: je veux un lit transversal à l'arrière, une kitchenette compacte côté droit..."[31m
+[31m[1m>[22m[31m[90m 392 |[31m                     [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m     |[31m                     [31m[1m^[22m[31m
+ [90m 393 |[31m                 [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m 394 |[31m
+ [90m 395 |[31m               {[90m/* Ligne options */[31m}[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/02_Coding/02_Projects/2DVanProj/apps/web/src/components/layout/VanPlannerLayout.tsx[39m:392:20
+[33m  401|                      onChange={(e) => setHasCuisine(e.target.checked)}
+  402|                      disabled={aiLoading}
+  403|                    />
+     |          ^
+  404|                    Cuisine
+  405|                  </label>[39m
+      at constructor (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:367:19)
+      at TypeScriptParserMixin.raise (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6630:19)
+      at TypeScriptParserMixin.unexpected (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6650:16)
+      at TypeScriptParserMixin.jsxParseIdentifier (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4602:12)
+      at TypeScriptParserMixin.jsxParseNamespacedName (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4609:23)
+      at TypeScriptParserMixin.jsxParseAttribute (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4685:22)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4700:28)
+      at TypeScriptParserMixin.jsxParseOpeningElementAfterName (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10067:18)
+      at TypeScriptParserMixin.jsxParseOpeningElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4695:17)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4719:33)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4731:32)
+      at TypeScriptParserMixin.jsxParseElementAt (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4731:32)
+      at TypeScriptParserMixin.jsxParseElement (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4782:17)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4792:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9795:39
+      at TypeScriptParserMixin.tryParse (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:6938:20)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9795:18)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12436:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12503:17)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11683:28)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11335:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:4797:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11085:23)
+      at TypeScriptParserMixin.parseUpdate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11070:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:11050:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9857:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10903:61)
+      at TypeScriptParserMixin.parseExprOps (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10908:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10885:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)
+      at C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:39
+      at TypeScriptParserMixin.allowInAnd (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:12436:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10804:17)
+      at TypeScriptParserMixin.parseConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10895:30)
+      at TypeScriptParserMixin.parseConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9631:18)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10889:17)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:10835:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\02_Coding\02_Projects\2DVanProj\node_modules\.pnpm\@babel+parser@7.28.4\node_modules\@babel\parser\lib\index.js:9806:20)

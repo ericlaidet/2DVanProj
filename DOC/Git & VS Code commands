@@ -1,0 +1,54 @@
+--------------------- LANCER FRONTEND & BACKEND -------------------------
+
+pnpm --filter api run start:dev					// Lancer backend
+
+Remove-Item -Recurse -Force .\apps\api\dist		// Supprimer rép dist
+rmdir /s /q .\apps\api\dist						// Supprimer rep dist ... commande sous Windows
+
+pnpm --filter web run dev						// Lancer frontend
+
+------------------------ COMMIT FILES TO GIT ----------------------------
+
+
+git status										// Check if your folder is a Git repository
+
+git add .										// Add all files to staging
+
+git commit -m "xxxxx"							// Make a commit --> replace xxx by commit desc
+
+git push										// Push to GitHub
+
+
+__________________________________________________________________________________
+
+
+Soucis lancement pnpm
+
+Impossible de charger le fichier C:\02_Coding\02_Projects\2DVanProj\test-backend.ps1, car l’exécution de scripts est désactivée sur ce système. Pour plus d’informations, consultez about_Execution_Policies à l’adresse https://go.microsoft.com/fwlink/?LinkID=135170
+
+Ouvre PowerShell en administrateur et exécute :
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+
+
+
+__________________________________________________________________________________
+
+1️⃣ Avec l’invite de commandes (cmd), pour supprimer un dossier et tout son contenu :
+
+rmdir /s /q "C:\chemin\important"
+
+ou via VsCode : Remove-Item -Path .\node_modules\ -Recurse -Force
+
+
+__________________________________________________________________________________
+
+
+Phrase prompt IA:
+je veux un lit transversal à l'arrière, une kitchenette compact côté droit, et beaucoup de rangements
+
+
+
+pnpm install --filter ./apps/api... && pnpm build
+
+

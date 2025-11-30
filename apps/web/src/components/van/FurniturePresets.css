@@ -1,0 +1,125 @@
+/* apps/web/src/components/van/FurniturePresets.css */
+
+.furniture-presets {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.dark-theme .furniture-presets {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.presets-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.dark-theme .presets-title {
+  color: #f9fafb;
+}
+
+.presets-description {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.dark-theme .presets-description {
+  color: #9ca3af;
+}
+
+.presets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.preset-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.preset-card:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.preset-card:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.preset-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dark-theme .preset-card {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.dark-theme .preset-card:hover:not(:disabled) {
+  background: #4b5563;
+  border-color: #6b7280;
+}
+
+.preset-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preset-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.preset-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.dark-theme .preset-name {
+  color: #f9fafb;
+}
+
+.preset-dimensions {
+  font-size: 11px;
+  color: #6b7280;
+  font-family: 'Courier New', monospace;
+}
+
+.dark-theme .preset-dimensions {
+  color: #9ca3af;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .presets-grid {
+    grid-template-columns: 1fr;
+  }
+}

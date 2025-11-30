@@ -1,0 +1,70 @@
+I need to go to the next level on this web interface. I need to instruct app.emergent.sh on the existing and ask to reuse the existing code and enhance it.
+
+So I need you to indicate a correct prompt for emergent.sh
+I will provide the code and database (using a docker Adminer) structure along with already Added data
+
+Those are my main goals on this website:
+Different user account types, Free, Pro1, Pro2
+The difference between those user accounts:
+             - number of van   | IA generated plan / per   |   expiration date of plan in Db
+FREE               1                     0                            1 week
+PRO1               3                     3                            1 month
+PRO2               6                   20 + optimized                 6 months
+PRO3               10                   unlimited                     1 year
+
+The SaaS mode of the project is made in a way a logged in user cannot see the van layout of another user.
+When a user logs in with the current account type, even user's on PRO3 cannot see other layouts of users on any other account type.
+A token enables one to log in and work on what they wish. The tool enables anyone to log in and have a FREE account as a base account type.
+
+The app communicates with an API backend, this is a multi-user app with JWT token per user.
+
+When a user selects the web address a log in or create account link enables one to either log in or to create an account, selecting the create an account opens a create account screen. A control is made when the user indicates a name or email to check if not already defined by another user, per a check in the Db. If the user defines an already used name or email address, a small red modal message is shown on the top of the screen indicating the email and/or login name is already used.
+
+On top of the screen a title indicates 'Plan your Van - Éditeur 2D', in the center a message indicates 'Bienvenue', followed by the logged in's user name, Following by 'Abonnement:' and the account type.
+For example when logged in with the same Eric which had an account PRO1: "Bienvenue, Erik - Abonnement: PRO1"
+Four buttons are on the left and on the same level as the ones mentioned before. The first button is "Plans", second is "Profile", third is "Paramètres" and fourth is "Déconnexion"
+
+The first button "Plans" shows the different plans made available, the one the user is on, enables a user to register for another account. An action to pay with Stripe or PayPal offers a user to pay the fee to upgrade. Fee will be indicated in a later stage, generic amount should be added for timebeing.
+
+The second button "Profile" one to access his parameters, log name (this can be changed on this page), email address (this can be changed on this page), account type, (some actions might be added later on).
+
+The third button "Paramètres & Guide" is where some parameters specifically for the application be be adjusted. This goes for the dark/light mode of the interface, language selection 'french' or 'english' based on which the entire interface will be translated, a currency button to allow selection of either euro € or dollar $
+This page defines some guidelines to allow one to understand how to work on the interface, what actions are per each button
+
+The fourth button "Déconnecter" is in grey color with white caracter
+
+The interface is split in two areas. the object_catalog, the van_workspace
+
+the 'object_catalog'
+First is the object palette 'in french 'Palenette d'objets' allowing the user to add some object to the workspace.
+The user can therefor enter a name, dimensions and color of an object, a button 'Ajouter' creates the object on the worspace.
+the fields are as follows: "Nom :" + input field inside which a string "Ex : Table" is written + "Dimensions :" + input field inside which a string "Ex : 500x300" is written + button "Ajouter" + "Palette d'objets" with round format colors: red, green, blue, orange, purple. When user selects a color it is surrounded by a thick black surrounding to indicate the color selected.
+Selecting the 'Ajouter' creates the object in the defined color on the worspace, with the same of the object in its center. Dimensions are in meter, to be in line with the Workspace dimensions (also in meter)
+When drag moving them on the worspace those elements should not be one on another. the name is kept in the center or the element. Drag Moving them can be done based on he dimensions of the Workspace.
+
+Another part of this area is the prompt IA. For this a big field allows one to enter a prompt, two buttons on the left have some action "Optimiser" and "Générer layout"
+The default value of the prompt field is: "Ex: je veux un lit transversal à l'arrière, une kitchenette compact côté droit ..."
+The "Optimiser" button is only available on PRO2 and PRO3 account type, so marked as unavailable for other account types, not hidden.
+
+The above prompt part is not available for FREE account, so therefore should be marked as unavailable, not hidden
+
+some prebuilt actions allow a user to specify if the kitchen should be added using a checkbox, another checkbox for "Rangements", a list for "Couchage" with list containg "1 pers" / "2 pers" / "3 pers" / "4 pers", and lastly a 'Style' listbox containing data "Minimal" / "Moderne" / "Rustique"
+Those fields are on the same level as follows: checkbox + 'Cuisine' + checkbox + 'Rangements' + "|" + 'Couchage' + listbox with values identified above with default value '1 pers' + 'Style + listbox with values identified above with default value ''Minimal'
+
+
+the 'van_workspace' area
+when logged in a user can select a van type using a modal screen listing a table of available van types. The list can be filtered with the van type, per the schema.prisma list and info on vans.ts
+
+Selecting the list of vans indicates per van it's display name, category, length, width and a PNG picture of each van. Selecting one triggers a layout change of the workspace using the dimensions provided under the file vans.ts
+the Workspace is then adapted using those dimensions and space of screen's layout considering a user can open the web application on a desktop, tablet or smartphone.
+The Workspace is transcribed in meters to work on adding elements also using meters per elements.
+
+A svg file usig the same van's name for consistency, is placed on the worspace to allow full view of the van's dimensions.
+The van type defines the van from a top down view in 2D (2D for time being, later I will add 3D)
+
+When a layout is created I can save it to the Db using a "Sauvegarder" button. I can charge an already saved layout using a "Charger" button, I can delete a layouy using a "Supprimer" button, this deletes the layout from the database and refreshes the workspace. Another action enables to modify a layout if the user adds other elements, with a "Mettre à jour" button. A last action can rename, using a "Renommer" action, the name of the element in the database.
+Above all this the list of saved layouts. JHere are the elments 
+
+"Liste de plans sauvegardés (9)" under there is a listbox with the default value "-- Sélectionner un plan --" with the action button "✏️ Mettre à jour"
+under threre are those buttons "✏️ Renommer" / "💾 Sauvegarder" / "📂 Charger" / 🗑️ Supprimer"
+

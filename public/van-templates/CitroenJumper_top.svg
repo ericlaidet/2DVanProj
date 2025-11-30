@@ -1,0 +1,16 @@
+<svg viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg">
+  <!-- Carrosserie -->
+  <rect x="35" y="35" width="1030" height="350" rx="45" ry="45" fill="#d8d8d8" stroke="#333" stroke-width="3"/>
+
+  <!-- Intérieur -->
+  <rect x="65" y="65" width="970" height="290" fill="#fdfdfd" stroke="#aaa" stroke-width="1" stroke-dasharray="5 5"/>
+
+  <!-- Roues (rectangles plats) -->
+  <!-- Gauche -->
+  <rect x="35" y="80" width="22" height="70" fill="#222" rx="3"/>
+  <rect x="35" y="270" width="22" height="70" fill="#222" rx="3"/>
+
+  <!-- Droite -->
+  <rect x="1043" y="80" width="22" height="70" fill="#222" rx="3"/>
+  <rect x="1043" y="270" width="22" height="70" fill="#222" rx="3"/>
+</svg>

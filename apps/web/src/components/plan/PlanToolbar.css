@@ -1,0 +1,95 @@
+.plan-toolbar {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.plan-list-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.plan-selector {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.plan-selector select {
+  flex: 1;
+  padding: 0.625rem;
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.plan-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-btn.save {
+  background-color: #10b981;
+  color: #fff;
+}
+
+.action-btn.save:hover:not(:disabled) {
+  background-color: #059669;
+}
+
+.action-btn.load {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+.action-btn.load:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.action-btn.update {
+  background-color: #8b5cf6;
+  color: #fff;
+}
+
+.action-btn.update:hover:not(:disabled) {
+  background-color: #7c3aed;
+}
+
+.action-btn.rename {
+  background-color: #f59e0b;
+  color: #fff;
+}
+
+.action-btn.rename:hover:not(:disabled) {
+  background-color: #d97706;
+}
+
+.action-btn.delete {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+.action-btn.delete:hover:not(:disabled) {
+  background-color: #dc2626;
+}
