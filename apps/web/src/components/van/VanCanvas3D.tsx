@@ -1,185 +1,36 @@
-// apps/web/src/components/van/VanCanvas3D.tsx
-import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame, ThreeEvent } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Grid, Text } from '@react-three/drei';
+// apps/web/src/components/van/VanCanvas3D.tsx (Phase 2)
+import React, { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, PerspectiveCamera, Grid, Environment, Stats } from '@react-three/drei';
 import { useStore } from '../../store/store';
 import { VAN_TYPES } from '../../constants/vans';
-import { FURNITURE_PRESETS } from '../../constants/furniture';
+import { VanModelRealistic } from './models/VanModelRealistic';
+import { DraggableFurniture3D } from './DraggableFurniture3D';
+import { calculateVolumeUsage } from '../../utils/coordinates3D';
 import * as THREE from 'three';
 import './VanCanvas3D.css';
 
-// ✨ Composant Van 3D (boîte simple pour l'instant)
-const VanModel: React.FC<{ vanType: string }> = ({ vanType }) => {
-  const van = VAN_TYPES.find(v => v.vanType === vanType);
-  if (!van) return null;
-
-  // Conversion mm → mètres pour Three.js
-  const length = van.length / 1000;
-  const width = van.width / 1000;
-  const height = 2.0; // Hauteur standard d'un van en mètres
-
-  return (
-    <group position={[0, height / 2, 0]}>
-      {/* Sol du van */}
-      <mesh position={[0, -height / 2 + 0.01, 0]} receiveShadow>
-        <boxGeometry args={[length, 0.02, width]} />
-        <meshStandardMaterial color="#8b7355" />
-      </mesh>
-
-      {/* Murs du van */}
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[length, height, width]} />
-        <meshStandardMaterial 
-          color="#e0e0e0" 
-          transparent 
-          opacity={0.3}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      {/* Contours du van */}
-      <lineSegments>
-        <edgesGeometry args={[new THREE.BoxGeometry(length, height, width)]} />
-        <lineBasicMaterial color="#333333" linewidth={2} />
-      </lineSegments>
-
-      {/* Texte indicatif */}
-      <Text
-        position={[0, height / 2 + 0.2, 0]}
-        fontSize={0.15}
-        color="#333333"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {van.displayName}
-      </Text>
-      <Text
-        position={[0, height / 2 + 0.05, 0]}
-        fontSize={0.08}
-        color="#666666"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {van.length}mm × {van.width}mm × {Math.round(height * 1000)}mm
-      </Text>
-    </group>
-  );
-};
-
-// ✨ Composant Meuble 3D
-interface FurnitureModel3DProps {
-  furniture: {
-    id: string;
-    name?: string;
-    type?: string;
-    x: number;
-    y: number;
-    z?: number;
-    width: number;
-    height: number;
-    depth?: number;
-    color: string;
-    rotation?: { x?: number; y?: number; z?: number };
-  };
-}
-
-const FurnitureModel3D: React.FC<FurnitureModel3DProps> = ({ furniture }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const [hovered, setHovered] = React.useState(false);
-  const updateObject = useStore(s => s.updateObject);
-
-  // Conversion mm → mètres
-  const van = VAN_TYPES.find(v => v.vanType === useStore.getState().vanType);
-  if (!van) return null;
-
-  const posX = (furniture.x / 1000) - (van.length / 2000);
-  const posZ = (furniture.y / 1000) - (van.width / 2000);
-  const posY = (furniture.z || 0) / 1000;
-
-  const sizeX = furniture.width / 1000;
-  const sizeZ = furniture.height / 1000;
-  const sizeY = (furniture.depth || furniture.height) / 1000;
-
-  // Rotation
-  const rotX = THREE.MathUtils.degToRad(furniture.rotation?.x || 0);
-  const rotY = THREE.MathUtils.degToRad(furniture.rotation?.y || 0);
-  const rotZ = THREE.MathUtils.degToRad(furniture.rotation?.z || 0);
-
-  // Récupérer l'icône depuis FURNITURE_PRESETS
-  const preset = furniture.type ? FURNITURE_PRESETS[furniture.type as keyof typeof FURNITURE_PRESETS] : null;
-  const icon = preset?.icon || '📦';
-
-  // Animation de hover
-  useFrame(() => {
-    if (meshRef.current && hovered) {
-      meshRef.current.position.y = posY + sizeY / 2 + Math.sin(Date.now() * 0.003) * 0.02;
-    }
-  });
-
-  const handleClick = (e: ThreeEvent<MouseEvent>) => {
-    e.stopPropagation();
-    console.log('Clicked:', furniture.name || furniture.id);
-  };
-
-  return (
-    <group position={[posX, posY + sizeY / 2, posZ]} rotation={[rotX, rotY, rotZ]}>
-      <mesh
-        ref={meshRef}
-        castShadow
-        receiveShadow
-        onClick={handleClick}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-      >
-        <boxGeometry args={[sizeX, sizeY, sizeZ]} />
-        <meshStandardMaterial 
-          color={furniture.color} 
-          emissive={hovered ? furniture.color : '#000000'}
-          emissiveIntensity={hovered ? 0.3 : 0}
-        />
-      </mesh>
-
-      {/* Contour */}
-      <lineSegments>
-        <edgesGeometry args={[new THREE.BoxGeometry(sizeX, sizeY, sizeZ)]} />
-        <lineBasicMaterial color={hovered ? '#ffffff' : '#000000'} linewidth={hovered ? 3 : 1} />
-      </lineSegments>
-
-      {/* Nom du meuble */}
-      {furniture.name && (
-        <Text
-          position={[0, sizeY / 2 + 0.1, 0]}
-          fontSize={0.08}
-          color="#ffffff"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.01}
-          outlineColor="#000000"
-        >
-          {icon} {furniture.name}
-        </Text>
-      )}
-    </group>
-  );
-};
-
-// ✨ Sol avec grille
-const Floor: React.FC = () => {
+// ✨ Sol avec grille amélioré
+const EnhancedFloor: React.FC = () => {
   return (
     <>
       <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, -0.01, 0]}>
-        <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial color="#f0f0f0" />
+        <planeGeometry args={[30, 30]} />
+        <meshStandardMaterial 
+          color="#e8e8e8" 
+          roughness={0.9}
+          metalness={0.1}
+        />
       </mesh>
       <Grid 
-        args={[20, 20]} 
+        args={[30, 30]} 
         cellSize={0.5} 
         cellThickness={0.5} 
-        cellColor="#666666" 
-        sectionSize={1} 
+        cellColor="#999999" 
+        sectionSize={2.5} 
         sectionThickness={1} 
-        sectionColor="#333333"
-        fadeDistance={15}
+        sectionColor="#666666"
+        fadeDistance={20}
         fadeStrength={1}
         position={[0, 0, 0]}
       />
@@ -187,30 +38,68 @@ const Floor: React.FC = () => {
   );
 };
 
-// ✨ Lumières
-const Lighting: React.FC = () => {
+// ✨ Éclairage amélioré
+const EnhancedLighting: React.FC = () => {
   return (
     <>
       {/* Lumière ambiante */}
-      <ambientLight intensity={0.4} />
+      <ambientLight intensity={0.5} />
       
-      {/* Lumière directionnelle (soleil) */}
+      {/* Lumière directionnelle principale (soleil) */}
       <directionalLight
-        position={[5, 10, 5]}
-        intensity={1}
+        position={[10, 15, 10]}
+        intensity={1.2}
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        shadow-mapSize-width={4096}
+        shadow-mapSize-height={4096}
         shadow-camera-far={50}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
+        shadow-camera-left={-15}
+        shadow-camera-right={15}
+        shadow-camera-top={15}
+        shadow-camera-bottom={-15}
+        shadow-bias={-0.0001}
       />
       
-      {/* Lumière d'appoint */}
-      <pointLight position={[-5, 5, -5]} intensity={0.3} />
+      {/* Lumières d'appoint */}
+      <pointLight position={[-8, 8, -8]} intensity={0.4} color="#ffffcc" />
+      <pointLight position={[8, 8, 8]} intensity={0.4} color="#ccf fff" />
+      
+      {/* Lumière de remplissage */}
+      <hemisphereLight
+        args={['#87CEEB', '#8b7355', 0.3]}
+      />
     </>
+  );
+};
+
+// ✨ Chargement avec Suspense
+const LoadingFallback: React.FC = () => {
+  return (
+    <mesh>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="#3b82f6" wireframe />
+    </mesh>
+  );
+};
+
+// ✨ Statistiques 3D (overlay)
+const Stats3DOverlay: React.FC = () => {
+  const objects = useStore(s => s.objects);
+  const vanType = useStore(s => s.vanType);
+
+  const volumeUsage = calculateVolumeUsage(objects, vanType);
+
+  return (
+    <div className="stats-3d-overlay">
+      <div className="stat-item">
+        <span className="stat-label">Meubles:</span>
+        <span className="stat-value">{objects.length}</span>
+      </div>
+      <div className="stat-item">
+        <span className="stat-label">Volume occupé:</span>
+        <span className="stat-value">{volumeUsage.toFixed(1)}%</span>
+      </div>
+    </div>
   );
 };
 
@@ -218,6 +107,7 @@ const Lighting: React.FC = () => {
 export const VanCanvas3D: React.FC = () => {
   const objects = useStore(s => s.objects);
   const vanType = useStore(s => s.vanType);
+  const [showStats, setShowStats] = React.useState(false);
 
   if (!vanType) {
     return (
@@ -232,46 +122,90 @@ export const VanCanvas3D: React.FC = () => {
 
   return (
     <div className="van-canvas-3d">
-      <Canvas shadows camera={{ position: [8, 6, 8], fov: 50 }}>
-        {/* Couleur de fond */}
-        <color attach="background" args={['#87CEEB']} />
-        
-        {/* Fog pour la profondeur */}
-        <fog attach="fog" args={['#87CEEB', 10, 50]} />
-        
-        {/* Caméra et contrôles */}
-        <PerspectiveCamera makeDefault position={[8, 6, 8]} />
-        <OrbitControls
-          enableDamping
-          dampingFactor={0.05}
-          minDistance={2}
-          maxDistance={20}
-          maxPolarAngle={Math.PI / 2.1}
-        />
+      <Suspense fallback={
+        <div className="canvas-3d-loading">
+          <div className="canvas-3d-loading-spinner" />
+          <p>Chargement de la vue 3D...</p>
+        </div>
+      }>
+        <Canvas 
+          shadows 
+          camera={{ position: [8, 6, 8], fov: 50 }}
+          gl={{ 
+            antialias: true,
+            toneMapping: THREE.ACESFilmicToneMapping,
+            toneMappingExposure: 1.2
+          }}
+          onCreated={({ gl }) => {
+            gl.shadowMap.enabled = true;
+            gl.shadowMap.type = THREE.PCFSoftShadowMap;
+          }}
+        >
+          {/* Couleur de fond (ciel) */}
+          <color attach="background" args={['#87CEEB']} />
+          
+          {/* Brouillard pour la profondeur */}
+          <fog attach="fog" args={['#87CEEB', 15, 50]} />
+          
+          {/* Caméra et contrôles */}
+          <PerspectiveCamera makeDefault position={[8, 6, 8]} />
+          <OrbitControls
+            enableDamping
+            dampingFactor={0.05}
+            minDistance={2}
+            maxDistance={25}
+            maxPolarAngle={Math.PI / 2.1}
+            minPolarAngle={Math.PI / 6}
+            enablePan
+            panSpeed={0.5}
+          />
 
-        {/* Lumières */}
-        <Lighting />
+          {/* Éclairage amélioré */}
+          <EnhancedLighting />
 
-        {/* Sol avec grille */}
-        <Floor />
+          {/* Environnement (réflexions) */}
+          <Environment preset="sunset" />
 
-        {/* Van 3D */}
-        <VanModel vanType={vanType} />
+          {/* Sol avec grille */}
+          <EnhancedFloor />
 
-        {/* Meubles 3D */}
-        {objects.map(obj => (
-          <FurnitureModel3D key={obj.id} furniture={obj} />
-        ))}
-      </Canvas>
+          {/* Van 3D réaliste */}
+          <VanModelRealistic vanType={vanType} />
+
+          {/* Meubles 3D avec drag & drop */}
+          {objects.map(obj => (
+            <DraggableFurniture3D key={obj.id} furniture={obj} />
+          ))}
+
+          {/* Stats FPS (dev) */}
+          {showStats && <Stats />}
+        </Canvas>
+      </Suspense>
+
+      {/* Overlay avec statistiques */}
+      <Stats3DOverlay />
 
       {/* Overlay d'instructions */}
       <div className="canvas-3d-overlay">
         <div className="controls-hint">
-          <p>🖱️ <strong>Clic gauche + glisser</strong> : Rotation</p>
-          <p>🖱️ <strong>Clic droit + glisser</strong> : Déplacer</p>
-          <p>🖱️ <strong>Molette</strong> : Zoom</p>
+          <p><strong>🖱️ Clic gauche + glisser</strong> : Rotation caméra</p>
+          <p><strong>🖱️ Clic droit + glisser</strong> : Déplacer caméra</p>
+          <p><strong>🖱️ Molette</strong> : Zoom</p>
+          <p><strong>🎯 Clic gauche sur meuble</strong> : Déplacer</p>
+          <p><strong>🔄 Clic droit sur meuble</strong> : Rotation</p>
+          <p><strong>🗑️ Double-clic</strong> : Rotation 90°</p>
+          <p><strong>❌ Clic droit (maintenir)</strong> : Supprimer</p>
         </div>
       </div>
+
+      {/* Toggle FPS Stats */}
+      <button 
+        className="stats-toggle"
+        onClick={() => setShowStats(!showStats)}
+        title="Afficher/masquer les stats FPS"
+      >
+        📊
+      </button>
     </div>
   );
 };

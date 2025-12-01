@@ -1,46 +1,295 @@
+/* apps/web/src/components/van/VanWorkspace.css */
+
 .van-workspace {
   position: relative;
-  background-color: #f9fafb;
-  border: 2px dashed var(--border-color, #d1d5db);
-  border-radius: 0.5rem;
-  background-position: center;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  overflow: hidden;
 }
 
-.workspace-object {
-  position: absolute;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.375rem;
+.van-workspace.empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  user-select: none;
-  transition: box-shadow 0.2s;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.workspace-object:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 10;
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
+.empty-state {
+  text-align: center;
+  color: white;
+  padding: 3rem;
+  animation: fadeInUp 0.6s ease-out;
 }
 
-.workspace-object.dragging {
-  opacity: 0.7;
-  cursor: grabbing !important;
-  z-index: 100;
+.empty-icon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  animation: bounce 2s infinite;
 }
 
-.object-label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.75rem;
+.empty-state h3 {
+  font-size: 1.8rem;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.8);
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-  pointer-events: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 90%;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================
+   WORKSPACE INFO (Top Bar)
+   ========================================== */
+
+.workspace-info {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  animation: slideDown 0.4s ease-out;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.info-label {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.info-value {
+  font-weight: 600;
+  color: #1e293b;
+  background: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+/* ==========================================
+   CANVAS CONTAINER
+   ========================================== */
+
+.workspace-canvas-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Transition smooth entre 2D et 3D */
+.workspace-canvas-container > * {
+  width: 100%;
+  height: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* ==========================================
+   MODE INDICATOR (Bottom Right)
+   ========================================== */
+
+.workspace-mode-indicator {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  animation: fadeInRight 0.4s ease-out;
+}
+
+.mode-badge {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #64748b;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.mode-badge.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transform: scale(1.05);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+  .workspace-info {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    transform: none;
+  }
+
+  .info-item {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .workspace-mode-indicator {
+    bottom: 8px;
+    right: 8px;
+  }
+
+  .mode-badge {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .empty-icon {
+    font-size: 3.5rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.4rem;
+  }
+
+  .empty-state p {
+    font-size: 0.95rem;
+  }
+
+  .workspace-canvas-container {
+    padding: 10px;
+  }
+}
+
+/* ==========================================
+   DARK MODE
+   ========================================== */
+
+.dark-theme .van-workspace {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.dark-theme .workspace-info {
+  background: rgba(30, 41, 59, 0.95);
+}
+
+.dark-theme .info-label {
+  color: #94a3b8;
+}
+
+.dark-theme .info-value {
+  color: #f1f5f9;
+  background: #334155;
+}
+
+.dark-theme .mode-badge {
+  background: rgba(30, 41, 59, 0.8);
+  color: #94a3b8;
+}
+
+.dark-theme .mode-badge.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ==========================================
+   TRANSITIONS ENTRE MODES
+   ========================================== */
+
+.van-workspace[data-view-mode="2D"] .workspace-canvas-container {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eaf0 100%);
+}
+
+.van-workspace[data-view-mode="3D"] .workspace-canvas-container {
+  background: transparent;
+}
+
+/* Effet de transition lors du changement de mode */
+.van-workspace[data-view-mode] .workspace-canvas-container > * {
+  transition: opacity 0.3s ease-in-out;
 }

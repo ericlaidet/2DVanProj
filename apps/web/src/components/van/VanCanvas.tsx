@@ -1,247 +1,306 @@
 // apps/web/src/components/van/VanCanvas.tsx
-import React, { useEffect, useState } from 'react';
-import { Stage, Layer, Rect, Group, Text, Image as KonvaImage } from 'react-konva';
+import React, { useRef, useState, useEffect } from 'react';
 import { useStore } from '../../store/store';
 import { VAN_TYPES } from '../../constants/vans';
+import { FURNITURE_PRESETS } from '../../constants/furniture';
 import './VanCanvas.css';
 
-type Obj = {
-  id: string;
-  name?: string; // ✅ ajout du nom
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  color: string;
-};
+interface VanCanvasProps {
+  selectedObjectId?: string | null;
+  onSelectObject?: (id: string | null) => void;
+}
 
-// ✅ FurnitureRect now works in van-space coordinates only
-// The parent Group handles all scaling and offsetting
-const FurnitureRect: React.FC<{ obj: Obj }> = ({ obj }) => {
-  const objects = useStore((s) => s.objects);
-  const updateObject = useStore((s) => s.updateObject);
-  const removeObject = useStore((s) => s.removeObject);
-  const vanType = useStore.getState().vanType;
-  const van = VAN_TYPES.find((v) => v.vanType === vanType) ?? { length: 4000, width: 2000 };
+/**
+ * Canvas 2D pour l'aménagement du van
+ * Version mise à jour avec support de la sélection synchronisée avec la vue 3D
+ */
+export const VanCanvas: React.FC<VanCanvasProps> = ({ 
+  selectedObjectId, 
+  onSelectObject 
+}) => {
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  const [isHovered, setIsHovered] = React.useState(false);
+  const vanType = useStore(s => s.vanType);
+  const objects = useStore(s => s.objects);
+  const updateObject = useStore(s => s.updateObject);
+  const removeObject = useStore(s => s.removeObject);
 
-  // ✅ Check if two objects overlap (in van-space coordinates)
-  const isOverlapping = (a: any, b: any) =>
-    !(
-      a.x + a.width <= b.x ||
-      a.x >= b.x + b.width ||
-      a.y + a.height <= b.y ||
-      a.y >= b.y + b.height
+  const van = VAN_TYPES.find(v => v.vanType === vanType);
+  
+  if (!van) {
+    return (
+      <div className="van-canvas empty">
+        <p>Sélectionnez un type de van</p>
+      </div>
     );
+  }
 
-  // ✅ Handle drag - all coordinates are in van-space (mm)
-  const handleDragMove = (e: any) => {
-    const vanX = e.target.x();
-    const vanY = e.target.y();
+  // Échelle : 1mm = 0.1px
+  const SCALE = 0.1;
+  const canvasWidth = van.length * SCALE;
+  const canvasHeight = van.width * SCALE;
 
-    const constrainedX = Math.max(0, Math.min(vanX, van.length - obj.width));
-    const constrainedY = Math.max(0, Math.min(vanY, van.width - obj.height));
-
-    const newRect = { ...obj, x: constrainedX, y: constrainedY };
-    const hasOverlap = objects.some((o) => o.id !== obj.id && isOverlapping(newRect, o));
-
-    if (hasOverlap) {
-      e.target.x(obj.x);
-      e.target.y(obj.y);
-    } else {
-      updateObject(obj.id, { x: constrainedX, y: constrainedY });
+  // Gestion du clic sur un meuble
+  const handleObjectClick = (e: React.MouseEvent, objectId: string) => {
+    e.stopPropagation();
+    if (onSelectObject) {
+      onSelectObject(objectId);
     }
   };
 
-  // ✅ Handle right-click context menu
-  const handleContextMenu = (e: any) => {
-    e.evt.preventDefault();
+  // Gestion du clic sur le canvas (désélection)
+  const handleCanvasClick = () => {
+    if (onSelectObject && !draggingId) {
+      onSelectObject(null);
+    }
+  };
 
-    const options = [
-      { label: '✏️ Renommer', action: 'rename' },
-      { label: '🗑️ Supprimer', action: 'delete' }
-    ];
+  // Début du drag
+  const handleMouseDown = (e: React.MouseEvent, objectId: string) => {
+    e.stopPropagation();
+    
+    const obj = objects.find(o => o.id === objectId);
+    if (!obj) return;
 
-    const choice = window.confirm(
-      `${obj.name || 'Meuble'}\n\nQue voulez-vous faire?\n\n` +
-      `Cliquez OK pour RENOMMER\n` +
-      `Cliquez Annuler pour SUPPRIMER`
-    );
+    const rect = e.currentTarget.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+    setDraggingId(objectId);
+    
+    if (onSelectObject) {
+      onSelectObject(objectId);
+    }
+  };
 
-    if (choice) {
-      // Rename
-      const newName = window.prompt('Nouveau nom:', obj.name || '');
-      if (newName !== null && newName.trim() !== '') {
-        updateObject(obj.id, { name: newName.trim() });
-      }
-    } else {
-      // Delete
-      const confirmDelete = window.confirm(
-        `Êtes-vous sûr de vouloir supprimer "${obj.name || 'ce meuble'}"?`
+  // Mouvement pendant le drag
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!draggingId || !canvasRef.current) return;
+
+    const canvasRect = canvasRef.current.getBoundingClientRect();
+    const newX = e.clientX - canvasRect.left - dragOffset.x;
+    const newY = e.clientY - canvasRect.top - dragOffset.y;
+
+    const obj = objects.find(o => o.id === draggingId);
+    if (!obj) return;
+
+    // Conversion pixel → mm
+    const newXmm = newX / SCALE;
+    const newYmm = newY / SCALE;
+
+    // Contraintes dans les limites du van
+    const maxX = van.length - obj.width;
+    const maxY = van.width - obj.height;
+    const clampedX = Math.max(0, Math.min(newXmm, maxX));
+    const clampedY = Math.max(0, Math.min(newYmm, maxY));
+
+    // Vérification de collision
+    const hasCollision = objects.some(other => {
+      if (other.id === draggingId) return false;
+      
+      return !(
+        clampedX + obj.width <= other.x ||
+        clampedX >= other.x + other.width ||
+        clampedY + obj.height <= other.y ||
+        clampedY >= other.y + other.height
       );
-      if (confirmDelete) {
-        removeObject(obj.id);
+    });
+
+    if (!hasCollision) {
+      updateObject(draggingId, { x: clampedX, y: clampedY });
+    }
+  };
+
+  // Fin du drag
+  const handleMouseUp = () => {
+    setDraggingId(null);
+  };
+
+  // Double-clic pour rotation
+  const handleDoubleClick = (e: React.MouseEvent, objectId: string) => {
+    e.stopPropagation();
+    const obj = objects.find(o => o.id === objectId);
+    if (!obj) return;
+
+    const currentRotation = obj.rotation?.y || 0;
+    const newRotation = (currentRotation + 90) % 360;
+    updateObject(objectId, {
+      rotation: { ...obj.rotation, y: newRotation }
+    });
+  };
+
+  // Context menu (suppression)
+  const handleContextMenu = (e: React.MouseEvent, objectId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const obj = objects.find(o => o.id === objectId);
+    const confirmDelete = window.confirm(
+      `Supprimer "${obj?.name || 'ce meuble'}" ?`
+    );
+    
+    if (confirmDelete) {
+      removeObject(objectId);
+      if (onSelectObject) {
+        onSelectObject(null);
       }
     }
   };
 
-  return (
-    <Group
-      x={obj.x}
-      y={obj.y}
-      draggable
-      onDragMove={handleDragMove}
-      onContextMenu={handleContextMenu}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* ✅ Rectangle positioned at 0,0 relative to Group */}
-      <Rect
-        x={0}
-        y={0}
-        width={obj.width}
-        height={obj.height}
-        fill={obj.color}
-        cornerRadius={4}
-        stroke={isHovered ? '#1f2937' : 'transparent'}
-        strokeWidth={isHovered ? 3 : 0}
-        opacity={isHovered ? 0.9 : 1}
-      />
-      {/* ✅ Text positioned at 0,0 relative to Group - stays centered in rect */}
-      {obj.name && (
-        <Text
-          text={obj.name}
-          x={0}
-          y={0}
-          width={obj.width}
-          height={obj.height}
-          fontSize={14}
-          fontStyle="bold"
-          fill="#111827"
-          align="center"
-          verticalAlign="middle"
-          listening={false}
-        />
-      )}
-      {/* ✅ Hover hint */}
-      {isHovered && (
-        <Text
-          text="Clic droit pour options"
-          x={0}
-          y={obj.height + 5}
-          fontSize={10}
-          fill="#6b7280"
-          align="center"
-          width={obj.width}
-          listening={false}
-        />
-      )}
-    </Group>
-  );
-};
-
-// ✅ Composant principal du canvas
-export const VanCanvas: React.FC = () => {
-  const objects = useStore((s) => s.objects);
-  const vanType = useStore((s) => s.vanType);
-  const selectedPlan = useStore((s) => s.selectedPlan); // ✅ si ton store contient le plan sélectionné
-  const canvasWidth = 900;
-  const canvasHeight = 300;
-
-  const van = VAN_TYPES.find((v) => v.vanType === vanType) ?? { length: 4000, width: 2000 };
-
-  // ✅ updated for SVG overlay (Vite safe)
-  const [svgImage, setSvgImage] = useState<HTMLImageElement | null>(null);
-
+  // Raccourcis clavier pour l'objet sélectionné
   useEffect(() => {
-    if (!vanType) {
-      setSvgImage(null);
-      return;
-    }
+    if (!selectedObjectId) return;
 
-    const svgPath = new URL(`../../assets/vans/${vanType}.svg`, import.meta.url).href;
-    const img = new Image();
-    img.onload = () => setSvgImage(img);
-    img.onerror = () => {
-      console.warn(`⚠️ SVG for ${vanType} not found or failed to load`);
-      setSvgImage(null);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const obj = objects.find(o => o.id === selectedObjectId);
+      if (!obj) return;
+
+      const step = e.shiftKey ? 10 : 100; // Shift = mouvement fin
+
+      switch (e.key.toLowerCase()) {
+        case 'delete':
+        case 'backspace':
+          removeObject(selectedObjectId);
+          if (onSelectObject) onSelectObject(null);
+          break;
+        case 'arrowup':
+          e.preventDefault();
+          updateObject(selectedObjectId, { y: Math.max(0, obj.y - step) });
+          break;
+        case 'arrowdown':
+          e.preventDefault();
+          updateObject(selectedObjectId, { 
+            y: Math.min(van.width - obj.height, obj.y + step) 
+          });
+          break;
+        case 'arrowleft':
+          e.preventDefault();
+          updateObject(selectedObjectId, { x: Math.max(0, obj.x - step) });
+          break;
+        case 'arrowright':
+          e.preventDefault();
+          updateObject(selectedObjectId, { 
+            x: Math.min(van.length - obj.width, obj.x + step) 
+          });
+          break;
+        case 'r':
+          e.preventDefault();
+          const currentRot = obj.rotation?.y || 0;
+          updateObject(selectedObjectId, {
+            rotation: { ...obj.rotation, y: (currentRot + 90) % 360 }
+          });
+          break;
+      }
     };
-    img.src = svgPath;
-  }, [vanType]);
 
-  // ✅ When a saved plan is loaded, reload SVG even if vanType didn't change
-  useEffect(() => {
-    if (!selectedPlan) return;
-    const currentVanType = useStore.getState().vanType;
-    if (!currentVanType) return;
-
-    const svgPath = new URL(`../../assets/vans/${currentVanType}.svg`, import.meta.url).href;
-    const img = new Image();
-    img.onload = () => setSvgImage(img);
-    img.onerror = () => {
-      console.warn(`⚠️ SVG for ${currentVanType} not found or failed to load`);
-      setSvgImage(null);
-    };
-    img.src = svgPath;
-  }, [selectedPlan]); // ✅ triggered when a plan is loaded
-
-  // scale basé sur la longueur ET largeur, on privilégie le remplissage
-  const scaleX = canvasWidth / van.length;
-  const scaleY = canvasHeight / van.width;
-  const scale = Math.min(scaleX, scaleY) * 0.95;
-  const offsetX = (canvasWidth - van.length * scale) / 2;
-  const offsetY = (canvasHeight - van.width * scale) / 2;
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedObjectId, objects, van, updateObject, removeObject, onSelectObject]);
 
   return (
-    <div className="van-canvas">
-      <Stage width={canvasWidth} height={canvasHeight}>
-        <Layer>
-          {/* fond du canvas */}
-          <Rect x={0} y={0} width={canvasWidth} height={canvasHeight} fill="#f9fafb" />
-          <Group x={offsetX} y={offsetY} scaleX={scale} scaleY={scale}>
-            {/* van */}
-            <Rect
-              x={0}
-              y={0}
-              width={van.length}
-              height={van.width}
-              fill="#ddd"
-              cornerRadius={8}
-              stroke="#9ca3af"
-              strokeWidth={2}
-            />
+    <div className="van-canvas-container">
+      <div
+        ref={canvasRef}
+        className="van-canvas"
+        style={{
+          width: `${canvasWidth}px`,
+          height: `${canvasHeight}px`,
+          backgroundImage: `url(/assets/vans/${vanType}.svg)`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center'
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onClick={handleCanvasClick}
+      >
+        {/* Grille de fond */}
+        <div className="canvas-grid" style={{
+          backgroundSize: `${100 * SCALE}px ${100 * SCALE}px`
+        }} />
 
-            {/* ✅ added SVG overlay */}
-            {svgImage && (
-              <KonvaImage
-                image={svgImage}
-                x={0}
-                y={0}
-                width={van.length}
-                height={van.width}
-                opacity={0.75}
-                listening={false}
-              />
-            )}
+        {/* Meubles */}
+        {objects.map((obj) => {
+          const preset = FURNITURE_PRESETS[obj.type as keyof typeof FURNITURE_PRESETS];
+          const isSelected = selectedObjectId === obj.id;
+          const isHovered = hoveredId === obj.id;
+          const isDragging = draggingId === obj.id;
+          
+          return (
+            <div
+              key={obj.id}
+              className={`canvas-object ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} ${isDragging ? 'dragging' : ''}`}
+              style={{
+                left: `${obj.x * SCALE}px`,
+                top: `${obj.y * SCALE}px`,
+                width: `${obj.width * SCALE}px`,
+                height: `${obj.height * SCALE}px`,
+                backgroundColor: obj.color,
+                transform: `rotate(${obj.rotation?.y || 0}deg)`,
+                cursor: isDragging ? 'grabbing' : 'grab',
+                zIndex: isSelected ? 1000 : isDragging ? 999 : 1
+              }}
+              onClick={(e) => handleObjectClick(e, obj.id)}
+              onMouseDown={(e) => handleMouseDown(e, obj.id)}
+              onDoubleClick={(e) => handleDoubleClick(e, obj.id)}
+              onContextMenu={(e) => handleContextMenu(e, obj.id)}
+              onMouseEnter={() => setHoveredId(obj.id)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              {/* Label du meuble */}
+              <div className="object-label">
+                <span className="object-icon">{preset?.icon || '📦'}</span>
+                <span className="object-name">{obj.name}</span>
+              </div>
 
-            {/* objets - NO NEED to pass scale/offset props */}
-            {objects.map((o) => (
-              <FurnitureRect key={o.id} obj={o} />
-            ))}
-          </Group>
-        </Layer>
-      </Stage>
+              {/* Dimensions */}
+              {(isSelected || isHovered) && (
+                <div className="object-dimensions">
+                  {obj.width} × {obj.height} mm
+                </div>
+              )}
+
+              {/* Indicateur de hauteur (z) */}
+              {obj.z && obj.z > 0 && (
+                <div className="object-height-indicator">
+                  ↑ {obj.z}mm
+                </div>
+              )}
+
+              {/* Bordure de sélection */}
+              {isSelected && (
+                <div className="selection-border" />
+              )}
+
+              {/* Poignées de redimensionnement (future fonctionnalité) */}
+              {isSelected && (
+                <>
+                  <div className="resize-handle top-left" />
+                  <div className="resize-handle top-right" />
+                  <div className="resize-handle bottom-left" />
+                  <div className="resize-handle bottom-right" />
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Légende des raccourcis */}
+      <div className="canvas-controls-hint">
+        <p><strong>🖱️ Clic</strong>: Sélectionner</p>
+        <p><strong>🖱️ Glisser</strong>: Déplacer</p>
+        <p><strong>🖱️ Double-clic</strong>: Rotation 90°</p>
+        <p><strong>⌨️ Flèches</strong>: Déplacer (100mm)</p>
+        <p><strong>⌨️ Shift + Flèches</strong>: Déplacer fin (10mm)</p>
+        <p><strong>⌨️ R</strong>: Rotation 90°</p>
+        <p><strong>⌨️ Suppr</strong>: Supprimer</p>
+      </div>
     </div>
   );
 };
-
-/*
-✅ Key Changes for SVG + Saved Plans
-------------------------------------
-- Added `selectedPlan` from store dependency
-- Added useEffect that reloads SVG when a saved plan is selected
-- Keeps fallback if file is missing
-- Keeps original layout, comments, and scaling logic
-
-*/
