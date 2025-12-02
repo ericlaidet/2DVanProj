@@ -159,47 +159,19 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
       const obj = objects.find(o => o.id === selectedObjectId);
       if (!obj) return;
 
-      const step = e.shiftKey ? 10 : 100; // Shift = mouvement fin
-
       switch (e.key.toLowerCase()) {
         case 'delete':
         case 'backspace':
+          e.preventDefault();
           removeObject(selectedObjectId);
           if (onSelectObject) onSelectObject(null);
-          break;
-        case 'arrowup':
-          e.preventDefault();
-          updateObject(selectedObjectId, { y: Math.max(0, obj.y - step) });
-          break;
-        case 'arrowdown':
-          e.preventDefault();
-          updateObject(selectedObjectId, {
-            y: Math.min(van.width - obj.height, obj.y + step)
-          });
-          break;
-        case 'arrowleft':
-          e.preventDefault();
-          updateObject(selectedObjectId, { x: Math.max(0, obj.x - step) });
-          break;
-        case 'arrowright':
-          e.preventDefault();
-          updateObject(selectedObjectId, {
-            x: Math.min(van.length - obj.width, obj.x + step)
-          });
-          break;
-        case 'r':
-          e.preventDefault();
-          const currentRot = obj.rotation?.y || 0;
-          updateObject(selectedObjectId, {
-            rotation: { ...obj.rotation, y: (currentRot + 90) % 360 }
-          });
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedObjectId, objects, van, updateObject, removeObject, onSelectObject]);
+  }, [selectedObjectId, objects, removeObject, onSelectObject]);
 
   return (
     <div className="van-canvas-container">
@@ -296,9 +268,6 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
         <p><strong>🖱️ Clic</strong>: Sélectionner</p>
         <p><strong>🖱️ Glisser</strong>: Déplacer</p>
         <p><strong>🖱️ Double-clic</strong>: Rotation 90°</p>
-        <p><strong>⌨️ Flèches</strong>: Déplacer (100mm)</p>
-        <p><strong>⌨️ Shift + Flèches</strong>: Déplacer fin (10mm)</p>
-        <p><strong>⌨️ R</strong>: Rotation 90°</p>
         <p><strong>⌨️ Suppr</strong>: Supprimer</p>
       </div>
     </div>
