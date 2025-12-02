@@ -240,7 +240,7 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
   };
 
   return (
-    <div className="van-canvas-container">
+    <div className="van-canvas-container" key={`canvas-${objects.length}-${objects.map(o => o.id).join('-')}`}>
       <div
         ref={canvasRef}
         className="van-canvas"

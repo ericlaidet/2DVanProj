@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useStore } from '../../store/store';
 import { VAN_TYPES } from '../../constants/vans';
 import { FURNITURE_PRESETS } from '../../constants/furniture';
-import './VanCanvas.css';
+import './VanCanvas2D.css';
 
 interface VanCanvasProps {
   selectedObjectId?: string | null;
@@ -14,9 +14,9 @@ interface VanCanvasProps {
  * Canvas 2D pour l'aménagement du van
  * Version mise à jour avec support de la sélection synchronisée avec la vue 3D
  */
-export const VanCanvas: React.FC<VanCanvasProps> = ({ 
-  selectedObjectId, 
-  onSelectObject 
+export const VanCanvas: React.FC<VanCanvasProps> = ({
+  selectedObjectId,
+  onSelectObject
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
   const removeObject = useStore(s => s.removeObject);
 
   const van = VAN_TYPES.find(v => v.vanType === vanType);
-  
+
   if (!van) {
     return (
       <div className="van-canvas empty">
@@ -61,7 +61,7 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
   // Début du drag
   const handleMouseDown = (e: React.MouseEvent, objectId: string) => {
     e.stopPropagation();
-    
+
     const obj = objects.find(o => o.id === objectId);
     if (!obj) return;
 
@@ -71,7 +71,7 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
       y: e.clientY - rect.top
     });
     setDraggingId(objectId);
-    
+
     if (onSelectObject) {
       onSelectObject(objectId);
     }
@@ -101,7 +101,7 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
     // Vérification de collision
     const hasCollision = objects.some(other => {
       if (other.id === draggingId) return false;
-      
+
       return !(
         clampedX + obj.width <= other.x ||
         clampedX >= other.x + other.width ||
@@ -137,12 +137,12 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
   const handleContextMenu = (e: React.MouseEvent, objectId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     const obj = objects.find(o => o.id === objectId);
     const confirmDelete = window.confirm(
       `Supprimer "${obj?.name || 'ce meuble'}" ?`
     );
-    
+
     if (confirmDelete) {
       removeObject(objectId);
       if (onSelectObject) {
@@ -173,8 +173,8 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
           break;
         case 'arrowdown':
           e.preventDefault();
-          updateObject(selectedObjectId, { 
-            y: Math.min(van.width - obj.height, obj.y + step) 
+          updateObject(selectedObjectId, {
+            y: Math.min(van.width - obj.height, obj.y + step)
           });
           break;
         case 'arrowleft':
@@ -183,8 +183,8 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
           break;
         case 'arrowright':
           e.preventDefault();
-          updateObject(selectedObjectId, { 
-            x: Math.min(van.length - obj.width, obj.x + step) 
+          updateObject(selectedObjectId, {
+            x: Math.min(van.length - obj.width, obj.x + step)
           });
           break;
         case 'r':
@@ -230,7 +230,7 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
           const isSelected = selectedObjectId === obj.id;
           const isHovered = hoveredId === obj.id;
           const isDragging = draggingId === obj.id;
-          
+
           return (
             <div
               key={obj.id}

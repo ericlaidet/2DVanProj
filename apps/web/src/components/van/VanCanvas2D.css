@@ -1,0 +1,322 @@
+/* VanCanvas2D.css - Styling for 2D canvas furniture objects */
+
+/* ==========================================
+   CANVAS CONTAINER
+   ========================================== */
+
+.van-canvas {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    background: #f9fafb;
+    cursor: default;
+}
+
+.van-canvas canvas {
+    display: block;
+}
+
+body.dark-theme .van-canvas {
+    background: #1f2937;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}
+
+.van-canvas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+}
+
+/* ==========================================
+   CANVAS GRID
+   ========================================== */
+
+.canvas-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.dark-theme .canvas-grid {
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+}
+
+/* ==========================================
+   FURNITURE OBJECTS
+   ========================================== */
+
+.canvas-object {
+    position: absolute;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    user-select: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+}
+
+.canvas-object:hover {
+    opacity: 1;
+    border-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10 !important;
+}
+
+.canvas-object.selected {
+    border-color: #3b82f6;
+    border-width: 3px;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2), 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+}
+
+.canvas-object.dragging {
+    opacity: 0.8;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 999 !important;
+    transition: none;
+}
+
+body.dark-theme .canvas-object {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .canvas-object:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-theme .canvas-object.selected {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================
+   OBJECT LABEL
+   ========================================== */
+
+.object-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.8);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+}
+
+.object-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.object-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+body.dark-theme .object-label {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* ==========================================
+   OBJECT DIMENSIONS
+   ========================================== */
+
+.object-dimensions {
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+body.dark-theme .object-dimensions {
+    background: rgba(255, 255, 255, 0.9);
+    color: #1f2937;
+}
+
+/* ==========================================
+   HEIGHT INDICATOR
+   ========================================== */
+
+.object-height-indicator {
+    position: absolute;
+    top: -20px;
+    right: 4px;
+    background: rgba(147, 51, 234, 0.9);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+/* ==========================================
+   SELECTION BORDER
+   ========================================== */
+
+.selection-border {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px dashed #3b82f6;
+    border-radius: 6px;
+    pointer-events: none;
+    animation: dash 20s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -100;
+    }
+}
+
+/* ==========================================
+   RESIZE HANDLES
+   ========================================== */
+
+.resize-handle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #3b82f6;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    z-index: 1002;
+}
+
+.resize-handle.top-left {
+    top: -4px;
+    left: -4px;
+    cursor: nwse-resize;
+}
+
+.resize-handle.top-right {
+    top: -4px;
+    right: -4px;
+    cursor: nesw-resize;
+}
+
+.resize-handle.bottom-left {
+    bottom: -4px;
+    left: -4px;
+    cursor: nesw-resize;
+}
+
+.resize-handle.bottom-right {
+    bottom: -4px;
+    right: -4px;
+    cursor: nwse-resize;
+}
+
+.resize-handle:hover {
+    transform: scale(1.3);
+    background: #2563eb;
+}
+
+body.dark-theme .resize-handle {
+    background: #60a5fa;
+    border-color: #1f2937;
+}
+
+/* ==========================================
+   CONTROLS HINT
+   ========================================== */
+
+.canvas-controls-hint {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+}
+
+.canvas-controls-hint p {
+    margin: 0;
+    color: #4b5563;
+}
+
+.canvas-controls-hint strong {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+body.dark-theme .canvas-controls-hint {
+    background: rgba(31, 41, 55, 0.95);
+    border-color: #374151;
+}
+
+body.dark-theme .canvas-controls-hint p {
+    color: #d1d5db;
+}
+
+body.dark-theme .canvas-controls-hint strong {
+    color: #f9fafb;
+}
+
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
+.van-canvas.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+}
+
+.van-canvas.empty p {
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+body.dark-theme .van-canvas.empty {
+    background: #1f2937;
+    border-color: #4b5563;
+}
+
+body.dark-theme .van-canvas.empty p {
+    color: #9ca3af;
+}
