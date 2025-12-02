@@ -26,17 +26,17 @@ interface DraggableFurniture3DProps {
   onSelect?: (id: string) => void;
 }
 
-export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({ 
-  furniture, 
-  selectedId, 
-  onSelect 
+export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
+  furniture,
+  selectedId,
+  onSelect
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isRotating, setIsRotating] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [dragPlane, setDragPlane] = useState<'horizontal' | 'vertical'>('horizontal');
-  
+
   const { camera, gl } = useThree();
   const vanType = useStore(s => s.vanType);
   const updateObject = useStore(s => s.updateObject);
@@ -46,7 +46,12 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
   const isSelected = selectedId === furniture.id;
 
   // Conversion 2D → 3D pour l'affichage
-  const pos3D = convert2DTo3D(furniture.x, furniture.y, furniture.z || 0, vanType);
+  // En 2D, x et y représentent le coin supérieur gauche
+  // En 3D, on a besoin du centre du meuble
+  // Donc on ajoute la moitié des dimensions avant la conversion
+  const centerX = furniture.x + furniture.width / 2;
+  const centerY = furniture.y + furniture.height / 2;
+  const pos3D = convert2DTo3D(centerX, centerY, furniture.z || 0, vanType);
   const sizeY = (furniture.depth || furniture.height) / 1000;
 
   // Décalage pour centrer sur le sol
@@ -68,21 +73,21 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
   // Drag & Drop amélioré avec plan horizontal ou vertical
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
-    
+
     if (e.button === 0) { // Clic gauche = drag
       setIsDragging(true);
       gl.domElement.style.cursor = 'grabbing';
-      
+
       // Shift = déplacement vertical, sinon horizontal
       setDragPlane(e.shiftKey ? 'vertical' : 'horizontal');
-      
+
       if (onSelect) {
         onSelect(furniture.id);
       }
     } else if (e.button === 2) { // Clic droit = rotate
       setIsRotating(true);
       gl.domElement.style.cursor = 'grab';
-      
+
       if (onSelect) {
         onSelect(furniture.id);
       }
@@ -98,18 +103,18 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
       );
 
       raycaster.setFromCamera(mouse, camera);
-      
+
       let intersectPoint = new THREE.Vector3();
-      
+
       if (dragPlane === 'horizontal') {
         // Plan horizontal (Y = 0, le sol)
         const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
         raycaster.ray.intersectPlane(plane, intersectPoint);
-        
+
         if (intersectPoint) {
           // Conversion 3D → 2D pour mise à jour du store
           const pos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
-          
+
           // Contraindre dans le van
           const constrained = constrainToVan({
             ...furniture,
@@ -118,7 +123,7 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
           }, vanType);
 
           // Vérifier les collisions
-          const hasCollision = objects.some(obj => 
+          const hasCollision = objects.some(obj =>
             obj.id !== furniture.id && checkCollision3D(constrained, obj)
           );
 
@@ -133,9 +138,9 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
         camera.getWorldDirection(cameraDir);
         const planeNormal = cameraDir.clone().normalize();
         const plane = new THREE.Plane(planeNormal, -planeNormal.dot(pos3D));
-        
+
         raycaster.ray.intersectPlane(plane, intersectPoint);
-        
+
         if (intersectPoint) {
           // Mise à jour de la hauteur (Z en 2D)
           const newZ = Math.max(0, Math.min(2000, intersectPoint.y * 1000));
@@ -147,9 +152,9 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
       const deltaX = e.movementX;
       const currentRotY = furniture.rotation?.y || 0;
       const newRotY = (currentRotY + deltaX * 0.5) % 360;
-      
-      updateObject(furniture.id, { 
-        rotation: { ...furniture.rotation, y: newRotY } 
+
+      updateObject(furniture.id, {
+        rotation: { ...furniture.rotation, y: newRotY }
       });
     }
   };
@@ -171,8 +176,8 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
     e.stopPropagation();
     const currentRotY = furniture.rotation?.y || 0;
     const newRotY = (currentRotY + 90) % 360;
-    updateObject(furniture.id, { 
-      rotation: { ...furniture.rotation, y: newRotY } 
+    updateObject(furniture.id, {
+      rotation: { ...furniture.rotation, y: newRotY }
     });
   };
 
@@ -191,7 +196,7 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const step = e.shiftKey ? 10 : 100; // Shift = mouvement fin
-      
+
       switch (e.key.toLowerCase()) {
         case 'delete':
         case 'backspace':
@@ -224,8 +229,8 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
         case 'r':
           e.preventDefault();
           const currentRotY = furniture.rotation?.y || 0;
-          updateObject(furniture.id, { 
-            rotation: { ...furniture.rotation, y: (currentRotY + 90) % 360 } 
+          updateObject(furniture.id, {
+            rotation: { ...furniture.rotation, y: (currentRotY + 90) % 360 }
           });
           break;
       }
@@ -259,10 +264,10 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
             sizeY,
             furniture.height / 1000
           ]} />
-          <meshBasicMaterial 
-            color="#3b82f6" 
-            wireframe 
-            transparent 
+          <meshBasicMaterial
+            color="#3b82f6"
+            wireframe
+            transparent
             opacity={0.5}
           />
         </mesh>
@@ -278,27 +283,27 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
               Math.max(furniture.width, furniture.height) / 2000 + 0.05,
               32
             ]} />
-            <meshBasicMaterial 
+            <meshBasicMaterial
               color={
                 isSelected ? '#3b82f6' :
-                isDragging ? '#10b981' : 
-                isRotating ? '#f59e0b' : 
-                '#6b7280'
-              } 
-              transparent 
+                  isDragging ? '#10b981' :
+                    isRotating ? '#f59e0b' :
+                      '#6b7280'
+              }
+              transparent
               opacity={0.7}
             />
           </mesh>
-          
+
           {/* Ombre portée */}
           <mesh rotation-x={-Math.PI / 2}>
             <planeGeometry args={[
               furniture.width / 1000 * 1.2,
               furniture.height / 1000 * 1.2
             ]} />
-            <meshBasicMaterial 
-              color="#000000" 
-              transparent 
+            <meshBasicMaterial
+              color="#000000"
+              transparent
               opacity={0.15}
             />
           </mesh>

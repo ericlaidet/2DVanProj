@@ -72,13 +72,13 @@ export const constrainToVan = (
   if (!van) return furniture;
 
   const constrained = { ...furniture };
-  
+
   // Contraindre X (longueur)
   constrained.x = Math.max(0, Math.min(constrained.x, van.length - furniture.width));
-  
+
   // Contraindre Y (largeur)
   constrained.y = Math.max(0, Math.min(constrained.y, van.width - furniture.height));
-  
+
   // Contraindre Z (hauteur) - hauteur max 2000mm
   constrained.z = Math.max(0, Math.min(constrained.z || 0, 2000 - (furniture.depth || furniture.height)));
 
