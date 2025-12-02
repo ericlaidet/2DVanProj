@@ -33,9 +33,8 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [isRotating, setIsRotating] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const [dragPlane, setDragPlane] = useState<'horizontal' | 'vertical'>('horizontal');
+  const [dragPlane, setDragPlane] = useState<'horizontal' | 'vertical' | 'depth'>('horizontal');
 
   const { camera, gl } = useThree();
   const vanType = useStore(s => s.vanType);
@@ -74,19 +73,20 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
 
-    if (e.button === 0) { // Clic gauche = drag
+    if (e.button === 0) { // Clic gauche seulement
       setIsDragging(true);
       gl.domElement.style.cursor = 'grabbing';
 
-      // Shift = déplacement vertical, sinon horizontal
-      setDragPlane(e.shiftKey ? 'vertical' : 'horizontal');
-
-      if (onSelect) {
-        onSelect(furniture.id);
+      // Shift = déplacement vertical (hauteur)
+      // Ctrl = déplacement en profondeur
+      // Sinon = déplacement horizontal (sol)
+      if (e.shiftKey) {
+        setDragPlane('vertical');
+      } else if (e.ctrlKey) {
+        setDragPlane('depth');
+      } else {
+        setDragPlane('horizontal');
       }
-    } else if (e.button === 2) { // Clic droit = rotate
-      setIsRotating(true);
-      gl.domElement.style.cursor = 'grab';
 
       if (onSelect) {
         onSelect(furniture.id);
@@ -131,7 +131,7 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
             updateObject(furniture.id, { x: constrained.x, y: constrained.y });
           }
         }
-      } else {
+      } else if (dragPlane === 'vertical') {
         // Plan vertical (pour déplacer en hauteur)
         // Plan parallèle à la caméra passant par l'objet
         const cameraDir = new THREE.Vector3();
@@ -146,40 +146,45 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
           const newZ = Math.max(0, Math.min(2000, intersectPoint.y * 1000));
           updateObject(furniture.id, { z: newZ });
         }
+      } else if (dragPlane === 'depth') {
+        // Plan de profondeur (déplacement le long de l'axe Y en 2D / Z en 3D)
+        const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+        raycaster.ray.intersectPlane(plane, intersectPoint);
+        
+        if (intersectPoint) {
+          // On ne change que la position en profondeur (axe Y en 2D)
+          const centerPos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
+          const cornerY = centerPos2D.y - furniture.height / 2;
+          
+          // Contraindre dans le van
+          const constrained = constrainToVan({
+            ...furniture,
+            y: cornerY,
+          }, vanType);
+          // Vérifier les collisions
+          const hasCollision = objects.some(obj =>
+            obj.id !== furniture.id && checkCollision3D(constrained, obj)
+          );
+          if (!hasCollision) {
+            updateObject(furniture.id, { y: constrained.y });
+          }
+        }
       }
-    } else if (isRotating) {
-      // Rotation basée sur le mouvement horizontal de la souris
-      const deltaX = e.movementX;
-      const currentRotY = furniture.rotation?.y || 0;
-      const newRotY = (currentRotY + deltaX * 0.5) % 360;
-
-      updateObject(furniture.id, {
-        rotation: { ...furniture.rotation, y: newRotY }
-      });
     }
   };
 
   const handlePointerUp = () => {
     setIsDragging(false);
-    setIsRotating(false);
     gl.domElement.style.cursor = hovered ? 'pointer' : 'default';
   };
 
-  // Context menu désactivé - suppression via panneau ou touche Suppr uniquement
+  // Désactiver le menu contextuel (clic droit)
   const handleContextMenu = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    // Ne rien faire - le clic droit est utilisé pour la rotation
+    e.nativeEvent.preventDefault();
   };
 
-  // Double-click pour rotation automatique de 90°
-  const handleDoubleClick = (e: ThreeEvent<MouseEvent>) => {
-    e.stopPropagation();
-    const currentRotY = furniture.rotation?.y || 0;
-    const newRotY = (currentRotY + 90) % 360;
-    updateObject(furniture.id, {
-      rotation: { ...furniture.rotation, y: newRotY }
-    });
-  };
+
 
   // Curseur
   useEffect(() => {
@@ -195,50 +200,18 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
     if (!isSelected) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      const step = e.shiftKey ? 10 : 100; // Shift = mouvement fin
-
       switch (e.key.toLowerCase()) {
         case 'delete':
         case 'backspace':
+          e.preventDefault();
           removeObject(furniture.id);
-          break;
-        case 'arrowup':
-          e.preventDefault();
-          updateObject(furniture.id, { y: furniture.y - step });
-          break;
-        case 'arrowdown':
-          e.preventDefault();
-          updateObject(furniture.id, { y: furniture.y + step });
-          break;
-        case 'arrowleft':
-          e.preventDefault();
-          updateObject(furniture.id, { x: furniture.x - step });
-          break;
-        case 'arrowright':
-          e.preventDefault();
-          updateObject(furniture.id, { x: furniture.x + step });
-          break;
-        case 'pageup':
-          e.preventDefault();
-          updateObject(furniture.id, { z: (furniture.z || 0) + step });
-          break;
-        case 'pagedown':
-          e.preventDefault();
-          updateObject(furniture.id, { z: Math.max(0, (furniture.z || 0) - step) });
-          break;
-        case 'r':
-          e.preventDefault();
-          const currentRotY = furniture.rotation?.y || 0;
-          updateObject(furniture.id, {
-            rotation: { ...furniture.rotation, y: (currentRotY + 90) % 360 }
-          });
           break;
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSelected, furniture, updateObject, removeObject]);
+  }, [isSelected, furniture, removeObject]);
 
   return (
     <group
@@ -252,7 +225,6 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
       onContextMenu={handleContextMenu}
-      onDoubleClick={handleDoubleClick}
     >
       <RealisticFurnitureModel furniture={furniture} />
 
@@ -274,7 +246,7 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
       )}
 
       {/* Indicateur au sol */}
-      {(hovered || isDragging || isRotating || isSelected) && (
+      {(hovered || isDragging || isSelected) && (
         <group position={[0, -sizeY / 2 - 0.01, 0]}>
           {/* Cercle de sélection */}
           <mesh rotation-x={-Math.PI / 2}>
@@ -285,10 +257,9 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
             ]} />
             <meshBasicMaterial
               color={
-                isSelected ? '#3b82f6' :
-                  isDragging ? '#10b981' :
-                    isRotating ? '#f59e0b' :
-                      '#6b7280'
+				  isSelected ? '#3b82f6' :
+					isDragging ? '#10b981' :
+					  '#6b7280'
               }
               transparent
               opacity={0.7}
@@ -306,21 +277,6 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
               transparent
               opacity={0.15}
             />
-          </mesh>
-        </group>
-      )}
-
-      {/* Indicateur de rotation */}
-      {isRotating && (
-        <group position={[0, sizeY / 2 + 0.2, 0]}>
-          <mesh>
-            <torusGeometry args={[0.15, 0.02, 16, 32]} />
-            <meshBasicMaterial color="#f59e0b" />
-          </mesh>
-          {/* Flèche de direction */}
-          <mesh position={[0.15, 0, 0]} rotation-z={-Math.PI / 2}>
-            <coneGeometry args={[0.04, 0.08, 8]} />
-            <meshBasicMaterial color="#f59e0b" />
           </mesh>
         </group>
       )}

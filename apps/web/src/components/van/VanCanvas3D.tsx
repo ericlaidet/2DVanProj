@@ -18,19 +18,19 @@ const EnhancedFloor: React.FC = () => {
     <>
       <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, -0.01, 0]}>
         <planeGeometry args={[30, 30]} />
-        <meshStandardMaterial 
-          color="#e8e8e8" 
+        <meshStandardMaterial
+          color="#e8e8e8"
           roughness={0.9}
           metalness={0.1}
         />
       </mesh>
-      <Grid 
-        args={[30, 30]} 
-        cellSize={0.5} 
-        cellThickness={0.5} 
-        cellColor="#999999" 
-        sectionSize={2.5} 
-        sectionThickness={1} 
+      <Grid
+        args={[30, 30]}
+        cellSize={0.5}
+        cellThickness={0.5}
+        cellColor="#999999"
+        sectionSize={2.5}
+        sectionThickness={1}
         sectionColor="#666666"
         fadeDistance={20}
         fadeStrength={1}
@@ -92,7 +92,7 @@ export const VanCanvas3D: React.FC = () => {
   const addObject = useStore(s => s.addObject);
   const updateObject = useStore(s => s.updateObject);
   const removeObject = useStore(s => s.removeObject);
-  
+
   const [showStats, setShowStats] = useState(false);
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string | null>(null);
   const [transformMode, setTransformMode] = useState<'translate' | 'rotate' | 'scale'>('translate');
@@ -180,10 +180,10 @@ export const VanCanvas3D: React.FC = () => {
           <p>Chargement de la vue 3D...</p>
         </div>
       }>
-        <Canvas 
-          shadows 
+        <Canvas
+          shadows
           camera={{ position: [8, 6, 8], fov: 50 }}
-          gl={{ 
+          gl={{
             antialias: true,
             toneMapping: THREE.ACESFilmicToneMapping,
             toneMappingExposure: 1.2
@@ -196,7 +196,7 @@ export const VanCanvas3D: React.FC = () => {
         >
           <color attach="background" args={['#87CEEB']} />
           <fog attach="fog" args={['#87CEEB', 15, 50]} />
-          
+
           <PerspectiveCamera makeDefault position={[8, 6, 8]} />
           <OrbitControls
             ref={orbitControlsRef}
@@ -217,8 +217,8 @@ export const VanCanvas3D: React.FC = () => {
           <VanModelRealistic vanType={vanType} />
 
           {objects.map(obj => (
-            <DraggableFurniture3D 
-              key={obj.id} 
+            <DraggableFurniture3D
+              key={obj.id}
               furniture={obj}
               selectedId={selectedFurnitureId}
               onSelect={handleSelectFurniture}
@@ -238,7 +238,6 @@ export const VanCanvas3D: React.FC = () => {
         onResetTransform={handleResetTransform}
       />
 
-      <Stats3DOverlay />
 
       <div className="canvas-3d-overlay">
         <div className="controls-hint">
@@ -247,15 +246,12 @@ export const VanCanvas3D: React.FC = () => {
           <p><strong>🎯 Clic sur meuble</strong> : Sélectionner</p>
           <p><strong>🎯 Glisser meuble</strong> : Déplacer (horizontal)</p>
           <p><strong>⬆️ Shift + Glisser</strong> : Déplacer (hauteur)</p>
-          <p><strong>🔄 Clic droit sur meuble</strong> : Rotation</p>
-          <p><strong>⌨️ Flèches</strong> : Déplacer sélection</p>
-          <p><strong>⌨️ Page Up/Down</strong> : Hauteur</p>
-          <p><strong>⌨️ R</strong> : Rotation 90°</p>
+          <p><strong>🎯 Ctrl + Glisser</strong> : Déplacer (profondeur)</p>
           <p><strong>⌨️ Suppr</strong> : Supprimer</p>
         </div>
       </div>
 
-      <button 
+      <button
         className="stats-toggle"
         onClick={() => setShowStats(!showStats)}
         title="Afficher/masquer les stats FPS"
@@ -263,7 +259,7 @@ export const VanCanvas3D: React.FC = () => {
         📊
       </button>
 
-      <button 
+      <button
         className="camera-lock-toggle"
         onClick={() => setCameraLocked(!cameraLocked)}
         title={cameraLocked ? "Déverrouiller la caméra (C)" : "Verrouiller la caméra (C)"}
