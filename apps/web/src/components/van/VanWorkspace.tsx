@@ -1,7 +1,7 @@
 // apps/web/src/components/van/VanWorkspace.tsx
 import React, { useEffect } from 'react';
 import { useStore } from '../../store/store';
-import { VanCanvas } from './VanCanvas';        // Vue 2D existante
+import { VanCanvas2D } from './VanCanvas2D';        // Vue 2D existante
 import { VanCanvas3D } from './VanCanvas3D';    // Vue 3D nouvelle
 import { ViewModeToggle } from './ViewModeToggle';
 import './VanWorkspace.css';
@@ -65,7 +65,7 @@ export const VanWorkspace: React.FC = () => {
       {/* Canvas 2D ou 3D selon le mode */}
       <div className="workspace-canvas-container">
         {viewMode === '2D' ? (
-          <VanCanvas 
+          <VanCanvas2D
             selectedObjectId={selectedObjectId}
             onSelectObject={setSelectedObjectId}
           />

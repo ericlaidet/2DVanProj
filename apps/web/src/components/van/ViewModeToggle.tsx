@@ -45,10 +45,11 @@ export const ViewModeToggle: React.FC = () => {
   return (
     <div className="view-mode-toggle-container">
       <button
-        className={`view-mode-toggle ${viewMode}`}
+        className={`view-mode-toggle mode-${viewMode}`}
         onClick={handleToggle}
         title={`Basculer vers la vue ${viewMode === '2D' ? '3D' : '2D'} (V)`}
         aria-label={`Basculer vers la vue ${viewMode === '2D' ? '3D' : '2D'}`}
+        data-active-mode={viewMode}
       >
         {/* Icône 2D */}
         <div className={`mode-icon mode-2d ${viewMode === '2D' ? 'active' : ''}`}>

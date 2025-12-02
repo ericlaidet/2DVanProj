@@ -111,3 +111,25 @@
   color: #555;
   font-style: italic;
 }
+
+.workspace-layout {
+  display: flex;
+  gap: 20px;
+  height: 600px;
+  margin-top: 20px;
+}
+
+.furniture-palette-sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.workspace-main {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}

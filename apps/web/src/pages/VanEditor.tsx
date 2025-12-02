@@ -1,29 +1,34 @@
+// apps/web/src/pages/VanEditor.tsx
 import React, { useState } from "react";
 import { useModal } from "@/components/ui/ModalProvider";
 import { ConfirmModal } from "@/components/modals/ConfirmModal";
 import { RenameModal } from "@/components/modals/RenameModal";
 import { SubscriptionModal } from "@/components/modals/SubscriptionModal";
 import { VanModalSelector } from "@/components/van/VanModalSelector";
+import VanWorkspace from "@/components/van/VanWorkspace"; // ✅ AJOUT
+import { FurniturePalette } from "@/components/van/FurniturePalette"; // ✅ AJOUT
+import { useStore } from "@/store/store"; // ✅ AJOUT
 import { savePlan } from "@/api/plans";
 import "./VanEditor.css";
 
-// Pour test rapide : valeur valide pour éviter le 400
-const DEFAULT_VAN = "VOLKSWAGEN_ID_BUZZ";
-
 export default function VanEditor() {
   const { showModal } = useModal();
+  
+  // ✅ Utiliser le store au lieu du state local
+  const vanType = useStore(s => s.vanType);
+  const setVanType = useStore(s => s.setVanType);
+  const objects = useStore(s => s.objects);
 
-  const [selectedVans, setSelectedVans] = useState<string[]>([DEFAULT_VAN]);
   const [planName, setPlanName] = useState("Plan " + new Date().toLocaleDateString());
 
   // --- Modal Handlers ---
   const handleSelectVan = () => {
     showModal(
       <VanModalSelector
-        selectedVan={selectedVans[0]}
-        onSelect={(vanType) => {
-          setSelectedVans([vanType]);
-          console.log("Van choisi :", vanType);
+        selectedVan={vanType}
+        onSelect={(selectedVanType) => {
+          setVanType(selectedVanType); // ✅ Mettre à jour le store
+          console.log("Van choisi :", selectedVanType);
         }}
       />,
       "Choisir un van"
@@ -42,15 +47,15 @@ export default function VanEditor() {
             return;
           }
 
-          if (!selectedVans.length) {
-            console.error("Veuillez sélectionner au moins un van valide !");
+          if (!vanType) {
+            console.error("Veuillez sélectionner un van valide !");
             return;
           }
 
           const payload = {
-            name: newName || planName
-            jsonData: [], // futur contenu 2D
-            vanTypes: selectedVans, // tableau avec les valeurs exactes du backend
+            name: finalName,
+            jsonData: objects, // ✅ Sauvegarder les objets du store
+            vanTypes: [vanType],
           };
 
           try {
@@ -89,9 +94,8 @@ export default function VanEditor() {
   return (
     <div className="van-editor">
       <header className="van-editor-header">
-        <h1>Plan your Van - Éditeur 2D</h1>
+        <h1>Plan your Van - Éditeur 2D/3D</h1>
         <div className="user-info">
-          
           <button onClick={handleSubscription} className="link">Abonnement</button>
         </div>
       </header>
@@ -102,10 +106,12 @@ export default function VanEditor() {
         <button>Paramètres</button>
       </nav>
 
+      {/* ✅ Section IA (optionnel, garde si tu veux) */}
+      {/* 
       <section className="van-section prompt">
         <h2>Prompt IA</h2>
         <p>Décrivez votre aménagement idéal :</p>
-        <textarea placeholder="Ex : je veux un lit transversal à l’arrière..." />
+        <textarea placeholder="Ex : je veux un lit transversal à l'arrière..." />
         <div className="options">
           <label><input type="checkbox" /> Cuisine</label>
           <label><input type="checkbox" /> Rangements</label>
@@ -113,20 +119,31 @@ export default function VanEditor() {
           <button>Générer layout</button>
         </div>
       </section>
+      */}
 
+      {/* ✅ WORKSPACE PRINCIPAL */}
       <section className="van-section workspace">
-        <h2>Espace travail Van</h2>
         <div className="workspace-toolbar">
           <button onClick={handleSelectVan}>
-            {selectedVans[0] || "Sélectionner un van"}
+            {vanType || "Sélectionner un van"}
           </button>
           <div className="workspace-actions">
             <button onClick={handleSave}>Sauvegarder</button>
             <button onClick={handleDelete}>Supprimer</button>
           </div>
         </div>
-        <div className="workspace-area">
-          <p>Zone d’édition 2D (future intégration de votre éditeur ici)</p>
+        
+        {/* ✅ INTÉGRATION DU WORKSPACE + PALETTE */}
+        <div className="workspace-layout">
+          {/* Palette de meubles à gauche */}
+          <aside className="furniture-palette-sidebar">
+            <FurniturePalette />
+          </aside>
+          
+          {/* Espace de travail principal */}
+          <main className="workspace-main">
+            <VanWorkspace />
+          </main>
         </div>
       </section>
     </div>

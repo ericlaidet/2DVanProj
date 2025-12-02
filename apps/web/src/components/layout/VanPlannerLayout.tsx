@@ -42,9 +42,10 @@ const VanPlannerLayout: React.FC = () => {
   const { plans, loadPlans, addPlan, updatePlan, removePlan } = usePlanManager();
 
   const [prompt, setPrompt] = useState('');
+  const [hasCouchage, setHasCouchage] = useState(true);
   const [hasCuisine, setHasCuisine] = useState(true);
   const [hasRangements, setHasRangements] = useState(true);
-  const [couchage, setCouchage] = useState('1');
+  const [couchage, setCouchage] = useState('2');
   const [style, setStyle] = useState('minin');
 
   const [elementName, setElementName] = useState('');
@@ -80,7 +81,8 @@ const VanPlannerLayout: React.FC = () => {
       vanType,
       userDescription: prompt,
       preferences: {
-        sleepingCapacity: Number(couchage),
+        hasBed: hasCouchage,
+        sleepingCapacity: hasCouchage ? Number(couchage) : 0,
         hasCooking: hasCuisine,
         hasStorage: hasRangements,
         style: style === 'minin' ? 'minimalist' : style === 'moderne' ? 'modern' : 'rustic',
@@ -111,7 +113,7 @@ const VanPlannerLayout: React.FC = () => {
     if (!vanType) return notify.error('Sélectionnez un van avant de sauvegarder');
     if (objects.length === 0) return notify.error('Ajoutez des objets au plan');
 
-    const planName = prompt.trim() 
+    const planName = prompt.trim()
       ? `Plan ${new Date().toLocaleDateString()} - ${prompt.substring(0, 30)}...`
       : `Plan ${new Date().toLocaleDateString()}`;
 
@@ -331,7 +333,7 @@ const VanPlannerLayout: React.FC = () => {
                       </option>
                     ))}
                   </select>
-                  
+
                   <Button
                     variant="yellow"
                     onClick={handleRenamePlan}
@@ -347,29 +349,29 @@ const VanPlannerLayout: React.FC = () => {
 
               {/* ACTION BUTTONS */}
               <div className="plans-actions">
-                <Button 
-                  variant="blue" 
+                <Button
+                  variant="blue"
                   onClick={handleLoadPlan}
                   disabled={!selectedPlanId}
                 >
                   Charger
                 </Button>
-                <Button 
-                  variant="green" 
+                <Button
+                  variant="green"
                   onClick={handleSavePlan}
                   disabled={!vanType || objects.length === 0}
                 >
                   Sauvegarder
                 </Button>
-                <Button 
-                  variant="red" 
+                <Button
+                  variant="red"
                   onClick={handleDeletePlan}
                   disabled={!selectedPlanId}
                 >
                   Supprimer
                 </Button>
-                <Button 
-                  variant="yellow" 
+                <Button
+                  variant="yellow"
                   onClick={handleUpdatePlan}
                   disabled={!selectedPlanId || objects.length === 0}
                 >
@@ -381,7 +383,7 @@ const VanPlannerLayout: React.FC = () => {
 
           {/* ===== COLONNE DROITE : SIDEBAR ===== */}
           <aside className="sidebar-right">
-            
+
             {/* === PROMPT IA === */}
             <section className="prompt-section">
               <h2 className="section-title">
@@ -400,8 +402,8 @@ const VanPlannerLayout: React.FC = () => {
                       disabled={aiLoading}
                     />
                     <div className="action-buttons-inline">
-                      <Button 
-                        variant="gray" 
+                      <Button
+                        variant="gray"
                         onClick={handleOptimizePlan}
                         disabled={aiLoading || plans.length === 0 || !isPro2Plus}
                         title={!isPro2Plus
@@ -411,8 +413,8 @@ const VanPlannerLayout: React.FC = () => {
                       >
                         {!isPro2Plus && '🔒 '}Optimiser
                       </Button>
-                      <Button 
-                        variant="gray" 
+                      <Button
+                        variant="gray"
                         onClick={handleGenerateLayout}
                         disabled={aiLoading || !vanType || !prompt.trim()}
                       >
@@ -422,6 +424,15 @@ const VanPlannerLayout: React.FC = () => {
                   </div>
 
                   <div className="prompt-options-line">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={hasCouchage}
+                        onChange={(e) => setHasCouchage(e.target.checked)}
+                        disabled={aiLoading}
+                      />
+                      Couchage
+                    </label>
                     <label className="checkbox-label">
                       <input
                         type="checkbox"
@@ -441,27 +452,27 @@ const VanPlannerLayout: React.FC = () => {
                       Rangements
                     </label>
 
-                    <label className="selector-label">
-                      Couchage: <strong>{couchage} pers</strong>
-                      <select
-                        value={couchage}
-                        onChange={(e) => setCouchage(e.target.value)}
-                        className="selector-input"
-                        disabled={aiLoading}
-                      >
-                        <option value="1">1 pers</option>
-                        <option value="2">2 pers</option>
-                        <option value="3">3 pers</option>
-                        <option value="4">4 pers</option>
-                      </select>
-                    </label>
+                    {hasCouchage && (
+                      <label className="selector-label">
+                        Personnes: <strong>{couchage}</strong>
+                        <select
+                          value={couchage}
+                          onChange={(e) => setCouchage(e.target.value)}
+                          className="selector-input"
+                          disabled={aiLoading}
+                        >
+                          <option value="1">1 pers</option>
+                          <option value="2">2 pers</option>
+                        </select>
+                      </label>
+                    )}
                   </div>
 
                   {suggestion && (
                     <div className="ai-suggestion">
                       <h4 className="suggestion-title">💡 Suggestion IA</h4>
                       <p className="suggestion-explanation">{suggestion.explanation}</p>
-                      
+
                       {suggestion.alternatives && suggestion.alternatives.length > 0 && (
                         <div className="suggestion-alternatives">
                           <strong>Alternatives :</strong>
@@ -484,8 +495,8 @@ const VanPlannerLayout: React.FC = () => {
                         </div>
                       )}
 
-                      <Button 
-                        variant="green" 
+                      <Button
+                        variant="green"
                         onClick={handleApplySuggestion}
                         className="apply-suggestion-btn"
                       >

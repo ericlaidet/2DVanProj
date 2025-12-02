@@ -160,15 +160,10 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
     gl.domElement.style.cursor = hovered ? 'pointer' : 'default';
   };
 
-  // Context menu (suppression)
+  // Context menu désactivé - suppression via panneau ou touche Suppr uniquement
   const handleContextMenu = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    const confirmDelete = window.confirm(
-      `Supprimer "${furniture.name || 'ce meuble'}" ?`
-    );
-    if (confirmDelete) {
-      removeObject(furniture.id);
-    }
+    // Ne rien faire - le clic droit est utilisé pour la rotation
   };
 
   // Double-click pour rotation automatique de 90°
