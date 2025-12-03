@@ -46,15 +46,18 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
 
   // Conversion 2D → 3D pour l'affichage
   // En 2D, x et y représentent le coin supérieur gauche
-  // En 3D, on a besoin du centre du meuble
+  // En 3D,on a besoin du centre du meuble
   // Donc on ajoute la moitié des dimensions avant la conversion
   const centerX = furniture.x + furniture.width / 2;
   const centerY = furniture.y + furniture.height / 2;
   const pos3D = convert2DTo3D(centerX, centerY, furniture.z || 0, vanType);
   const sizeY = (furniture.depth || furniture.height) / 1000;
 
-  // Décalage pour centrer sur le sol
-  pos3D.y = pos3D.y + sizeY / 2;
+  // ⚠️ IMPORTANT : Le plancher du van (texture bois) est à y = 0.031m, pas à y = 0
+  const VAN_FLOOR_HEIGHT = 0.031; // matches VanModelRealistic floor texture position
+
+  // Décalage pour que le BAS du meuble touche le plancher du van
+  pos3D.y = VAN_FLOOR_HEIGHT + pos3D.y + sizeY / 2;
 
   // Rotation
   const rotX = THREE.MathUtils.degToRad(furniture.rotation?.x || 0);
@@ -150,12 +153,12 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
         // Plan de profondeur (déplacement le long de l'axe Y en 2D / Z en 3D)
         const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
         raycaster.ray.intersectPlane(plane, intersectPoint);
-        
+
         if (intersectPoint) {
           // On ne change que la position en profondeur (axe Y en 2D)
           const centerPos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
           const cornerY = centerPos2D.y - furniture.height / 2;
-          
+
           // Contraindre dans le van
           const constrained = constrainToVan({
             ...furniture,
@@ -257,9 +260,9 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
             ]} />
             <meshBasicMaterial
               color={
-				  isSelected ? '#3b82f6' :
-					isDragging ? '#10b981' :
-					  '#6b7280'
+                isSelected ? '#3b82f6' :
+                  isDragging ? '#10b981' :
+                    '#6b7280'
               }
               transparent
               opacity={0.7}

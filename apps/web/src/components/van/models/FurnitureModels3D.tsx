@@ -35,18 +35,19 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
 
   return (
     <group ref={meshRef}>
-      {/* Matelas */}
+      {/* Matelas - bas du lit à y = -sizeY/2 */}
       <RoundedBox
         args={[sizeX, sizeY * 0.3, sizeZ]}
         radius={0.02}
         smoothness={4}
+        position={[0, -sizeY / 2 + (sizeY * 0.3) / 2, 0]}
         castShadow
         receiveShadow
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        <meshStandardMaterial 
-          color={hovered ? '#6b9bd1' : '#5a8ac7'} 
+        <meshStandardMaterial
+          color={hovered ? '#6b9bd1' : '#5a8ac7'}
           roughness={0.8}
           metalness={0.1}
         />
@@ -56,7 +57,7 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
       <RoundedBox
         args={[sizeX * 0.3, sizeY * 0.15, sizeZ * 0.2]}
         radius={0.01}
-        position={[-sizeX * 0.25, sizeY * 0.25, sizeZ * 0.35]}
+        position={[-sizeX * 0.25, -sizeY / 2 + (sizeY * 0.3) + (sizeY * 0.15) / 2, sizeZ * 0.35]}
       >
         <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
       </RoundedBox>
@@ -65,7 +66,7 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
       <RoundedBox
         args={[sizeX * 0.3, sizeY * 0.15, sizeZ * 0.2]}
         radius={0.01}
-        position={[sizeX * 0.25, sizeY * 0.25, sizeZ * 0.35]}
+        position={[sizeX * 0.25, -sizeY / 2 + (sizeY * 0.3) + (sizeY * 0.15) / 2, sizeZ * 0.35]}
       >
         <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
       </RoundedBox>
@@ -74,7 +75,7 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
       <RoundedBox
         args={[sizeX * 0.9, sizeY * 0.05, sizeZ * 0.7]}
         radius={0.01}
-        position={[0, sizeY * 0.18, -sizeZ * 0.1]}
+        position={[0, -sizeY / 2 + (sizeY * 0.3) + (sizeY * 0.05) / 2, -sizeZ * 0.1]}
       >
         <meshStandardMaterial color={furniture.color} roughness={0.7} />
       </RoundedBox>
@@ -101,8 +102,8 @@ const KitchenModel: React.FC<FurnitureProps> = ({ furniture }) => {
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        <meshStandardMaterial 
-          color={hovered ? '#15b38a' : '#10b981'} 
+        <meshStandardMaterial
+          color={hovered ? '#15b38a' : '#10b981'}
           roughness={0.3}
           metalness={0.2}
         />
@@ -115,8 +116,8 @@ const KitchenModel: React.FC<FurnitureProps> = ({ furniture }) => {
         position={[0, sizeY * 0.42, 0]}
         castShadow
       >
-        <meshStandardMaterial 
-          color="#8b7355" 
+        <meshStandardMaterial
+          color="#8b7355"
           roughness={0.2}
           metalness={0.1}
         />
@@ -171,8 +172,8 @@ const BathroomModel: React.FC<FurnitureProps> = ({ furniture }) => {
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        <meshStandardMaterial 
-          color={hovered ? '#9b6fd6' : '#8b5cf6'} 
+        <meshStandardMaterial
+          color={hovered ? '#9b6fd6' : '#8b5cf6'}
           roughness={0.2}
           metalness={0.3}
         />
@@ -181,9 +182,9 @@ const BathroomModel: React.FC<FurnitureProps> = ({ furniture }) => {
       {/* Parois de douche (transparentes) */}
       <mesh position={[0, sizeY, 0]} castShadow>
         <boxGeometry args={[sizeX, sizeY * 1.8, sizeZ]} />
-        <meshStandardMaterial 
-          color="#ffffff" 
-          transparent 
+        <meshStandardMaterial
+          color="#ffffff"
+          transparent
           opacity={0.2}
           roughness={0.1}
           metalness={0.0}
@@ -224,8 +225,8 @@ const StorageModel: React.FC<FurnitureProps> = ({ furniture }) => {
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        <meshStandardMaterial 
-          color={hovered ? '#ffa726' : '#f59e0b'} 
+        <meshStandardMaterial
+          color={hovered ? '#ffa726' : '#f59e0b'}
           roughness={0.4}
           metalness={0.1}
         />
@@ -239,7 +240,7 @@ const StorageModel: React.FC<FurnitureProps> = ({ furniture }) => {
             <boxGeometry args={[0.01, sizeY * 0.9, 0.01]} />
             <meshStandardMaterial color="#6b5430" />
           </mesh>
-          
+
           {/* Poignée */}
           <RoundedBox
             args={[sizeX * 0.05, sizeY * 0.02, sizeZ * 0.02]}
@@ -274,8 +275,8 @@ const TableModel: React.FC<FurnitureProps> = ({ furniture }) => {
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        <meshStandardMaterial 
-          color={hovered ? '#d4a574' : '#c19a6b'} 
+        <meshStandardMaterial
+          color={hovered ? '#d4a574' : '#c19a6b'}
           roughness={0.3}
           metalness={0.05}
         />
@@ -290,7 +291,7 @@ const TableModel: React.FC<FurnitureProps> = ({ furniture }) => {
           receiveShadow
         >
           <planeGeometry args={[sizeX * 0.15, sizeZ * 0.9]} />
-          <meshStandardMaterial 
+          <meshStandardMaterial
             color="#a67c52"
             roughness={0.4}
             transparent
@@ -321,7 +322,7 @@ const TableModel: React.FC<FurnitureProps> = ({ furniture }) => {
           >
             <meshStandardMaterial color="#8b4513" roughness={0.6} />
           </RoundedBox>
-          
+
           {/* Embout métallique en bas */}
           <mesh position={[0, -sizeY * 0.35, 0]}>
             <cylinderGeometry args={[sizeX * 0.035, sizeX * 0.035, sizeY * 0.02, 16]} />
@@ -350,7 +351,7 @@ const TableModel: React.FC<FurnitureProps> = ({ furniture }) => {
       {hovered && (
         <mesh position={[0, sizeY * 0.735, 0]} rotation-x={-Math.PI / 2} receiveShadow>
           <planeGeometry args={[sizeX * 0.6, sizeZ * 0.4]} />
-          <meshStandardMaterial 
+          <meshStandardMaterial
             color="#f0e8d8"
             roughness={0.9}
             transparent
@@ -382,8 +383,8 @@ const SeatModel: React.FC<FurnitureProps> = ({ furniture }) => {
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
       >
-        <meshStandardMaterial 
-          color={hovered ? '#f56ba9' : '#ec4899'} 
+        <meshStandardMaterial
+          color={hovered ? '#f56ba9' : '#ec4899'}
           roughness={0.8}
         />
       </RoundedBox>
@@ -432,8 +433,8 @@ const GenericModel: React.FC<FurnitureProps> = ({ furniture }) => {
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >
-      <meshStandardMaterial 
-        color={furniture.color} 
+      <meshStandardMaterial
+        color={furniture.color}
         emissive={hovered ? furniture.color : '#000000'}
         emissiveIntensity={hovered ? 0.2 : 0}
         roughness={0.5}
@@ -449,7 +450,7 @@ export const RealisticFurnitureModel: React.FC<FurnitureProps> = (props) => {
 
   // Sélection du modèle selon le type
   let ModelComponent: React.FC<FurnitureProps>;
-  
+
   switch (furniture.type) {
     case 'bed':
       ModelComponent = BedModel;
@@ -482,7 +483,7 @@ export const RealisticFurnitureModel: React.FC<FurnitureProps> = (props) => {
   return (
     <group>
       <ModelComponent {...props} />
-      
+
       {/* Nom du meuble au-dessus */}
       {furniture.name && (
         <Text

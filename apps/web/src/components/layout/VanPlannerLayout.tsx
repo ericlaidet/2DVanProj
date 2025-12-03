@@ -55,12 +55,12 @@ const VanPlannerLayout: React.FC = () => {
 
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const predefinedElements = [
-    { name: 'Table', width: 800, height: 600, icon: '🪑', color: '#ef4444', type: 'table' },
-    { name: 'Cuisine', width: 1000, height: 600, icon: '🍳', color: '#10b981', type: 'kitchen' },
-    { name: 'Douche', width: 800, height: 800, icon: '🚿', color: '#8b5cf6', type: 'bathroom' },
-    { name: 'Bureau', width: 1200, height: 600, icon: '💼', color: '#3b82f6', type: 'storage' },
-    { name: 'Lit', width: 2000, height: 1400, icon: '🛏️', color: '#3b82f6', type: 'bed' },
-    { name: 'Rangement', width: 600, height: 400, icon: '📦', color: '#f59e0b', type: 'storage' },
+    { name: 'Table', width: 800, height: 600, icon: '🪑', color: '#ef4444', type: 'table', depth: 600 },
+    { name: 'Cuisine', width: 1000, height: 600, icon: '🍳', color: '#10b981', type: 'kitchen', depth: 800 },
+    { name: 'Douche', width: 800, height: 800, icon: '🚿', color: '#8b5cf6', type: 'bathroom', depth: 2000 },
+    { name: 'Bureau', width: 1200, height: 600, icon: '💼', color: '#3b82f6', type: 'storage', depth: 800 },
+    { name: 'Lit', width: 2000, height: 1400, icon: '🛏️', color: '#3b82f6', type: 'bed', depth: 400 },
+    { name: 'Rangement', width: 600, height: 400, icon: '📦', color: '#f59e0b', type: 'storage', depth: 400 },
   ];
 
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
@@ -253,6 +253,7 @@ const VanPlannerLayout: React.FC = () => {
       y: startY,
       width: element.width,
       height: element.height,
+      depth: element.depth,
       color: element.color,
     });
 
