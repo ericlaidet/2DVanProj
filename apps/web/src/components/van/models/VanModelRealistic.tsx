@@ -1,4 +1,5 @@
 // apps/web/src/components/van/models/VanModelRealistic.tsx
+// 🎨 Version avec murs semi-transparents pour voir les meubles
 import React from 'react';
 import { RoundedBox } from '@react-three/drei';
 import { VAN_TYPES } from '../../../constants/vans';
@@ -21,9 +22,13 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
   const floorThickness = 0.03;
   const roofThickness = 0.02;
 
+  // 🎨 Opacité des murs (ajustez entre 0.0 et 1.0)
+  const WALL_OPACITY = 0.15; // 15% d'opacité = très transparent
+  const WINDOW_OPACITY = 0.1; // Fenêtres encore plus transparentes
+
   return (
     <group position={[0, height / 2, 0]}>
-      {/* ==================== SOL ==================== */}
+      {/* ==================== SOL (OPAQUE) ==================== */}
       <RoundedBox
         args={[length, floorThickness, width]}
         radius={0.01}
@@ -56,9 +61,9 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         ))}
       </group>
 
-      {/* ==================== MURS ==================== */}
+      {/* ==================== MURS SEMI-TRANSPARENTS ==================== */}
       
-      {/* Mur gauche */}
+      {/* Mur gauche - TRANSPARENT */}
       <RoundedBox
         args={[length, height, wallThickness]}
         radius={0.01}
@@ -68,12 +73,16 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
       >
         <meshStandardMaterial 
           color="#f5f5f5"
-          roughness={0.7}
-          metalness={0.0}
+          roughness={0.3}
+          metalness={0.1}
+          transparent
+          opacity={WALL_OPACITY}
+          side={THREE.DoubleSide} // Visible des deux côtés
+          depthWrite={false} // Évite les artefacts de transparence
         />
       </RoundedBox>
 
-      {/* Mur droit */}
+      {/* Mur droit - TRANSPARENT */}
       <RoundedBox
         args={[length, height, wallThickness]}
         radius={0.01}
@@ -83,12 +92,16 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
       >
         <meshStandardMaterial 
           color="#f5f5f5"
-          roughness={0.7}
-          metalness={0.0}
+          roughness={0.3}
+          metalness={0.1}
+          transparent
+          opacity={WALL_OPACITY}
+          side={THREE.DoubleSide}
+          depthWrite={false}
         />
       </RoundedBox>
 
-      {/* Mur arrière */}
+      {/* Mur arrière - TRANSPARENT */}
       <RoundedBox
         args={[wallThickness, height, width]}
         radius={0.01}
@@ -98,11 +111,37 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
       >
         <meshStandardMaterial 
           color="#f5f5f5"
-          roughness={0.7}
+          roughness={0.3}
+          metalness={0.1}
+          transparent
+          opacity={WALL_OPACITY}
+          side={THREE.DoubleSide}
+          depthWrite={false}
         />
       </RoundedBox>
 
-      {/* ==================== FENÊTRES ==================== */}
+      {/* ==================== CONTOURS VISIBLES (pour voir la structure) ==================== */}
+      
+      {/* Contour principal du van en lignes */}
+      <lineSegments>
+        <edgesGeometry args={[new THREE.BoxGeometry(length, height, width)]} />
+        <lineBasicMaterial color="#2d3748" linewidth={2} transparent opacity={0.6} />
+      </lineSegments>
+
+      {/* Coins renforcés pour mieux voir la structure */}
+      {[
+        [-length/2, -height/2, -width/2], [length/2, -height/2, -width/2],
+        [-length/2, -height/2, width/2], [length/2, -height/2, width/2],
+        [-length/2, height/2, -width/2], [length/2, height/2, -width/2],
+        [-length/2, height/2, width/2], [length/2, height/2, width/2],
+      ].map((pos, i) => (
+        <mesh key={i} position={pos as [number, number, number]}>
+          <sphereGeometry args={[0.03, 8, 8]} />
+          <meshStandardMaterial color="#1a202c" metalness={0.8} roughness={0.2} />
+        </mesh>
+      ))}
+
+      {/* ==================== FENÊTRES (très transparentes) ==================== */}
       
       {/* Fenêtre gauche 1 */}
       <mesh 
@@ -113,16 +152,17 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         <meshStandardMaterial 
           color="#87CEEB" 
           transparent 
-          opacity={0.3}
+          opacity={WINDOW_OPACITY}
           roughness={0.1}
           metalness={0.9}
+          side={THREE.DoubleSide}
         />
       </mesh>
       
       {/* Cadre fenêtre gauche 1 */}
       <lineSegments position={[length * 0.2, height * 0.2, -width / 2 + 0.01]}>
         <edgesGeometry args={[new THREE.BoxGeometry(0.6, 0.4, 0.01)]} />
-        <lineBasicMaterial color="#333333" linewidth={3} />
+        <lineBasicMaterial color="#333333" linewidth={2} />
       </lineSegments>
 
       {/* Fenêtre droite 1 */}
@@ -134,16 +174,17 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         <meshStandardMaterial 
           color="#87CEEB" 
           transparent 
-          opacity={0.3}
+          opacity={WINDOW_OPACITY}
           roughness={0.1}
           metalness={0.9}
+          side={THREE.DoubleSide}
         />
       </mesh>
 
       {/* Cadre fenêtre droite 1 */}
       <lineSegments position={[length * 0.2, height * 0.2, width / 2 - 0.01]}>
         <edgesGeometry args={[new THREE.BoxGeometry(0.6, 0.4, 0.01)]} />
-        <lineBasicMaterial color="#333333" linewidth={3} />
+        <lineBasicMaterial color="#333333" linewidth={2} />
       </lineSegments>
 
       {/* Fenêtre arrière */}
@@ -155,19 +196,20 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         <meshStandardMaterial 
           color="#87CEEB" 
           transparent 
-          opacity={0.3}
+          opacity={WINDOW_OPACITY}
           roughness={0.1}
           metalness={0.9}
+          side={THREE.DoubleSide}
         />
       </mesh>
 
       {/* Cadre fenêtre arrière */}
       <lineSegments position={[-length / 2 + 0.01, height * 0.3, 0]}>
         <edgesGeometry args={[new THREE.BoxGeometry(0.01, 0.5, 0.8)]} />
-        <lineBasicMaterial color="#333333" linewidth={3} />
+        <lineBasicMaterial color="#333333" linewidth={2} />
       </lineSegments>
 
-      {/* ==================== PORTE LATÉRALE ==================== */}
+      {/* ==================== PORTE LATÉRALE (semi-transparente) ==================== */}
       
       {/* Porte coulissante */}
       <RoundedBox
@@ -180,6 +222,9 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
           color="#d0d0d0"
           roughness={0.4}
           metalness={0.3}
+          transparent
+          opacity={WALL_OPACITY * 1.5} // Un peu plus opaque que les murs
+          side={THREE.DoubleSide}
         />
       </RoundedBox>
 
@@ -189,19 +234,26 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         <meshStandardMaterial 
           color="#87CEEB" 
           transparent 
-          opacity={0.3}
+          opacity={WINDOW_OPACITY}
           roughness={0.1}
           metalness={0.9}
+          side={THREE.DoubleSide}
         />
       </mesh>
 
-      {/* Poignée de porte */}
+      {/* Poignée de porte (opaque) */}
       <mesh position={[-length * 0.2 + 0.5, height * 0.1, width / 2 - 0.01]}>
         <cylinderGeometry args={[0.02, 0.02, 0.1, 16]} />
         <meshStandardMaterial color="#1a1a1a" metalness={0.9} roughness={0.2} />
       </mesh>
 
-      {/* ==================== TOIT ==================== */}
+      {/* Cadre de porte */}
+      <lineSegments position={[-length * 0.2, 0, width / 2 - 0.02]}>
+        <edgesGeometry args={[new THREE.BoxGeometry(1.2, height * 0.9, wallThickness * 1.5)]} />
+        <lineBasicMaterial color="#1a202c" linewidth={2} />
+      </lineSegments>
+
+      {/* ==================== TOIT (légèrement transparent) ==================== */}
       
       <RoundedBox
         args={[length, roofThickness, width]}
@@ -214,6 +266,9 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
           color="#ffffff"
           roughness={0.4}
           metalness={0.2}
+          transparent
+          opacity={0.3} // Toit un peu transparent
+          side={THREE.DoubleSide}
         />
       </RoundedBox>
 
@@ -223,9 +278,10 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         <meshStandardMaterial 
           color="#87CEEB" 
           transparent 
-          opacity={0.4}
+          opacity={WINDOW_OPACITY}
           roughness={0.1}
           metalness={0.8}
+          side={THREE.DoubleSide}
         />
       </mesh>
 
@@ -235,7 +291,7 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         <lineBasicMaterial color="#333333" linewidth={2} />
       </lineSegments>
 
-      {/* ==================== DÉTAILS EXTÉRIEURS ==================== */}
+      {/* ==================== DÉTAILS EXTÉRIEURS (opaques) ==================== */}
       
       {/* Rétroviseurs */}
       {[-width / 2 - 0.1, width / 2 + 0.1].map((z, i) => (
@@ -257,14 +313,6 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
         <meshStandardMaterial color="#ff6b6b" metalness={0.6} roughness={0.3} />
       </mesh>
 
-      {/* ==================== CONTOURS STRUCTURELS ==================== */}
-      
-      {/* Contour principal du van */}
-      <lineSegments>
-        <edgesGeometry args={[new THREE.BoxGeometry(length, height, width)]} />
-        <lineBasicMaterial color="#1a1a1a" linewidth={2} />
-      </lineSegments>
-
       {/* Grille de ventilation (arrière) */}
       <group position={[-length / 2 + 0.02, -height * 0.3, 0]}>
         {Array.from({ length: 10 }).map((_, i) => (
@@ -274,6 +322,12 @@ export const VanModelRealistic: React.FC<VanModelRealisticProps> = ({ vanType })
           </mesh>
         ))}
       </group>
+
+      {/* ==================== INDICATEURS VISUELS ==================== */}
+      
+      {/* Axes de repère (optionnel, pour debug) */}
+      {/* Décommentez pour voir les axes X (rouge), Y (vert), Z (bleu) */}
+      {/* <axesHelper args={[1]} /> */}
     </group>
   );
 };
