@@ -6,7 +6,7 @@ import { useStore } from '../../store/store';
 import { VAN_TYPES } from '../../constants/vans';
 import { VanModelRealistic } from './models/VanModelRealistic';
 import { DraggableFurniture3D } from './DraggableFurniture3D';
-import { ControlsPanel3D } from './ControlsPanel3D';
+// import { ControlsPanel3D } from './ControlsPanel3D';
 import { calculateVolumeUsage } from '../../utils/coordinates3D';
 import { notify } from '../../utils/notify';
 import * as THREE from 'three';
@@ -230,14 +230,14 @@ export const VanCanvas3D: React.FC = () => {
         </Canvas>
       </Suspense>
 
-      <ControlsPanel3D
+      {/* <ControlsPanel3D
         selectedFurnitureId={selectedFurnitureId}
         transformMode={transformMode}
         onModeChange={setTransformMode}
         onDelete={handleDeleteSelected}
         onDuplicate={handleDuplicateSelected}
         onResetTransform={handleResetTransform}
-      />
+      /> */}
 
 
       <div className="canvas-3d-overlay">
