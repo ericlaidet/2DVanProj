@@ -97,6 +97,7 @@ export const VanCanvas3D: React.FC = () => {
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string | null>(null);
   const [transformMode, setTransformMode] = useState<'translate' | 'rotate' | 'scale'>('translate');
   const [cameraLocked, setCameraLocked] = useState(true); // 🔒 Caméra verrouillée par défaut
+  const [showControls, setShowControls] = useState(false); // Dropdown des commandes fermé par défaut
   const orbitControlsRef = useRef<any>(null);
 
   // Gestion de la sélection
@@ -239,16 +240,37 @@ export const VanCanvas3D: React.FC = () => {
         onResetTransform={handleResetTransform}
       /> */}
 
+      {/* Camera status - centered bottom */}
+      <div className="camera-status-centered">
+        <strong>🔒 {cameraLocked ? 'Caméra Verrouillée' : 'Caméra Libre'}</strong>
+      </div>
 
-      <div className="canvas-3d-overlay">
-        <div className="controls-hint">
-          <p><strong>🔒 {cameraLocked ? 'Caméra Verrouillée' : 'Caméra Libre'}</strong></p>
-          <p><strong>⌨️ C</strong> : {cameraLocked ? 'Déverrouiller' : 'Verrouiller'} caméra</p>
-          <p><strong>🎯 Clic sur meuble</strong> : Sélectionner</p>
-          <p><strong>🎯 Glisser meuble</strong> : Déplacer (horizontal)</p>
-          <p><strong>⬆️ Shift + Glisser</strong> : Déplacer (hauteur)</p>
-          <p><strong>🎯 Ctrl + Glisser</strong> : Déplacer (profondeur)</p>
-          <p><strong>⌨️ Suppr</strong> : Supprimer</p>
+      {/* Controls - bottom left */}
+      <div className="canvas-3d-controls-bottom">
+        {/* Camera unlock hint - always visible */}
+        <div className="camera-hint">
+          <strong>⌨️ C</strong> : {cameraLocked ? 'Déverrouiller' : 'Verrouiller'} caméra
+        </div>
+
+        {/* Collapsible controls */}
+        <div className="controls-dropdown">
+          <button
+            className="controls-toggle"
+            onClick={() => setShowControls(!showControls)}
+            title="Afficher/masquer les commandes"
+          >
+            {showControls ? '▼' : '▲'} Commandes
+          </button>
+
+          {showControls && (
+            <div className="controls-list">
+              <p><strong>🎯 Clic sur meuble</strong> : Sélectionner</p>
+              <p><strong>🎯 Glisser meuble</strong> : Déplacer (horizontal)</p>
+              <p><strong>⬆️ Shift + Glisser</strong> : Déplacer (hauteur)</p>
+              <p><strong>🎯 Ctrl + Glisser</strong> : Déplacer (profondeur)</p>
+              <p><strong>⌨️ Suppr</strong> : Supprimer</p>
+            </div>
+          )}
         </div>
       </div>
 

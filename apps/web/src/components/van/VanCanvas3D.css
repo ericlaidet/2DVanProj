@@ -106,33 +106,129 @@
   margin-left: 12px;
 }
 
-/* Instructions overlay */
-.canvas-3d-overlay {
+/* Controls bottom-left dropdown */
+.canvas-3d-controls-bottom {
   position: absolute;
   bottom: 16px;
   left: 16px;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 16px;
-  color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 5;
-  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   animation: slideInLeft 0.4s ease-out;
 }
 
-.controls-hint p {
+.camera-hint {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.camera-hint strong {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+/* Camera status - centered bottom */
+.camera-status-centered {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 12px 24px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 1rem;
+  white-space: nowrap;
+  z-index: 4;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.camera-status-centered strong {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.controls-dropdown {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.controls-toggle {
+  width: 100%;
+  background: rgba(59, 130, 246, 0.2);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.controls-toggle:hover {
+  background: rgba(59, 130, 246, 0.4);
+}
+
+.controls-list {
+  padding: 12px 16px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 320px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.controls-list p {
   font-size: 0.85rem;
   margin: 6px 0;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
 }
 
-.controls-hint strong {
+.controls-list strong {
   color: #60a5fa;
   font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Toggle FPS Stats button */
@@ -205,6 +301,7 @@
     opacity: 0;
     transform: scale(0.8);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -212,9 +309,12 @@
 }
 
 @keyframes bounce {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-20px);
   }
@@ -231,6 +331,7 @@
     opacity: 0;
     transform: translateX(30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -242,6 +343,7 @@
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
