@@ -212,7 +212,8 @@ export const VanCanvas3D: React.FC = () => {
           />
 
           <EnhancedLighting />
-          <Environment preset="sunset" />
+          {/* <Environment preset="sunset" /> */}
+          {/* Environment désactivé pour éviter l'erreur de chargement HDR - l'éclairage manuel suffit */}
           <EnhancedFloor />
           <VanModelRealistic vanType={vanType} />
 

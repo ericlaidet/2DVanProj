@@ -5,6 +5,18 @@ import { VAN_TYPES } from '../../constants/vans';
 import { FURNITURE_PRESETS } from '../../constants/furniture';
 import './VanCanvas2D.css';
 
+/**
+ * ✅ IMAGES RÉALISTES - Mapping des fichiers PNG
+ */
+const FURNITURE_IMAGES: Record<string, string> = {
+  'bed': '/furniture/bed.png',
+  'kitchen': '/furniture/kitchen.png',
+  'bathroom': '/furniture/bathroom.png',
+  'storage': '/furniture/storage.png',
+  'table': '/furniture/table.png',
+  'seat': '/furniture/seat.png',
+};
+
 interface VanCanvasProps {
   selectedObjectId?: string | null;
   onSelectObject?: (id: string | null) => void;
@@ -199,6 +211,7 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
         {/* Meubles */}
         {objects.map((obj) => {
           const preset = FURNITURE_PRESETS[obj.type as keyof typeof FURNITURE_PRESETS];
+          const imageUrl = FURNITURE_IMAGES[obj.type] || '';
           const isSelected = selectedObjectId === obj.id;
           const isHovered = hoveredId === obj.id;
           const isDragging = draggingId === obj.id;
@@ -212,10 +225,14 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
                 top: `${obj.y * SCALE}px`,
                 width: `${obj.width * SCALE}px`,
                 height: `${obj.height * SCALE}px`,
-                backgroundColor: obj.color,
+                backgroundColor: imageUrl ? '#ffffff' : obj.color,
                 transform: `rotate(${obj.rotation?.y || 0}deg)`,
                 cursor: isDragging ? 'grabbing' : 'grab',
-                zIndex: isSelected ? 1000 : isDragging ? 999 : 1
+                zIndex: isSelected ? 1000 : isDragging ? 999 : 1,
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
               onClick={(e) => handleObjectClick(e, obj.id)}
               onMouseDown={(e) => handleMouseDown(e, obj.id)}
@@ -224,11 +241,27 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
               onMouseEnter={() => setHoveredId(obj.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              {/* Label du meuble */}
-              <div className="object-label">
-                <span className="object-icon">{preset?.icon || '📦'}</span>
-                <span className="object-name">{obj.name}</span>
-              </div>
+              {/* Image réaliste du meuble */}
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={obj.name}
+                  style={{
+                    width: '90%',
+                    height: '90%',
+                    objectFit: 'contain',
+                    userSelect: 'none',
+                    pointerEvents: 'none',
+                  }}
+                  draggable={false}
+                />
+              ) : (
+                /* Fallback : Label du meuble */
+                <div className="object-label">
+                  <span className="object-icon">{preset?.icon || '📦'}</span>
+                  <span className="object-name">{obj.name}</span>
+                </div>
+              )}
 
               {/* Dimensions */}
               {(isSelected || isHovered) && (
