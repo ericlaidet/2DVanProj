@@ -10,124 +10,74 @@ interface VanCanvas2DProps {
 }
 
 /**
- * Rendu SVG 2D pour chaque type de meuble
+ * Rendu SVG 2D pour chaque type de meuble avec images réalistes
  */
 const FurnitureSVG: React.FC<{ furniture: any }> = ({ furniture }) => {
   const type = furniture.type;
-  const color = furniture.color;
   const width = furniture.width;
   const height = furniture.height;
 
-  switch (type) {
-    case 'bed':
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          {/* Matelas */}
-          <rect x="5%" y="10%" width="90%" height="80%" rx="20" fill={color} opacity="0.9"/>
-          {/* Oreillers */}
-          <rect x="10%" y="15%" width="35%" height="25%" rx="10" fill="#f0f0f0" opacity="0.8"/>
-          <rect x="55%" y="15%" width="35%" height="25%" rx="10" fill="#f0f0f0" opacity="0.8"/>
-          {/* Couverture */}
-          <rect x="15%" y="50%" width="70%" height="40%" rx="5" fill={color} opacity="0.6"/>
-          <text x="50%" y="95%" fontSize="14" fill="#333" textAnchor="middle">🛏️</text>
-        </svg>
-      );
+  // Map furniture type to image path
+  const getImagePath = (furnitureType: string): string => {
+    const imageMap: Record<string, string> = {
+      'bed': '/furniture/bed.png',
+      'kitchen': '/furniture/kitchen.png',
+      'bathroom': '/furniture/bathroom.png',
+      'storage': '/furniture/storage.png',
+      'table': '/furniture/table.png',
+      'seat': '/furniture/seat.png',
+    };
+    return imageMap[furnitureType] || '';
+  };
 
-    case 'kitchen':
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          {/* Meuble */}
-          <rect x="5%" y="5%" width="90%" height="90%" rx="8" fill={color}/>
-          {/* Plan de travail */}
-          <rect x="5%" y="5%" width="90%" height="15%" rx="4" fill="#8b7355"/>
-          {/* Évier */}
-          <circle cx="30%" cy="35%" r="12%" fill="#c0c0c0"/>
-          {/* Plaques */}
-          <circle cx="65%" cy="35%" r="8%" fill="#1a1a1a"/>
-          <circle cx="80%" cy="35%" r="8%" fill="#1a1a1a"/>
-          {/* Portes */}
-          <rect x="8%" y="55%" width="40%" height="38%" rx="4" fill={color} stroke="#666" strokeWidth="2"/>
-          <rect x="52%" y="55%" width="40%" height="38%" rx="4" fill={color} stroke="#666" strokeWidth="2"/>
-          <text x="50%" y="95%" fontSize="16" fill="#fff" textAnchor="middle">🍳</text>
-        </svg>
-      );
+  const imagePath = getImagePath(type);
 
-    case 'bathroom':
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          {/* Bac de douche */}
-          <rect x="5%" y="5%" width="90%" height="90%" rx="10" fill={color} opacity="0.8"/>
-          {/* Parois */}
-          <rect x="8%" y="8%" width="84%" height="84%" rx="8" fill="none" stroke="#fff" strokeWidth="4" opacity="0.3"/>
-          {/* Pommeau */}
-          <circle cx="80%" cy="20%" r="6%" fill="#c0c0c0"/>
-          <line x1="80%" y1="26%" x2="80%" y2="40%" stroke="#c0c0c0" strokeWidth="2"/>
-          <text x="50%" y="95%" fontSize="16" fill="#fff" textAnchor="middle">🚿</text>
-        </svg>
-      );
+  // Debug logging
+  console.log('FurnitureSVG - Type:', type, 'Image Path:', imagePath, 'Furniture:', furniture);
 
-    case 'storage':
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          {/* Corps */}
-          <rect x="5%" y="5%" width="90%" height="90%" rx="8" fill={color}/>
-          {/* Compartiments */}
-          <line x1="35%" y1="5%" x2="35%" y2="95%" stroke="#6b5430" strokeWidth="3"/>
-          <line x1="65%" y1="5%" x2="65%" y2="95%" stroke="#6b5430" strokeWidth="3"/>
-          {/* Poignées */}
-          <rect x="15%" y="48%" width="10%" height="4%" rx="2" fill="#808080"/>
-          <rect x="45%" y="48%" width="10%" height="4%" rx="2" fill="#808080"/>
-          <rect x="75%" y="48%" width="10%" height="4%" rx="2" fill="#808080"/>
-          <text x="50%" y="95%" fontSize="16" fill="#fff" textAnchor="middle">📦</text>
-        </svg>
-      );
-
-    case 'table':
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          {/* Plateau */}
-          <rect x="5%" y="15%" width="90%" height="70%" rx="8" fill="#c19a6b"/>
-          <rect x="5%" y="15%" width="90%" height="10%" rx="4" fill="#8b4513" opacity="0.3"/>
-          {/* Pieds */}
-          <rect x="10%" y="85%" width="5%" height="10%" fill="#8b4513"/>
-          <rect x="85%" y="85%" width="5%" height="10%" fill="#8b4513"/>
-          <rect x="10%" y="5%" width="5%" height="10%" fill="#8b4513"/>
-          <rect x="85%" y="5%" width="5%" height="10%" fill="#8b4513"/>
-          <text x="50%" y="55%" fontSize="16" fill="#fff" textAnchor="middle">🪑</text>
-        </svg>
-      );
-
-    case 'seat':
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          {/* Dossier */}
-          <rect x="5%" y="5%" width="10%" height="90%" rx="8" fill={color}/>
-          {/* Assise */}
-          <rect x="15%" y="40%" width="80%" height="55%" rx="8" fill={color}/>
-          {/* Capitonnage */}
-          <circle cx="35%" cy="55%" r="3%" fill="#2a2a2a"/>
-          <circle cx="55%" cy="55%" r="3%" fill="#2a2a2a"/>
-          <circle cx="75%" cy="55%" r="3%" fill="#2a2a2a"/>
-          <circle cx="35%" cy="75%" r="3%" fill="#2a2a2a"/>
-          <circle cx="55%" cy="75%" r="3%" fill="#2a2a2a"/>
-          <circle cx="75%" cy="75%" r="3%" fill="#2a2a2a"/>
-          <text x="55%" y="95%" fontSize="14" fill="#fff" textAnchor="middle">💺</text>
-        </svg>
-      );
-
-    default:
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          <rect x="5%" y="5%" width="90%" height="90%" rx="8" fill={color}/>
-          <text x="50%" y="55%" fontSize="16" fill="#fff" textAnchor="middle">📦</text>
-        </svg>
-      );
+  // If we have an image for this furniture type, use it
+  if (imagePath) {
+    return (
+      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+        {/* Background with slight border */}
+        <rect
+          x="0"
+          y="0"
+          width={width}
+          height={height}
+          rx="8"
+          fill="#ffffff"
+          stroke="#e0e0e0"
+          strokeWidth="2"
+        />
+        {/* Furniture image */}
+        <image
+          xlinkHref={imagePath}
+          href={imagePath}
+          x="2%"
+          y="2%"
+          width="96%"
+          height="96%"
+          preserveAspectRatio="xMidYMid meet"
+        />
+      </svg>
+    );
   }
+
+  // Fallback for custom or unknown furniture types
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+      <rect x="5%" y="5%" width="90%" height="90%" rx="8" fill={furniture.color || '#6b7280'} opacity="0.7" />
+      <text x="50%" y="50%" fontSize="24" fill="#fff" textAnchor="middle" dominantBaseline="middle">
+        {furniture.name || '?'}
+      </text>
+    </svg>
+  );
 };
 
-export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({ 
-  selectedObjectId, 
-  onSelectObject 
+export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
+  selectedObjectId,
+  onSelectObject
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
@@ -140,7 +90,7 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
   const removeObject = useStore(s => s.removeObject);
 
   const van = VAN_TYPES.find(v => v.vanType === vanType);
-  
+
   if (!van) {
     return (
       <div className="van-canvas empty">
@@ -155,7 +105,7 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
 
   const handleObjectMouseDown = (e: React.MouseEvent, objectId: string) => {
     e.stopPropagation();
-    
+
     const obj = objects.find(o => o.id === objectId);
     if (!obj) return;
 
@@ -165,17 +115,17 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
 
     const objElement = e.currentTarget as HTMLElement;
     const rect = objElement.getBoundingClientRect();
-    
+
     setDragStart({
       x: e.clientX,
       y: e.clientY
     });
-    
+
     setDragOffset({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
     });
-    
+
     setDraggingId(objectId);
   };
 
@@ -203,7 +153,7 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
     // Vérification collision
     const hasCollision = objects.some(other => {
       if (other.id === draggingId) return false;
-      
+
       return !(
         clampedX + obj.width <= other.x ||
         clampedX >= other.x + other.width ||
@@ -261,7 +211,7 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
         {objects.map((obj) => {
           const isSelected = selectedObjectId === obj.id;
           const isDragging = draggingId === obj.id;
-          
+
           return (
             <div
               key={obj.id}
@@ -285,7 +235,7 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
               onDoubleClick={(e) => handleDoubleClick(e, obj.id)}
             >
               <FurnitureSVG furniture={obj} />
-              
+
               {/* Label */}
               <div style={{
                 position: 'absolute',

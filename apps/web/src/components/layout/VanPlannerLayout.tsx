@@ -55,12 +55,12 @@ const VanPlannerLayout: React.FC = () => {
 
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const predefinedElements = [
-    { name: 'Table', width: 800, height: 600, icon: '🪑', color: '#ef4444' },
-    { name: 'Cuisine', width: 1000, height: 600, icon: '🍳', color: '#10b981' },
-    { name: 'Douche', width: 800, height: 800, icon: '🚿', color: '#8b5cf6' },
-    { name: 'Bureau', width: 1200, height: 600, icon: '💼', color: '#3b82f6' },
-    { name: 'Lit', width: 2000, height: 1400, icon: '🛏️', color: '#3b82f6' },
-    { name: 'Rangement', width: 600, height: 400, icon: '📦', color: '#f59e0b' },
+    { name: 'Table', width: 800, height: 600, icon: '🪑', color: '#ef4444', type: 'table' },
+    { name: 'Cuisine', width: 1000, height: 600, icon: '🍳', color: '#10b981', type: 'kitchen' },
+    { name: 'Douche', width: 800, height: 800, icon: '🚿', color: '#8b5cf6', type: 'bathroom' },
+    { name: 'Bureau', width: 1200, height: 600, icon: '💼', color: '#3b82f6', type: 'storage' },
+    { name: 'Lit', width: 2000, height: 1400, icon: '🛏️', color: '#3b82f6', type: 'bed' },
+    { name: 'Rangement', width: 600, height: 400, icon: '📦', color: '#f59e0b', type: 'storage' },
   ];
 
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
@@ -221,6 +221,7 @@ const VanPlannerLayout: React.FC = () => {
     addObject({
       id: uuidv4(),
       name: elementName.trim(),
+      type: 'custom',
       x: startX,
       y: startY,
       width,
@@ -247,6 +248,7 @@ const VanPlannerLayout: React.FC = () => {
     addObject({
       id: uuidv4(),
       name: element.name,
+      type: element.type || 'custom',
       x: startX,
       y: startY,
       width: element.width,
