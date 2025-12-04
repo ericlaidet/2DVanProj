@@ -35,12 +35,12 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
 
   return (
     <group ref={meshRef}>
-      {/* Matelas - bas du lit à y = -sizeY/2 */}
+      {/* Matelas - base au sol (y=0) */}
       <RoundedBox
         args={[sizeX, sizeY * 0.3, sizeZ]}
         radius={0.02}
         smoothness={4}
-        position={[0, -sizeY / 2 + (sizeY * 0.3) / 2, 0]}
+        position={[0, (sizeY * 0.3) / 2, 0]}
         castShadow
         receiveShadow
         onPointerEnter={() => setHovered(true)}
@@ -57,7 +57,7 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
       <RoundedBox
         args={[sizeX * 0.3, sizeY * 0.15, sizeZ * 0.2]}
         radius={0.01}
-        position={[-sizeX * 0.25, -sizeY / 2 + (sizeY * 0.3) + (sizeY * 0.15) / 2, sizeZ * 0.35]}
+        position={[-sizeX * 0.25, (sizeY * 0.3) + (sizeY * 0.15) / 2, sizeZ * 0.35]}
       >
         <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
       </RoundedBox>
@@ -66,7 +66,7 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
       <RoundedBox
         args={[sizeX * 0.3, sizeY * 0.15, sizeZ * 0.2]}
         radius={0.01}
-        position={[sizeX * 0.25, -sizeY / 2 + (sizeY * 0.3) + (sizeY * 0.15) / 2, sizeZ * 0.35]}
+        position={[sizeX * 0.25, (sizeY * 0.3) + (sizeY * 0.15) / 2, sizeZ * 0.35]}
       >
         <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
       </RoundedBox>
@@ -75,7 +75,7 @@ const BedModel: React.FC<FurnitureProps> = ({ furniture, onDrag }) => {
       <RoundedBox
         args={[sizeX * 0.9, sizeY * 0.05, sizeZ * 0.7]}
         radius={0.01}
-        position={[0, -sizeY / 2 + (sizeY * 0.3) + (sizeY * 0.05) / 2, -sizeZ * 0.1]}
+        position={[0, (sizeY * 0.3) + (sizeY * 0.05) / 2, -sizeZ * 0.1]}
       >
         <meshStandardMaterial color={furniture.color} roughness={0.7} />
       </RoundedBox>
@@ -163,10 +163,11 @@ const BathroomModel: React.FC<FurnitureProps> = ({ furniture }) => {
 
   return (
     <group>
-      {/* Bac de douche */}
+      {/* Bac de douche - base au sol (y=0) */}
       <RoundedBox
         args={[sizeX, sizeY * 0.05, sizeZ]}
         radius={0.01}
+        position={[0, (sizeY * 0.05) / 2, 0]}
         castShadow
         receiveShadow
         onPointerEnter={() => setHovered(true)}
@@ -179,9 +180,9 @@ const BathroomModel: React.FC<FurnitureProps> = ({ furniture }) => {
         />
       </RoundedBox>
 
-      {/* Parois de douche (transparentes) */}
-      <mesh position={[0, sizeY, 0]} castShadow>
-        <boxGeometry args={[sizeX, sizeY * 1.8, sizeZ]} />
+      {/* Parois de douche (transparentes) - au-dessus du bac */}
+      <mesh position={[0, sizeY * 0.05 + (sizeY * 0.8) / 2, 0]} castShadow>
+        <boxGeometry args={[sizeX, sizeY * 0.8, sizeZ]} />
         <meshStandardMaterial
           color="#ffffff"
           transparent
@@ -192,14 +193,14 @@ const BathroomModel: React.FC<FurnitureProps> = ({ furniture }) => {
       </mesh>
 
       {/* Pommeau de douche */}
-      <mesh position={[sizeX * 0.3, sizeY * 1.7, sizeZ * 0.3]} castShadow>
+      <mesh position={[sizeX * 0.3, sizeY * 0.05 + sizeY * 0.75, sizeZ * 0.3]} castShadow>
         <cylinderGeometry args={[0.02, 0.05, 0.1, 16]} />
         <meshStandardMaterial color="#c0c0c0" metalness={0.9} roughness={0.1} />
       </mesh>
 
       {/* Contour */}
-      <lineSegments position={[0, sizeY * 0.9, 0]}>
-        <edgesGeometry args={[new THREE.BoxGeometry(sizeX, sizeY * 1.8, sizeZ)]} />
+      <lineSegments position={[0, sizeY * 0.05 + (sizeY * 0.8) / 2, 0]}>
+        <edgesGeometry args={[new THREE.BoxGeometry(sizeX, sizeY * 0.8, sizeZ)]} />
         <lineBasicMaterial color={hovered ? '#ffffff' : '#666666'} linewidth={2} />
       </lineSegments>
     </group>

@@ -56,8 +56,9 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
   // ⚠️ IMPORTANT : Le plancher du van (texture bois) est à y = 0.031m, pas à y = 0
   const VAN_FLOOR_HEIGHT = 0.031; // matches VanModelRealistic floor texture position
 
-  // Décalage pour que le BAS du meuble touche le plancher du van
-  pos3D.y = VAN_FLOOR_HEIGHT + pos3D.y + sizeY / 2;
+  // ✅ CORRECTION: Les modèles 3D ont leur BASE à y=0 localement (pas centrés en Y)
+  // Donc on ne doit PAS ajouter sizeY/2, juste la hauteur du plancher + pos3D.y
+  pos3D.y = VAN_FLOOR_HEIGHT + pos3D.y;
 
   // Rotation
   const rotX = THREE.MathUtils.degToRad(furniture.rotation?.x || 0);

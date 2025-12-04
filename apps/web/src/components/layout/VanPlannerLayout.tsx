@@ -235,6 +235,7 @@ const VanPlannerLayout: React.FC = () => {
       type: 'custom',
       x: startX,
       y: startY,
+      z: 0,  // ✅ Position au sol
       width,
       height,
       color: selectedColor,
@@ -262,6 +263,7 @@ const VanPlannerLayout: React.FC = () => {
       type: element.type || 'custom',
       x: startX,
       y: startY,
+      z: 0,  // ✅ Position au sol
       width: element.width,
       height: element.height,
       depth: element.depth,

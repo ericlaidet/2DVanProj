@@ -50,6 +50,7 @@ export const convertAILayoutToFurniture = (
             type: furnitureType,
             x,
             y,
+            z: 0,  // ✅ Position au sol (niveau 0)
             width,
             height,
             color: item.color || preset.color,
