@@ -38,6 +38,7 @@ model Van {
   category    String
   length      Int
   width       Int
+  height      Int      // Interior height in mm
 
   planVans    PlanVan[]
 }
