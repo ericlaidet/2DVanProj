@@ -18,7 +18,7 @@ export class AIService {
     private readonly openaiClient: OpenAIClient,
     private readonly prisma: PrismaService,
     private readonly cache: AICacheService,
-  ) {}
+  ) { }
 
   async generateLayout(dto: GenerateLayoutDto, userId: number): Promise<LayoutSuggestion> {
     this.logger.log(`Generate layout for user ${userId}, van: ${dto.vanType}`);
@@ -38,7 +38,7 @@ export class AIService {
       throw new BadRequestException(`Van type "${dto.vanType}" not found`);
     }
 
-    const prompt = generateLayoutPrompt(dto.userDescription, dto.preferences, van);
+    const prompt = generateLayoutPrompt(dto.userDescription, dto.preferences, van, dto.existingLayout);
 
     try {
       const completion: any = await this.openaiClient.createCompletion({
@@ -58,8 +58,8 @@ Réponds UNIQUEMENT en JSON valide.`,
       });
 
       // protective parsing
-//      const raw = completion?.choices?.[0]?.message?.content ?? '{}';
-//      const result = JSON.parse(raw);
+      //      const raw = completion?.choices?.[0]?.message?.content ?? '{}';
+      //      const result = JSON.parse(raw);
 
       const raw = completion?.choices?.[0]?.message?.content ?? '{}';
 
@@ -238,14 +238,14 @@ Réponds UNIQUEMENT en JSON valide.`,
 Analyse ces ${userPlans.length} plans créés par l'utilisateur et identifie ses préférences:
 
 ${userPlans
-  .map(
-    (plan, i) => `
+        .map(
+          (plan, i) => `
 Plan ${i + 1}:
 - Van: ${plan.planVans[0]?.van?.displayName}
 - Layout: ${JSON.stringify(plan.jsonData)}
 `,
-  )
-  .join('\n')}
+        )
+        .join('\n')}
 
 Identifie:
 1. Style préféré (minimaliste, confortable, etc.)

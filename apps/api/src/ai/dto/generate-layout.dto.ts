@@ -1,5 +1,5 @@
 // apps/api/src/ai/dto/generate-layout.dto.ts
-import { IsString, IsNotEmpty, IsOptional, IsInt, IsBoolean, IsEnum, ValidateNested } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsInt, IsBoolean, IsEnum, ValidateNested, IsArray } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class PreferencesDto {
@@ -33,4 +33,8 @@ export class GenerateLayoutDto {
   @ValidateNested()
   @Type(() => PreferencesDto)
   preferences?: PreferencesDto;
+
+  @IsOptional()
+  @IsArray()
+  existingLayout?: any[];  // Meubles déjà présents dans le van
 }

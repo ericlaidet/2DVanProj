@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import './VanPlannerLayout.css';
 import { notify } from '@/utils/notify';
 import Header from "@/components/layout/Header";
+import { convertAILayoutToFurniture } from '@/utils/aiLayoutConverter'; // ✅ AJOUT
 
 const VanPlannerLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -76,17 +77,17 @@ const VanPlannerLayout: React.FC = () => {
     if (!vanType) return notify.error("Sélectionnez d'abord un type de van");
     if (!prompt.trim()) return notify.error("Décrivez votre aménagement souhaité");
 
-    console.log('🤖 Generating layout...', { vanType, prompt });
+    console.log('🤖 Generating layout...', { vanType, prompt, existingObjects: objects.length });
     await generateLayout({
       vanType,
       userDescription: prompt,
       preferences: {
-        hasBed: hasCouchage,
         sleepingCapacity: hasCouchage ? Number(couchage) : 0,
         hasCooking: hasCuisine,
         hasStorage: hasRangements,
         style: style === 'minin' ? 'minimalist' : style === 'moderne' ? 'modern' : 'rustic',
       },
+      existingLayout: objects,  // ✅ Envoie les meubles déjà présents
     });
   };
 
@@ -100,13 +101,23 @@ const VanPlannerLayout: React.FC = () => {
   const handleApplySuggestion = () => {
     if (!suggestion) return;
     console.log('✅ Applying suggestion:', suggestion);
+
+    // Récupérer les dimensions du van
+    const van = VAN_TYPES.find(v => v.vanType === vanType);
+    if (!van) return notify.error("Van introuvable");
+
+    // ✅ Utiliser le convertisseur pour créer des objets complets avec tous les champs nécessaires
+    const newObjects = convertAILayoutToFurniture(
+      suggestion.layout,
+      van.length,
+      van.width
+    );
+
     useStore.setState({
-      objects: suggestion.layout.map((item) => ({
-        id: `ai-${Date.now()}-${Math.random()}`,
-        ...item,
-      })),
+      objects: [...objects, ...newObjects],  // Ajoute aux existants
     });
-    notify.success("Suggestion appliquée !");
+
+    notify.success(`${newObjects.length} meuble(s) ajouté(s) !`);
   };
 
   const handleSavePlan = async () => {
