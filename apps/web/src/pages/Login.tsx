@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { apiFetch } from '../api/api';
 import { useStore } from '../store/store';
-import './Login.css';
+import './login.css';
 import { notify } from '@/utils/notify';
 import { extractErrorMessage } from '@/utils/errorMessage';
 
