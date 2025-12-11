@@ -30,69 +30,71 @@ test.describe('Ajout de meubles sur le canvas', () => {
     });
 
 
-test('✅ TEST2 Peut ajouter un lit depuis la palette', async ({ page }) => {
-  // ✅ Trouver la carte lit dans la palette
-  const bedCard = page.locator('.element-card', { hasText: 'Lit' }).first();
-  
-  // ✅ S'assurer qu'elle est visible avant de cliquer
-  await expect(bedCard).toBeVisible();
-  
-  // ✅ Cliquer
-  await bedCard.click();
-  
-  // ✅ Attendre que le compteur change de 0 à 1 (preuve que le meuble a été ajouté)
-  await expect(page.locator('text=0').first()).not.toBeVisible({ timeout: 5000 });
-  
-  // OU attendre directement le meuble avec un timeout généreux
-  const bedOnCanvas = page.locator('[data-testid="furniture-bed"]');
-  await expect(bedOnCanvas).toBeVisible({ timeout: 15000 });
-});
+    test('✅ TEST2 Peut ajouter un lit depuis la palette', async ({ page }) => {
+        // ✅ Trouver la carte lit dans la palette
+        const bedCard = page.locator('.element-card', { hasText: 'Lit' }).first();
 
-/*test('✅ TEST3 - Peut ajouter un lit depuis la palette', async ({ page }) => {
-  // Compter les meubles AVANT
-  const countBefore = await page.locator('[data-furniture-id]').count();
-  
-  // Cliquer sur le lit
-  await page.locator('.element-card', { hasText: 'Lit' }).first().click();
-  
-  // Attendre que le nombre de meubles augmente
-  await expect(page.locator('[data-furniture-id]')).toHaveCount(countBefore + 1, { timeout: 10000 });
-  
-  // Puis vérifier le type
-  await expect(page.locator('[data-testid="furniture-bed"]')).toBeVisible();
-});
-*/
+        // ✅ S'assurer qu'elle est visible avant de cliquer
+        await expect(bedCard).toBeVisible();
 
-/*
-    test('✅ Peut ajouter un lit depuis la palette', async ({ page }) => {
-        // Cliquer sur l'élément "Lit"
-        const bedElement = page.locator('.element-card').filter({ hasText: /Lit|🛏️/i }).first();
-        await bedElement.click();
+        // ✅ Cliquer
+        await bedCard.click();
 
-        // ✅ Attendre plus longtemps pour que le meuble s'affiche
-        await page.waitForTimeout(2000);
+        // ✅ VÉRIFICATION ROBUSTE : Attendre que le compteur affiche "1" via data-testid
+        const countBadge = page.getByTestId('furniture-count');
+        await expect(countBadge).toBeVisible({ timeout: 5000 });
+        await expect(countBadge).toHaveText('1');
 
-        // ✅ Vérifier qu'un meuble avec data-testid="furniture-bed" apparaît
+        // ✅ Vérifier aussi que le meuble est dans le DOM
         const bedOnCanvas = page.locator('[data-testid="furniture-bed"]');
-        await expect(bedOnCanvas).toBeVisible({ timeout: 10000 });
-
-        // Vérifier aussi avec data-type
-        const bedByType = page.locator('[data-type="bed"]');
-        await expect(bedByType).toBeVisible({ timeout: 5000 });
+        await expect(bedOnCanvas).toBeVisible({ timeout: 15000 });
     });
 
-    test('✅ Peut ajouter une cuisine depuis la palette', async ({ page }) => {
-        // Cliquer sur l'élément "Cuisine"
-        const kitchenElement = page.locator('.element-card').filter({ hasText: /Cuisine|🍳/i }).first();
-        await kitchenElement.click();
-        await page.waitForTimeout(2000);
-
-        // ✅ Vérifier qu'une cuisine apparaît
-        const kitchenOnCanvas = page.locator('[data-testid="furniture-kitchen"]');
-        await expect(kitchenOnCanvas).toBeVisible({ timeout: 10000 });
+    /*test('✅ TEST3 - Peut ajouter un lit depuis la palette', async ({ page }) => {
+      // Compter les meubles AVANT
+      const countBefore = await page.locator('[data-furniture-id]').count();
+      
+      // Cliquer sur le lit
+      await page.locator('.element-card', { hasText: 'Lit' }).first().click();
+      
+      // Attendre que le nombre de meubles augmente
+      await expect(page.locator('[data-furniture-id]')).toHaveCount(countBefore + 1, { timeout: 10000 });
+      
+      // Puis vérifier le type
+      await expect(page.locator('[data-testid="furniture-bed"]')).toBeVisible();
     });
+    */
 
-*/
+    /*
+        test('✅ Peut ajouter un lit depuis la palette', async ({ page }) => {
+            // Cliquer sur l'élément "Lit"
+            const bedElement = page.locator('.element-card').filter({ hasText: /Lit|🛏️/i }).first();
+            await bedElement.click();
+    
+            // ✅ Attendre plus longtemps pour que le meuble s'affiche
+            await page.waitForTimeout(2000);
+    
+            // ✅ Vérifier qu'un meuble avec data-testid="furniture-bed" apparaît
+            const bedOnCanvas = page.locator('[data-testid="furniture-bed"]');
+            await expect(bedOnCanvas).toBeVisible({ timeout: 10000 });
+    
+            // Vérifier aussi avec data-type
+            const bedByType = page.locator('[data-type="bed"]');
+            await expect(bedByType).toBeVisible({ timeout: 5000 });
+        });
+    
+        test('✅ Peut ajouter une cuisine depuis la palette', async ({ page }) => {
+            // Cliquer sur l'élément "Cuisine"
+            const kitchenElement = page.locator('.element-card').filter({ hasText: /Cuisine|🍳/i }).first();
+            await kitchenElement.click();
+            await page.waitForTimeout(2000);
+    
+            // ✅ Vérifier qu'une cuisine apparaît
+            const kitchenOnCanvas = page.locator('[data-testid="furniture-kitchen"]');
+            await expect(kitchenOnCanvas).toBeVisible({ timeout: 10000 });
+        });
+    
+    */
 
     test('✅ Peut ajouter plusieurs meubles', async ({ page }) => {
         // Ajouter un lit
@@ -144,10 +146,10 @@ test('✅ TEST2 Peut ajouter un lit depuis la palette', async ({ page }) => {
         await page.waitForTimeout(500);
 
         // Compter les meubles en 2D
-		//const furniture = page.locator('[data-furniture-id]');
-		//await expect(furniture).toHaveCount(2);
-		const count_1 = page.locator('.objects-count-badge');
-		await expect(count_1).toHaveText('2');
+        //const furniture = page.locator('[data-furniture-id]');
+        //await expect(furniture).toHaveCount(2);
+        const count_1 = page.locator('.objects-count-badge');
+        await expect(count_1).toHaveText('2');
 
         // Basculer en 3D
         await page.getByRole('button', { name: '3D' }).click();
@@ -160,12 +162,12 @@ test('✅ TEST2 Peut ajouter un lit depuis la palette', async ({ page }) => {
         // ✅ Vérifier que les 2 meubles sont toujours là
         //const furnitureFinal = page.locator('[data-furniture-id]');
         //await expect(furnitureFinal).toHaveCount(2);
-		const count_2 = page.locator('.objects-count-badge');
-		await expect(count_2).toHaveText('2');
+        const count_2 = page.locator('.objects-count-badge');
+        await expect(count_2).toHaveText('2');
 
-//        // Vérifier que les types sont bien là
-//        await expect(page.locator('[data-type="bed"]')).toBeVisible();
-//        await expect(page.locator('[data-type="kitchen"]')).toBeVisible();
+        //        // Vérifier que les types sont bien là
+        //        await expect(page.locator('[data-type="bed"]')).toBeVisible();
+        //        await expect(page.locator('[data-type="kitchen"]')).toBeVisible();
     });
 
     test('✅ Formulaire d\'ajout personnalisé visible', async ({ page }) => {

@@ -221,6 +221,9 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
             <div
               key={obj.id}
               className={`canvas-object ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} ${isDragging ? 'dragging' : ''}`}
+              data-testid={`furniture-${obj.type}`}
+              data-furniture-id={obj.id}
+              data-type={obj.type}
               style={{
                 left: `${obj.x * SCALE}px`,
                 top: `${obj.y * SCALE}px`,

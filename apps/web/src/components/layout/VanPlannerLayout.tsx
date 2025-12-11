@@ -5,9 +5,9 @@ import { useStore } from '@/store/store';
 import { useAuth } from '@/hooks/useAuth';
 import { useAI } from '@/hooks/useAI';
 import { usePlanManager } from '@/hooks/usePlans';
-import { VanCanvas } from '@/components/van/VanCanvas';
-import { VanCanvas3D } from '@/components/van/VanCanvas3D'; // ✨ NOUVEAU
-import { ViewModeToggle } from '@/components/van/ViewModeToggle'; // ✨ NOUVEAU
+import { VanCanvas2D } from '@/components/van/VanCanvas2D';
+import { VanCanvas3D } from '@/components/van/VanCanvas3D';
+import { ViewModeToggle } from '@/components/van/ViewModeToggle';
 import Button from '@/components/buttons/Button';
 import { VAN_TYPES } from '@/constants/vans';
 import VanModalSelector from '@/components/van/VanModalSelector';
@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import './VanPlannerLayout.css';
 import { notify } from '@/utils/notify';
 import Header from "@/components/layout/Header";
-import { convertAILayoutToFurniture } from '@/utils/aiLayoutConverter'; // ✅ AJOUT
+import { convertAILayoutToFurniture } from '@/utils/aiLayoutConverter';
 
 const VanPlannerLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -332,7 +332,7 @@ const VanPlannerLayout: React.FC = () => {
             <div className="canvas-container">
               {vanType ? (
                 viewMode === '2D' ? (
-                  <VanCanvas />
+                  <VanCanvas2D />
                 ) : (
                   <VanCanvas3D />
                 )

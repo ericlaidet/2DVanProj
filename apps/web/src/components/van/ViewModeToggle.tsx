@@ -16,7 +16,7 @@ export const ViewModeToggle: React.FC = () => {
     // Animation de feedback
     const button = document.querySelector('.view-mode-toggle');
     button?.classList.add('toggling');
-    
+
     setTimeout(() => {
       button?.classList.remove('toggling');
     }, 400);
@@ -80,7 +80,7 @@ export const ViewModeToggle: React.FC = () => {
 
       {/* Badge avec le nombre de meubles */}
       {objects.length > 0 && (
-        <div className="objects-count-badge">
+        <div className="objects-count-badge" data-testid="furniture-count">
           {objects.length}
         </div>
       )}

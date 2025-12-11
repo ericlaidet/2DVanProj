@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 const VALID_EMAIL = 'sonik.vigbea@gmail.com';
 const VALID_PASSWORD = 'Sonik123';
 
-test('🔍 DIAGNOSTIC - Ajouter un lit et voir ce qui se passe', async ({ page }) => {
+test('DIAGNOSTIC - Ajouter un lit et voir ce qui se passe', async ({ page }) => {
     // Login
     await page.goto('/login');
     await page.getByPlaceholder('Email').fill(VALID_EMAIL);

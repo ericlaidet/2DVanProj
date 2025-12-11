@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 const VALID_EMAIL = 'sonik.vigbea@gmail.com';
 const VALID_PASSWORD = 'Sonik123';
 
-test('🔍 DÉBUG - Vérifier pourquoi le lit ne s\'ajoute pas', async ({ page }) => {
+test('DÉBUG - Vérifier pourquoi le lit ne s\'ajoute pas', async ({ page }) => {
     // Login
     await page.goto('/login');
     await page.getByPlaceholder('Email').fill(VALID_EMAIL);
