@@ -406,7 +406,7 @@ const VanPlannerLayout: React.FC = () => {
                   onClick={handleUpdatePlan}
                   disabled={!selectedPlanId || objects.length === 0}
                 >
-                  Sauvegarder
+                  Mettre à jour
                 </Button>
               </div>
             </div>
