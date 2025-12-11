@@ -62,6 +62,10 @@ jobs:
       - name: Lint Code
         run: pnpm lint
 
+      - name: Generate Prisma Client
+        working-directory: apps/api
+        run: npx prisma generate
+
       - name: Build Project
         run: pnpm build
 
