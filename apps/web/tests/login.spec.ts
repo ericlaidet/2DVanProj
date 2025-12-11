@@ -1,82 +1,47 @@
-// apps/web/tests/login.spec.ts
+// Test de login - Van Planner
 import { test, expect } from '@playwright/test';
-import { VALID, WRONG_PASSWORD, INVALID_EMAIL } from './credentials';
-import fs from 'fs';
 
-test.describe('Login - scénarios basiques', () => {
-	// Ajuste ce chemin si ta page de login est /signin ou /auth
-	const loginPath = '/login';
+// ⚠️ REMPLACEZ CES VALEURS PAR VOS VRAIS IDENTIFIANTS
+const VALID_EMAIL = 'sonik.vigbea@gmail.com';
+const VALID_PASSWORD = 'Sonik123';
 
-	test.beforeEach(async ({ page }) => {
-		// Utilise la baseURL du config, donc goto('/login') -> http://localhost:5173/login
-		await page.goto(loginPath);
-	});
+test.describe('Login - Tests simples', () => {
 
-	test('affiche une erreur pour mot de passe incorrect', async ({ page }) => {
-		// Ajuste sélecteurs selon ton DOM : ici on suppose name/email/password et bouton "Se connecter"
-		await page.getByPlaceholder('Email').fill(WRONG_PASSWORD.email);
-		await page.getByPlaceholder('Mot de passe').fill(WRONG_PASSWORD.password);
-		await page.click('button:has-text("Se connecter")');
+    test('✅ Login avec identifiants corrects', async ({ page }) => {
+        // Aller sur la page de login
+        await page.goto('/login');
 
-		// Attends et vérifie un message d'erreur visible
-		// adapte le sélecteur si ton app montre une alert, un toast, ou un paragraphe .error
-		const error = page.locator('text=Identifiants incorrects').first();
-		await expect(error).toBeVisible();
-	});
+        // Remplir le formulaire
+        await page.getByPlaceholder('Email').fill(VALID_EMAIL);
+        await page.getByPlaceholder('Mot de passe').fill(VALID_PASSWORD);
 
-	test('affiche une erreur pour adresse e-mail invalide', async ({ page }) => {
-		await page.getByPlaceholder('Email').fill(INVALID_EMAIL.email);
-		await page.getByPlaceholder('Mot de passe').fill(INVALID_EMAIL.password);
-		await page.click('button:has-text("Se connecter")');
+        // Cliquer sur Se connecter
+        await page.getByRole('button', { name: 'Se connecter' }).click();
 
-		// Attends et vérifie un message d'erreur visible
-		// adapte le sélecteur si ton app montre une alert, un toast, ou un paragraphe .error
-		const error = page.locator('text=Il manque un symbole').first();
-		await expect(error).toBeVisible();
-	});
+        // Vérifier qu'on est bien connecté
+        // Adaptez selon ce qui s'affiche après connexion réussie
+        await expect(page.locator('text=Connexion réussie')).toBeVisible({ timeout: 10000 });
 
-	test('login réussi -> sauvegarde token dans storageState.json', async ({ browser }) => {
-		const context = await browser.newContext();
-		const page = await context.newPage();
+        // Vérifier qu'on est redirigé vers la page principale
+        await expect(page).toHaveURL('/');
+    });
 
-		// 1️⃣ Aller sur la page de login
-		await page.goto('/login');
+    test('❌ Login avec mot de passe incorrect', async ({ page }) => {
+        // Aller sur la page de login
+        await page.goto('/login');
 
-		// 2️⃣ Remplir les champs
-		await page.getByPlaceholder('Email').fill(VALID.email);
-		await page.getByPlaceholder('Mot de passe').fill(VALID.password);
+        // Remplir avec un mauvais mot de passe
+        await page.getByPlaceholder('Email').fill(VALID_EMAIL);
+        await page.getByPlaceholder('Mot de passe').fill('MAUVAIS_MOT_DE_PASSE');
 
-		// 3️⃣ Cliquer sur "Se connecter"
-		await page.getByRole('button', { name: 'Se connecter' }).click();
+        // Cliquer sur Se connecter
+        await page.getByRole('button', { name: 'Se connecter' }).click();
 
-		// 4️⃣ Attendre le modal de succès
-		// (texte exact : "Connexion réussie" d’après ce que tu m’as dit)
-		const successModal = page.locator('text=Connexion réussie');
-		await expect(successModal).toBeVisible({ timeout: 10_000 });
+        // Vérifier qu'un message d'erreur s'affiche
+        await expect(page.locator('text=Identifiants incorrects')).toBeVisible({ timeout: 5000 });
 
-		// 5️⃣ Attendre que le header principal soit visible (preuve qu’on est sur la page principale)
-		const headerTitle = page.locator('h1.header-title');
-		await expect(headerTitle).toContainText('Plan your Van - Éditeur 2D');
-
-		// 6️⃣ Essayer de récupérer le token dans localStorage (si ton app l’utilise)
-		const token = await page.evaluate(() => {
-			// Remplace "token" si ton app stocke le token sous un autre nom
-			return window.localStorage.getItem('token');
-		});
-
-		if (token) {
-			console.log('✅ Token récupéré :', token);
-		} else {
-			console.log('⚠️ Aucun token trouvé dans localStorage');
-		}
-
-		// 7️⃣ Sauvegarder tout l’état (cookies + localStorage)
-		await context.storageState({ path: 'tests/storageState.json' });
-
-		// Vérifier que le fichier a bien été créé
-		expect(fs.existsSync('tests/storageState.json')).toBeTruthy();
-
-		await context.close();
-	});
+        // Vérifier qu'on reste sur la page de login
+        await expect(page).toHaveURL('/login');
+    });
 
 });

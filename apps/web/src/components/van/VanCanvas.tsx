@@ -198,6 +198,7 @@ export const VanCanvas: React.FC<VanCanvasProps> = ({
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center'
         }}
+        tabIndex={0}  // ✅ Permet de recevoir les événements clavier
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}

@@ -98,81 +98,65 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
     }
   };
 
+  // ✅ Raycaster persistant
+  const raycasterRef = useRef(new THREE.Raycaster());
+
   const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
-    if (isDragging) {
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2(
-        (e.clientX / window.innerWidth) * 2 - 1,
-        -(e.clientY / window.innerHeight) * 2 + 1
-      );
+    if (!isDragging) return;
 
-      raycaster.setFromCamera(mouse, camera);
+    const raycaster = raycasterRef.current;
+    const mouse = new THREE.Vector2(
+      (e.clientX / window.innerWidth) * 2 - 1,
+      -(e.clientY / window.innerHeight) * 2 + 1
+    );
 
-      let intersectPoint = new THREE.Vector3();
+    raycaster.setFromCamera(mouse, camera);
 
-      if (dragPlane === 'horizontal') {
-        // Plan horizontal (Y = 0, le sol)
-        const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-        raycaster.ray.intersectPlane(plane, intersectPoint);
+    let intersectPoint = new THREE.Vector3();
 
-        if (intersectPoint) {
-          // Conversion 3D → 2D pour mise à jour du store
-          const pos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
+    if (dragPlane === 'horizontal') {
+      // Plan horizontal (Y = 0, le sol)
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+      raycaster.ray.intersectPlane(plane, intersectPoint);
 
-          // Contraindre dans le van
-          const constrained = constrainToVan({
-            ...furniture,
-            x: pos2D.x,
-            y: pos2D.y,
-          }, vanType);
+      if (intersectPoint) {
+        const pos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
 
-          // Vérifier les collisions
-          const hasCollision = objects.some(obj =>
-            obj.id !== furniture.id && checkCollision3D(constrained, obj)
-          );
+        const constrained = constrainToVan({
+          ...furniture,
+          x: pos2D.x,
+          y: pos2D.y,
+        }, vanType);
 
-          if (!hasCollision) {
-            updateObject(furniture.id, { x: constrained.x, y: constrained.y });
-          }
-        }
-      } else if (dragPlane === 'vertical') {
-        // Plan vertical (pour déplacer en hauteur)
-        // Plan parallèle à la caméra passant par l'objet
-        const cameraDir = new THREE.Vector3();
-        camera.getWorldDirection(cameraDir);
-        const planeNormal = cameraDir.clone().normalize();
-        const plane = new THREE.Plane(planeNormal, -planeNormal.dot(pos3D));
+        // ✅ Pas de collision check pour fluidité maximale
+        updateObject(furniture.id, { x: constrained.x, y: constrained.y });
+      }
+    } else if (dragPlane === 'vertical') {
+      const cameraDir = new THREE.Vector3();
+      camera.getWorldDirection(cameraDir);
+      const planeNormal = cameraDir.clone().normalize();
+      const plane = new THREE.Plane(planeNormal, -planeNormal.dot(pos3D));
 
-        raycaster.ray.intersectPlane(plane, intersectPoint);
+      raycaster.ray.intersectPlane(plane, intersectPoint);
 
-        if (intersectPoint) {
-          // Mise à jour de la hauteur (Z en 2D)
-          const newZ = Math.max(0, Math.min(2000, intersectPoint.y * 1000));
-          updateObject(furniture.id, { z: newZ });
-        }
-      } else if (dragPlane === 'depth') {
-        // Plan de profondeur (déplacement le long de l'axe Y en 2D / Z en 3D)
-        const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-        raycaster.ray.intersectPlane(plane, intersectPoint);
+      if (intersectPoint) {
+        const newZ = Math.max(0, Math.min(2000, intersectPoint.y * 1000));
+        updateObject(furniture.id, { z: newZ });
+      }
+    } else if (dragPlane === 'depth') {
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+      raycaster.ray.intersectPlane(plane, intersectPoint);
 
-        if (intersectPoint) {
-          // On ne change que la position en profondeur (axe Y en 2D)
-          const centerPos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
-          const cornerY = centerPos2D.y - furniture.height / 2;
+      if (intersectPoint) {
+        const centerPos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
+        const cornerY = centerPos2D.y - furniture.height / 2;
 
-          // Contraindre dans le van
-          const constrained = constrainToVan({
-            ...furniture,
-            y: cornerY,
-          }, vanType);
-          // Vérifier les collisions
-          const hasCollision = objects.some(obj =>
-            obj.id !== furniture.id && checkCollision3D(constrained, obj)
-          );
-          if (!hasCollision) {
-            updateObject(furniture.id, { y: constrained.y });
-          }
-        }
+        const constrained = constrainToVan({
+          ...furniture,
+          y: cornerY,
+        }, vanType);
+
+        updateObject(furniture.id, { y: constrained.y });
       }
     }
   };

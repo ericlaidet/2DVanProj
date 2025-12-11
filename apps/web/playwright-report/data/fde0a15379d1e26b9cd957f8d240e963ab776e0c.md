@@ -1,0 +1,146 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Plan your Van - Éditeur 2D" [level=1] [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e9]:
+          - text: Bienvenue,
+          - strong [ref=e10]: Sonik
+          - text: "- Abonnement:"
+          - strong [ref=e11]: PRO1
+        - navigation [ref=e12]:
+          - button "Plans" [ref=e13] [cursor=pointer]
+          - button "Profil" [ref=e14] [cursor=pointer]
+          - button "Paramètres" [ref=e15] [cursor=pointer]
+          - button "Déconnexion" [ref=e16] [cursor=pointer]
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - heading "Espace travail Van" [level=2] [ref=e21]
+        - generic [ref=e22]:
+          - button "Basculer vers la vue 3D" [ref=e23] [cursor=pointer]:
+            - generic [ref=e24]:
+              - img [ref=e25]
+              - generic [ref=e27]: 2D
+            - generic [ref=e29]:
+              - img [ref=e30]
+              - generic [ref=e33]: 3D
+          - generic [ref=e34]: "1"
+          - generic [ref=e35]:
+            - generic [ref=e36]: V
+            - text: pour basculer
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]: Sélectionner un van
+          - button "Volkswagen ID. Buzz" [ref=e40] [cursor=pointer]
+        - generic [ref=e41]:
+          - generic [ref=e42]: Dimension van
+          - generic [ref=e43]: 4712 x 1985
+      - generic [ref=e45]:
+        - generic [ref=e47]:
+          - img "Lit"
+          - text: "0"
+        - generic [ref=e48]:
+          - paragraph [ref=e49]:
+            - strong [ref=e50]: 🖱️ Clic
+            - text: ": Sélectionner"
+          - paragraph [ref=e51]:
+            - strong [ref=e52]: 🖱️ Glisser
+            - text: ": Déplacer"
+          - paragraph [ref=e53]:
+            - strong [ref=e54]: 🖱️ Double-clic
+            - text: ": Rotation 90°"
+          - paragraph [ref=e55]:
+            - strong [ref=e56]: ⌨️ Suppr
+            - text: ": Supprimer"
+      - generic [ref=e57]:
+        - heading "Liste de plan sauvegardés" [level=3] [ref=e58]
+        - generic [ref=e59]:
+          - combobox [ref=e60] [cursor=pointer]:
+            - option "-- Sélectionner un plan --" [selected]
+            - option "Plan 06/11/2025 5555 - RENAULT_MASTER_L2H2"
+            - option "Plan 07/11/2025 test - MERCEDES_VITO"
+            - option "Plan 13/11/2025 test renamed - VOLKSWAGEN_CRAFTER_L5H2"
+            - option "Plan 14/11/2025 - this is a test - RENAULT_MASTER_L2H2"
+            - option "Plan 07/11/2025 444 - MERCEDES_VITO"
+            - option "Plan 07/11/2025 444 - MERCEDES_VITO"
+            - option "Plan 07/11/2025 444 - MERCEDES_VITO"
+            - option "Plan 07/11/2025 444 - MERCEDES_VITO"
+            - option "Plan 07/11/2025 444 - MERCEDES_VITO"
+            - option "Plan 19/11/2025 - RENAULT_MASTER_L2H2"
+            - option "Plan 14/11/2025 - this is a test - RENAULT_MASTER_L2H2"
+            - option "Plan 14/11/2025 - this is a test 1 - RENAULT_MASTER_L2H2"
+            - option "Plan 04/12/2025 - et si tu peux rajouter un lit ... - VOLKSWAGEN_CRAFTER_L4H2"
+          - button "Renommer" [disabled] [ref=e61]
+        - generic [ref=e62]:
+          - button "Charger" [disabled] [ref=e63]
+          - button "Sauvegarder" [ref=e64]
+          - button "Supprimer" [disabled] [ref=e65]
+          - button "Sauvegarder" [disabled] [ref=e66]
+    - complementary [ref=e67]:
+      - generic [ref=e68]:
+        - heading "Prompt IA Décrivez votre aménagement idéal:" [level=2] [ref=e69]
+        - generic [ref=e70]:
+          - 'textbox "Ex: je veux un lit transversal à l''arrière, une kitchenette compacte côté droit..." [ref=e71]'
+          - generic [ref=e72]:
+            - button "🔒 Optimiser" [disabled] [ref=e73]
+            - button "Générer layout" [disabled] [ref=e74]
+        - generic [ref=e75]:
+          - generic [ref=e76] [cursor=pointer]:
+            - checkbox "Couchage 2 pers" [checked] [ref=e77]
+            - text: Couchage
+            - combobox [ref=e78]:
+              - option "1 pers"
+              - option "2 pers" [selected]
+          - generic [ref=e79] [cursor=pointer]:
+            - checkbox "Cuisine" [checked] [ref=e80]
+            - text: Cuisine
+          - generic [ref=e81] [cursor=pointer]:
+            - checkbox "Rangements" [checked] [ref=e82]
+            - text: Rangements
+      - generic [ref=e83]:
+        - heading "Palette d'objets" [level=3] [ref=e84]
+        - generic [ref=e85]:
+          - generic [ref=e86] [cursor=pointer]:
+            - generic [ref=e87]: 🪑
+            - generic [ref=e88]: Table
+            - generic [ref=e89]: 800×600
+          - generic [ref=e90] [cursor=pointer]:
+            - generic [ref=e91]: 🍳
+            - generic [ref=e92]: Cuisine
+            - generic [ref=e93]: 1000×600
+          - generic [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]: 🚿
+            - generic [ref=e96]: Douche
+            - generic [ref=e97]: 800×800
+          - generic [ref=e98] [cursor=pointer]:
+            - generic [ref=e99]: 💼
+            - generic [ref=e100]: Bureau
+            - generic [ref=e101]: 1200×600
+          - generic [ref=e102] [cursor=pointer]:
+            - generic [ref=e103]: 🛏️
+            - generic [ref=e104]: Lit
+            - generic [ref=e105]: 2000×1400
+          - generic [ref=e106] [cursor=pointer]:
+            - generic [ref=e107]: 📦
+            - generic [ref=e108]: Rangement
+            - generic [ref=e109]: 600×400
+        - generic [ref=e110]:
+          - heading "Ajouter un objet personnalisé" [level=4] [ref=e111]
+          - generic [ref=e112]:
+            - textbox "Nom" [ref=e113]
+            - textbox "500x300" [ref=e114]
+            - combobox [ref=e115] [cursor=pointer]:
+              - option "#ef4444 (Rouge)" [selected]
+              - option "#10b981 (Vert)"
+              - option "#3b82f6 (Bleu)"
+              - option "#f59e0b (Orange)"
+              - option "#8b5cf6 (Violet)"
+              - option "#06b6d4 (Cyan)"
+              - option "#ec4899 (Rose)"
+              - option "#84cc16 (Lime)"
+            - button "Ajouter" [ref=e116]
+```

@@ -194,32 +194,38 @@ body {
   flex: 1;
   background: #ffffff;
   border-radius: 8px;
-  padding: 0.5rem; /* ✅ Réduit de 1rem à 0.5rem */
+  padding: 0.5rem;
+  /* ✅ Réduit de 1rem à 0.5rem */
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 300px; /* ✅ Réduit de 400px à 300px */
+  min-height: 300px;
+  /* ✅ Réduit de 400px à 300px */
   border: 2px solid #d1d5db;
 }
 
 .van-canvas {
   width: 100%;
-  height: 100%; /* ✅ Ajout pour occuper toute la hauteur */
+  height: 100%;
+  /* ✅ Ajout pour occuper toute la hauteur */
   display: flex;
-  align-items: center; /* ✅ Centrage vertical */
+  align-items: center;
+  /* ✅ Centrage vertical */
   justify-content: center;
 }
 
 .konvajs-content {
   width: 100%;
   height: auto;
-  max-height: 100%; /* ✅ Ajout pour limiter la hauteur */
+  max-height: 100%;
+  /* ✅ Ajout pour limiter la hauteur */
 }
 
 .konvajs-content canvas {
   width: 100%;
   height: auto;
-  display: block; /* ✅ Supprime l'espace en bas */
+  display: block;
+  /* ✅ Supprime l'espace en bas */
 }
 
 .canvas-empty {
@@ -312,7 +318,8 @@ body {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* ✅ Changé de flex-start à stretch */
+  align-items: stretch;
+  /* ✅ Changé de flex-start à stretch */
 }
 
 .section-title {
@@ -341,7 +348,8 @@ body {
 ======================================== */
 /* ✅ CORRECTION 3: Prompt row occupe tout l'espace */
 .prompt-row {
-  width: 100%; /* ✅ Ajout */
+  width: 100%;
+  /* ✅ Ajout */
   display: flex;
   gap: 0.75rem;
   margin-bottom: 0.75rem;
@@ -386,7 +394,8 @@ body {
 
 /* Options inline */
 .prompt-options-line {
-  width: 100%; /* ✅ Ajout */
+  width: 100%;
+  /* ✅ Ajout */
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -459,6 +468,7 @@ body {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -563,7 +573,8 @@ body {
   gap: 0.5rem;
   margin-bottom: 1rem;
   align-items: center;
-  width: 100%; /* ✅ Ajout */
+  width: 100%;
+  /* ✅ Ajout */
 }
 
 .element-select {
@@ -587,7 +598,8 @@ body {
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 1rem;
-  width: 100%; /* ✅ Ajout */
+  width: 100%;
+  /* ✅ Ajout */
 }
 
 .form-label {
@@ -618,7 +630,8 @@ body {
 
 /* Color Section Block */
 .color-section-block {
-  width: 100%; /* ✅ Changé de 50% à 100% */
+  width: 100%;
+  /* ✅ Changé de 50% à 100% */
   margin-bottom: 1rem;
   background: #f9fafb;
   padding: 0.75rem;
@@ -637,7 +650,8 @@ body {
   display: flex;
   gap: 0.75rem;
   align-items: center;
-  flex-wrap: wrap; /* ✅ Ajout */
+  flex-wrap: wrap;
+  /* ✅ Ajout */
 }
 
 .color-swatch {
@@ -664,7 +678,8 @@ body {
   gap: 0.5rem;
   align-items: center;
   margin-top: 0.75rem;
-  width: 100%; /* ✅ Ajout */
+  width: 100%;
+  /* ✅ Ajout */
 }
 
 /* ========================================
@@ -898,4 +913,72 @@ body.dark-theme .plans-container-bottom {
 
 body.dark-theme .no-plans-message {
   color: #6b7280;
+}
+
+/* ========================================
+   ✨ CUSTOM ELEMENT SECTION - COMPACT INLINE
+======================================== */
+.custom-element-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #d1d5db;
+}
+
+.custom-element-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.custom-element-form-inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-input.compact,
+.form-select.compact {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  flex: 1;
+  min-width: 100px;
+}
+
+.form-select.compact {
+  min-width: 120px;
+  cursor: pointer;
+}
+
+.form-input.compact:focus,
+.form-select.compact:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Dark theme */
+body.dark-theme .custom-element-section {
+  border-top-color: #404040;
+}
+
+body.dark-theme .custom-element-title {
+  color: #e0e0e0;
+}
+
+body.dark-theme .form-input.compact,
+body.dark-theme .form-select.compact {
+  background: #2a2a2a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+body.dark-theme .form-input.compact:focus,
+body.dark-theme .form-select.compact:focus {
+  border-color: #3b82f6;
 }

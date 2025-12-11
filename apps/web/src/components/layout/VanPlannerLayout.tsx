@@ -52,7 +52,22 @@ const VanPlannerLayout: React.FC = () => {
   const [elementName, setElementName] = useState('');
   const [elementDimensions, setElementDimensions] = useState('');
   const [selectedColor, setSelectedColor] = useState('#ef4444');
-  const colors = ['#ef4444', '#10b981', '#3b82f6', '#f59e0b', '#8b5cf6'];
+  const colors = ['#ef4444', '#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16'];
+
+  // Helper pour obtenir le nom de la couleur
+  const getColorName = (color: string): string => {
+    const colorNames: Record<string, string> = {
+      '#ef4444': 'Rouge',
+      '#10b981': 'Vert',
+      '#3b82f6': 'Bleu',
+      '#f59e0b': 'Orange',
+      '#8b5cf6': 'Violet',
+      '#06b6d4': 'Cyan',
+      '#ec4899': 'Rose',
+      '#84cc16': 'Lime',
+    };
+    return colorNames[color] || 'Couleur';
+  };
 
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const predefinedElements = [
@@ -448,6 +463,18 @@ const VanPlannerLayout: React.FC = () => {
                         disabled={aiLoading}
                       />
                       Couchage
+                      {hasCouchage && (
+                        <select
+                          value={couchage}
+                          onChange={(e) => setCouchage(e.target.value)}
+                          className="selector-input"
+                          disabled={aiLoading}
+                          style={{ marginLeft: '8px' }}
+                        >
+                          <option value="1">1 pers</option>
+                          <option value="2">2 pers</option>
+                        </select>
+                      )}
                     </label>
                     <label className="checkbox-label">
                       <input
@@ -467,21 +494,6 @@ const VanPlannerLayout: React.FC = () => {
                       />
                       Rangements
                     </label>
-
-                    {hasCouchage && (
-                      <label className="selector-label">
-                        Personnes: <strong>{couchage}</strong>
-                        <select
-                          value={couchage}
-                          onChange={(e) => setCouchage(e.target.value)}
-                          className="selector-input"
-                          disabled={aiLoading}
-                        >
-                          <option value="1">1 pers</option>
-                          <option value="2">2 pers</option>
-                        </select>
-                      </label>
-                    )}
                   </div>
 
                   {suggestion && (
@@ -552,47 +564,40 @@ const VanPlannerLayout: React.FC = () => {
                 ))}
               </div>
 
-              <div className="dimensions-row-inline">
-                <label className="form-label">Dimensions</label>
-                <input
-                  type="text"
-                  value={elementDimensions}
-                  onChange={(e) => setElementDimensions(e.target.value)}
-                  placeholder="500 x 300"
-                  className="form-input short"
-                />
-              </div>
-
-              <div className="color-section-block">
-                <p className="color-title-label">Palettes couleurs</p>
-                <div className="color-palette">
-                  {colors.map((color) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className="color-swatch"
-                      style={{
-                        backgroundColor: color,
-                        border: selectedColor === color ? '3px solid black' : '1px solid #ccc',
-                      }}
-                      title={`Sélectionner couleur ${color}`}
-                    />
-                  ))}
+              {/* Formulaire d'ajout d'objet personnalisé - Compact */}
+              <div className="custom-element-section">
+                <h4 className="custom-element-title">Ajouter un objet personnalisé</h4>
+                <div className="custom-element-form-inline">
+                  <input
+                    type="text"
+                    value={elementName}
+                    onChange={(e) => setElementName(e.target.value)}
+                    placeholder="Nom"
+                    className="form-input compact"
+                  />
+                  <input
+                    type="text"
+                    value={elementDimensions}
+                    onChange={(e) => setElementDimensions(e.target.value)}
+                    placeholder="500x300"
+                    className="form-input compact"
+                  />
+                  <select
+                    value={selectedColor}
+                    onChange={(e) => setSelectedColor(e.target.value)}
+                    className="form-select compact"
+                    style={{ backgroundColor: selectedColor, color: '#fff' }}
+                  >
+                    {colors.map((color) => (
+                      <option key={color} value={color} style={{ backgroundColor: color, color: '#fff' }}>
+                        {color} ({getColorName(color)})
+                      </option>
+                    ))}
+                  </select>
+                  <Button variant="blue" onClick={handleAddCustomElement}>
+                    Ajouter
+                  </Button>
                 </div>
-              </div>
-
-              <div className="custom-element-row">
-                <input
-                  type="text"
-                  value={elementName}
-                  onChange={(e) => setElementName(e.target.value)}
-                  placeholder="Nom personnalisé"
-                  className="form-input"
-                />
-
-                <Button variant="blue" onClick={handleAddCustomElement}>
-                  Ajouter
-                </Button>
               </div>
             </section>
           </aside>

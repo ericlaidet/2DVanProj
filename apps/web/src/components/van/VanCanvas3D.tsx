@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Grid, Environment, Stats } from '@react-three/drei';
 import { useStore } from '../../store/store';
 import { VAN_TYPES } from '../../constants/vans';
-import { VanModelRealistic } from './models/VanModelRealistic';
+import { VanModelWireframe } from './models/VanModelWireframe';
 import { DraggableFurniture3D } from './DraggableFurniture3D';
 // import { ControlsPanel3D } from './ControlsPanel3D';
 import { calculateVolumeUsage } from '../../utils/coordinates3D';
@@ -12,12 +12,12 @@ import { notify } from '../../utils/notify';
 import * as THREE from 'three';
 import './VanCanvas3D.css';
 
-// ✨ Sol avec grille amélioré
+// ✨ Sol avec grille optimisé pour un van
 const EnhancedFloor: React.FC = () => {
   return (
     <>
       <mesh receiveShadow rotation-x={-Math.PI / 2} position={[0, -0.01, 0]}>
-        <planeGeometry args={[30, 30]} />
+        <planeGeometry args={[12, 12]} />
         <meshStandardMaterial
           color="#e8e8e8"
           roughness={0.9}
@@ -25,14 +25,14 @@ const EnhancedFloor: React.FC = () => {
         />
       </mesh>
       <Grid
-        args={[30, 30]}
+        args={[12, 12]}
         cellSize={0.5}
         cellThickness={0.5}
-        cellColor="#999999"
-        sectionSize={2.5}
+        cellColor="#cccccc"
+        sectionSize={1}
         sectionThickness={1}
-        sectionColor="#666666"
-        fadeDistance={20}
+        sectionColor="#999999"
+        fadeDistance={8}
         fadeStrength={1}
         position={[0, 0, 0]}
       />
@@ -40,27 +40,13 @@ const EnhancedFloor: React.FC = () => {
   );
 };
 
-// ✨ Éclairage amélioré
+// ⚡ Éclairage ultra-simplifié pour performance maximale (60fps)
 const EnhancedLighting: React.FC = () => {
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <directionalLight
-        position={[10, 15, 10]}
-        intensity={1.2}
-        castShadow
-        shadow-mapSize-width={4096}
-        shadow-mapSize-height={4096}
-        shadow-camera-far={50}
-        shadow-camera-left={-15}
-        shadow-camera-right={15}
-        shadow-camera-top={15}
-        shadow-camera-bottom={-15}
-        shadow-bias={-0.0001}
-      />
-      <pointLight position={[-8, 8, -8]} intensity={0.4} color="#ffffcc" />
-      <pointLight position={[8, 8, 8]} intensity={0.4} color="#ccffff" />
-      <hemisphereLight args={['#87CEEB', '#8b7355', 0.3]} />
+      {/* Éclairage minimal sans ombres */}
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[5, 10, 5]} intensity={0.8} />
     </>
   );
 };
@@ -182,21 +168,15 @@ export const VanCanvas3D: React.FC = () => {
         </div>
       }>
         <Canvas
-          shadows
           camera={{ position: [8, 6, 8], fov: 50 }}
           gl={{
-            antialias: true,
-            toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 1.2
-          }}
-          onCreated={({ gl }) => {
-            gl.shadowMap.enabled = true;
-            gl.shadowMap.type = THREE.PCFSoftShadowMap;
+            antialias: false,  // ⚡ Désactivé pour performance
+            alpha: false,
+            powerPreference: 'high-performance'
           }}
           onClick={handleDeselectAll}
         >
-          <color attach="background" args={['#87CEEB']} />
-          <fog attach="fog" args={['#87CEEB', 15, 50]} />
+          <color attach="background" args={['#e0f2fe']} />
 
           <PerspectiveCamera makeDefault position={[8, 6, 8]} />
           <OrbitControls
@@ -216,7 +196,17 @@ export const VanCanvas3D: React.FC = () => {
           {/* <Environment preset="sunset" /> */}
           {/* Environment désactivé pour éviter l'erreur de chargement HDR - l'éclairage manuel suffit */}
           <EnhancedFloor />
-          <VanModelRealistic vanType={vanType} />
+          <VanModelWireframe
+            vanDimensions={
+              vanType
+                ? {
+                  width: VAN_TYPES.find(v => v.vanType === vanType)?.width || 2000,
+                  height: VAN_TYPES.find(v => v.vanType === vanType)?.height || 2000,
+                  length: VAN_TYPES.find(v => v.vanType === vanType)?.length || 5000
+                }
+                : undefined
+            }
+          />
 
           {objects.map(obj => (
             <DraggableFurniture3D
