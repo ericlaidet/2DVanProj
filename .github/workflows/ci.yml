@@ -102,9 +102,9 @@ jobs:
           WEB_PID=$!
           echo "Web started with PID $WEB_PID"
 
-          # 3. Attendre que les services soient prêts
+          # 3. Attendre que les services soient prêts (TCP check pour éviter les erreurs 401 sur le backend)
           echo "⏳ Waiting for services to be ready..."
-          npx wait-on http://localhost:3000 http://localhost:5173 --timeout 60000
+          npx wait-on tcp:localhost:3000 tcp:localhost:5173 --timeout 60000
 
           # 4. Lancer les tests Playwright
           echo "🧪 Running Playwright Tests..."
