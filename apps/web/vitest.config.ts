@@ -8,7 +8,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts', // 👈 important
-    include: ['src/**/*.test.{ts,tsx}', 'tests/**/*.spec.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}'], // Seulement les tests unitaires
   },
 });
 
