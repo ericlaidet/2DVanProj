@@ -1,0 +1,107 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  full-stack-test:
+    name: Build & Test (Full Stack)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # Service PostgreSQL pour les tests d'intégration API
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: vanplanner
+        ports:
+          - 5432:5432
+        # Health check pour s'assurer que la DB est prête avant de lancer les steps
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint Code
+        run: pnpm lint
+
+      - name: Build Project
+        run: pnpm build
+
+      - name: Run Unit Tests
+        run: pnpm test:ui --run
+
+      - name: Setup Database Schema
+        working-directory: apps/api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner?schema=public
+        run: npx prisma db push
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E Tests (Integration)
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner?schema=public
+          VITE_API_URL: http://localhost:3000
+          # JWT Secret si nécessaire (à ajouter dans Secrets GitHub plus tard)
+          JWT_SECRET: super_secret_test_key
+        run: |
+          echo "🚀 Starting Full Stack Environment for E2E Tests..."
+          
+          # 1. Démarrer le Backend (API) en background
+          # On utilise node dist/main.js car le build a déjà été fait
+          cd apps/api && node dist/main.js &
+          API_PID=$!
+          echo "API started with PID $API_PID"
+
+          # 2. Démarrer le Frontend (Web) en background
+          # On utilise Vite dev server pour servir le front sur 5173
+          cd apps/web && pnpm dev --port 5173 &
+          WEB_PID=$!
+          echo "Web started with PID $WEB_PID"
+
+          # 3. Attendre que les services soient prêts
+          echo "⏳ Waiting for services to be ready..."
+          npx wait-on http://localhost:3000 http://localhost:5173 --timeout 60000
+
+          # 4. Lancer les tests Playwright
+          echo "🧪 Running Playwright Tests..."
+          pnpm test:e2e
