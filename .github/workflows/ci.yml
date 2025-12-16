@@ -8,9 +8,11 @@ on:
 
 jobs:
   full-stack-test:
+    name: Build & Test (Full Stack)
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
+    # Service PostgreSQL pour les tests d'intégration API
     services:
       postgres:
         image: postgres:15
@@ -20,6 +22,7 @@ jobs:
           POSTGRES_DB: vanplanner
         ports:
           - 5432:5432
+        # Health check pour s'assurer que la DB est prête avant de lancer les steps
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -27,65 +30,72 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      - uses: pnpm/action-setup@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      - name: Cache pnpm
-        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
           path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+#      - name: Lint Code
+#        run: pnpm lint
+
+      - name: Generate Prisma Client
+        working-directory: apps/api
+        run: npx prisma generate
+
+      - name: Build Project
         run: pnpm build
 
-      - name: Unit tests
+      - name: Run Unit Tests
         run: pnpm test:ui --run
 
-      - name: Prisma schema
+      - name: Setup Database Schema
         working-directory: apps/api
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner?schema=public
         run: npx prisma db push
 
-      # Backend uniquement
-      - name: Start API
-        working-directory: apps/api
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner
-          JWT_SECRET: super_secret_test_key
-          PORT: 3000
-        run: node dist/main.js &
-
-      - name: Wait for API
-        run: npx wait-on http://localhost:3000/health
-
-      - name: Install Playwright browsers
+      - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      # Playwright démarre Vite via webServer
-      - name: E2E tests
+      - name: Run E2E Tests (Integration)
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner?schema=public
           VITE_API_URL: http://localhost:3000
-          CI: true
-        run: pnpm test:e2e
+          # JWT Secret si nécessaire (à ajouter dans Secrets GitHub plus tard)
+          JWT_SECRET: super_secret_test_key
+        run: |
+          echo "🚀 Starting Full Stack Environment for E2E Tests..."
+          
+          # 1. Démarrer le Backend (API) en background
+          # On utilise node dist/main.js car le build a déjà été fait
+          cd apps/api && node dist/main.js &
+          API_PID=$!
+          echo "API started with PID $API_PID"
 
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: apps/web/playwright-report/
+          # 2. Lancer les tests Playwright
+          echo "🧪 Running Playwright Tests..."
+          pnpm test:e2e
