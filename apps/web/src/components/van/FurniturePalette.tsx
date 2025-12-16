@@ -3,20 +3,23 @@ import React, { useState } from 'react';
 import { useStore } from '../../store/store';
 import { VAN_TYPES } from '../../constants/vans';
 import { notify } from '@/utils/notify';
+import { findAvailablePosition } from '../../utils/furniturePlacement';
+import { getAdaptiveFurnitureSize } from '../../utils/furnitureSizing';
 import './FurniturePalette.css';
 
 const FURNITURE_TYPES = [
-  { type: 'bed', name: 'Lit', icon: '🛏️', color: '#3b82f6', defaultWidth: 1900, defaultHeight: 1400 },
-  { type: 'kitchen', name: 'Cuisine', icon: '🍳', color: '#10b981', defaultWidth: 1200, defaultHeight: 600 },
-  { type: 'storage', name: 'Rangement', icon: '📦', color: '#f59e0b', defaultWidth: 800, defaultHeight: 400 },
-  { type: 'bathroom', name: 'Salle de bain', icon: '🚿', color: '#8b5cf6', defaultWidth: 800, defaultHeight: 800 },
-  { type: 'table', name: 'Table', icon: '🪑', color: '#ef4444', defaultWidth: 800, defaultHeight: 600 },
-  { type: 'seat', name: 'Siège', icon: '💺', color: '#ec4899', defaultWidth: 500, defaultHeight: 500 },
+  { type: 'bed', name: 'Lit', icon: '🛏️', color: '#3b82f6' },
+  { type: 'kitchen', name: 'Cuisine', icon: '🍳', color: '#10b981' },
+  { type: 'storage', name: 'Rangement', icon: '📦', color: '#f59e0b' },
+  { type: 'bathroom', name: 'Salle de bain', icon: '🚿', color: '#8b5cf6' },
+  { type: 'table', name: 'Table', icon: '🪑', color: '#ef4444' },
+  { type: 'seat', name: 'Siège', icon: '💺', color: '#ec4899' },
 ];
 
 export const FurniturePalette: React.FC = () => {
   const addObject = useStore(s => s.addObject);
   const vanType = useStore(s => s.vanType);
+  const objects = useStore(s => s.objects);
 
   const handleAddFurniture = (furnitureType: typeof FURNITURE_TYPES[0]) => {
     if (!vanType) {
@@ -30,16 +33,22 @@ export const FurniturePalette: React.FC = () => {
       return;
     }
 
+    // Obtenir les dimensions adaptées au van
+    const { width, height, depth } = getAdaptiveFurnitureSize(furnitureType.type, vanType);
+
     // Vérifier que le meuble rentre dans le van
-    if (furnitureType.defaultWidth > van.length || furnitureType.defaultHeight > van.width) {
+    if (width > van.length || height > van.width) {
       notify.error(`Ce meuble est trop grand pour ce van`);
       return;
     }
 
-    // Placer près du coin avec padding
-    const padding = 100;
-    const x = Math.min(padding, van.length - furnitureType.defaultWidth);
-    const y = Math.min(padding, van.width - furnitureType.defaultHeight);
+    // Trouver une position disponible sans collision
+    const { x, y } = findAvailablePosition(
+      width,
+      height,
+      objects,
+      vanType
+    );
 
     addObject({
       id: `${furnitureType.type}-${Date.now()}`,
@@ -47,8 +56,9 @@ export const FurniturePalette: React.FC = () => {
       type: furnitureType.type,
       x,
       y,
-      width: furnitureType.defaultWidth,
-      height: furnitureType.defaultHeight,
+      width,
+      height,
+      depth,
       color: furnitureType.color,
     });
 

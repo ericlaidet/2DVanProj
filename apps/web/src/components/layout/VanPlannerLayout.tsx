@@ -16,6 +16,8 @@ import './VanPlannerLayout.css';
 import { notify } from '@/utils/notify';
 import Header from "@/components/layout/Header";
 import { convertAILayoutToFurniture } from '@/utils/aiLayoutConverter';
+import { findAvailablePosition } from '@/utils/furniturePlacement';
+import { getAdaptiveFurnitureSize } from '@/utils/furnitureSizing';
 
 const VanPlannerLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -71,12 +73,12 @@ const VanPlannerLayout: React.FC = () => {
 
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const predefinedElements = [
-    { name: 'Table', width: 800, height: 600, icon: '🪑', color: '#ef4444', type: 'table', depth: 600 },
-    { name: 'Cuisine', width: 1000, height: 600, icon: '🍳', color: '#10b981', type: 'kitchen', depth: 800 },
-    { name: 'Douche', width: 800, height: 800, icon: '🚿', color: '#8b5cf6', type: 'bathroom', depth: 2000 },
-    { name: 'Bureau', width: 1200, height: 600, icon: '💼', color: '#3b82f6', type: 'storage', depth: 800 },
-    { name: 'Lit', width: 2000, height: 1400, icon: '🛏️', color: '#3b82f6', type: 'bed', depth: 400 },
-    { name: 'Rangement', width: 600, height: 400, icon: '📦', color: '#f59e0b', type: 'storage', depth: 400 },
+    { name: 'Table', icon: '🪑', color: '#ef4444', type: 'table' },
+    { name: 'Cuisine', icon: '🍳', color: '#10b981', type: 'kitchen' },
+    { name: 'Douche', icon: '🚿', color: '#8b5cf6', type: 'bathroom' },
+    { name: 'Bureau', icon: '💼', color: '#3b82f6', type: 'storage' },
+    { name: 'Lit', icon: '🛏️', color: '#3b82f6', type: 'bed' },
+    { name: 'Rangement', icon: '📦', color: '#f59e0b', type: 'storage' },
   ];
 
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
@@ -240,9 +242,13 @@ const VanPlannerLayout: React.FC = () => {
     const van = VAN_TYPES.find((v) => v.vanType === vanType);
     if (!van) return notify.error("Sélectionnez d'abord un van");
 
-    const padding = 100;
-    const startX = Math.min(padding, van.length - width - padding);
-    const startY = Math.min(padding, van.width - height - padding);
+    // Trouver une position disponible sans collision
+    const { x: startX, y: startY } = findAvailablePosition(
+      width,
+      height,
+      objects,
+      vanType
+    );
 
     addObject({
       id: uuidv4(),
@@ -268,9 +274,16 @@ const VanPlannerLayout: React.FC = () => {
     const van = VAN_TYPES.find((v) => v.vanType === vanType);
     if (!van) return notify.error("Sélectionnez d'abord un van");
 
-    const padding = 100;
-    const startX = Math.min(padding, van.length - element.width - padding);
-    const startY = Math.min(padding, van.width - element.height - padding);
+    // Obtenir les dimensions adaptées au van
+    const { width, height, depth } = getAdaptiveFurnitureSize(element.type, vanType);
+
+    // Trouver une position disponible sans collision
+    const { x: startX, y: startY } = findAvailablePosition(
+      width,
+      height,
+      objects,
+      vanType
+    );
 
     addObject({
       id: uuidv4(),
@@ -279,9 +292,9 @@ const VanPlannerLayout: React.FC = () => {
       x: startX,
       y: startY,
       z: 0,  // ✅ Position au sol
-      width: element.width,
-      height: element.height,
-      depth: element.depth,
+      width,
+      height,
+      depth,
       color: element.color,
     });
 

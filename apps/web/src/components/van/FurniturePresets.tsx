@@ -4,6 +4,8 @@ import { useStore } from '../../store/store';
 import { FURNITURE_PRESETS, FurnitureType } from '../../constants/furniture';
 import { VAN_TYPES } from '../../constants/vans';
 import { notify } from '@/utils/notify';
+import { findAvailablePosition } from '../../utils/furniturePlacement';
+import { getAdaptiveFurnitureSize } from '../../utils/furnitureSizing';
 import './FurniturePresets.css';
 
 /**
@@ -12,6 +14,7 @@ import './FurniturePresets.css';
 const FurniturePresets: React.FC = () => {
     const vanType = useStore((s) => s.vanType);
     const addObject = useStore((s) => s.addObject);
+    const objects = useStore((s) => s.objects);
 
     const handleAddPreset = (type: FurnitureType) => {
         if (!vanType) {
@@ -28,15 +31,20 @@ const FurniturePresets: React.FC = () => {
         const preset = FURNITURE_PRESETS[type];
 
         // Validate dimensions
-        if (preset.defaultWidth > van.length || preset.defaultHeight > van.width) {
-            notify.error(`Ce meuble est trop grand pour ce van (${preset.defaultWidth}x${preset.defaultHeight}mm)`);
+        const { width, height, depth } = getAdaptiveFurnitureSize(type, vanType);
+
+        if (width > van.length || height > van.width) {
+            notify.error(`Ce meuble est trop grand pour ce van (${width}x${height}mm)`);
             return;
         }
 
-        // Place near top-left with some padding
-        const padding = 100;
-        const x = Math.min(padding, van.length - preset.defaultWidth);
-        const y = Math.min(padding, van.width - preset.defaultHeight);
+        // Trouver une position disponible sans collision
+        const { x, y } = findAvailablePosition(
+            width,
+            height,
+            objects,
+            vanType
+        );
 
         addObject({
             id: `${type}-${Date.now()}`,
@@ -44,8 +52,9 @@ const FurniturePresets: React.FC = () => {
             type: type,
             x,
             y,
-            width: preset.defaultWidth,
-            height: preset.defaultHeight,
+            width,
+            height,
+            depth,
             color: preset.color,
         });
 

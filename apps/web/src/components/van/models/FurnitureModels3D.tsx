@@ -97,6 +97,7 @@ const KitchenModel: React.FC<FurnitureProps> = ({ furniture }) => {
       <RoundedBox
         args={[sizeX, sizeY * 0.8, sizeZ]}
         radius={0.01}
+        position={[0, (sizeY * 0.8) / 2, 0]}
         castShadow
         receiveShadow
         onPointerEnter={() => setHovered(true)}
@@ -221,6 +222,7 @@ const StorageModel: React.FC<FurnitureProps> = ({ furniture }) => {
       <RoundedBox
         args={[sizeX, sizeY, sizeZ]}
         radius={0.01}
+        position={[0, sizeY / 2, 0]}
         castShadow
         receiveShadow
         onPointerEnter={() => setHovered(true)}
@@ -429,6 +431,7 @@ const GenericModel: React.FC<FurnitureProps> = ({ furniture }) => {
       args={[sizeX, sizeY, sizeZ]}
       radius={0.02}
       smoothness={4}
+      position={[0, sizeY / 2, 0]}
       castShadow
       receiveShadow
       onPointerEnter={() => setHovered(true)}
