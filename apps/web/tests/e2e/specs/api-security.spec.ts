@@ -47,7 +47,7 @@ test.describe('API Resilience & Security', () => {
             await route.fulfill({
                 status: 200,
                 contentType: 'application/json',
-                body: '{"invalid_json": [}', // Malformed JSON
+                body: '{"invalid_json": [}',                // Malformed JSON
             });
         });
 
