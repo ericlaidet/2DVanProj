@@ -9,6 +9,7 @@ import './VanCanvas2D.css';
 interface VanCanvas2DProps {
   selectedObjectId?: string | null;
   onSelectObject?: (id: string | null) => void;
+  onEdit?: (id: string) => void;
 }
 
 /**
@@ -367,6 +368,7 @@ const RealisticFurniture2D: React.FC<{
 export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
   selectedObjectId,
   onSelectObject,
+  onEdit,
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
@@ -559,7 +561,11 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
             onMouseLeave={() => setHoveredId(null)}
             onClick={(e) => {
               e.stopPropagation();
-              if (onSelectObject) onSelectObject(obj.id);
+              if (e.shiftKey && onEdit) {
+                onEdit(obj.id);
+              } else if (onSelectObject) {
+                onSelectObject(obj.id);
+              }
             }}
             onDoubleClick={(e) => handleDoubleClick(e, obj.id)}
             onContextMenu={(e) => handleContextMenu(e, obj.id)}
@@ -568,18 +574,9 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
       </div>
 
       {/* Aide visuelle */}
-      <div style={{
-        marginTop: '12px',
-        padding: '12px 16px',
-        background: 'rgba(59, 130, 246, 0.1)',
-        borderRadius: '8px',
-        fontSize: '12px',
-        color: '#1f2937',
-        display: 'flex',
-        gap: '16px',
-        flexWrap: 'wrap',
-      }}>
+      <div className="canvas-controls-bar">
         <div><strong>🖱️ Clic:</strong> Sélectionner</div>
+        <div><strong>⬆️ Shift + Clic:</strong> Éditer</div>
         <div><strong>🖱️ Glisser:</strong> Déplacer</div>
         <div><strong>🖱️ Double-clic:</strong> Rotation 90°</div>
         <div><strong>🖱️ Clic droit:</strong> Supprimer</div>

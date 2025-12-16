@@ -31,8 +31,8 @@ type FurnitureSizes = {
  */
 const ADAPTIVE_SIZES: FurnitureSizes = {
     bed: {
-        compact: { width: 1200, height: 1850, depth: 400 },   // Lit simple 185×120cm
-        medium: { width: 1400, height: 1900, depth: 400 },   // Lit double 190×140cm
+        compact: { width: 800, height: 1850, depth: 400 },   // Lit simple 185×80cm (1 personne)
+        medium: { width: 1100, height: 1900, depth: 400 },   // Lit 190×110cm (1-2 personnes)
         large: { width: 1600, height: 2000, depth: 400 },    // Grand lit 200×160cm
     },
     kitchen: {

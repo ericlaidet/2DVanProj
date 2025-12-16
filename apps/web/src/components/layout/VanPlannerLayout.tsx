@@ -11,6 +11,7 @@ import { ViewModeToggle } from '@/components/van/ViewModeToggle';
 import Button from '@/components/buttons/Button';
 import { VAN_TYPES } from '@/constants/vans';
 import VanModalSelector from '@/components/van/VanModalSelector';
+import { FurnitureEditModal } from '@/components/van/FurnitureEditModal';
 import { v4 as uuidv4 } from 'uuid';
 import './VanPlannerLayout.css';
 import { notify } from '@/utils/notify';
@@ -28,6 +29,7 @@ const VanPlannerLayout: React.FC = () => {
   const addObject = useStore((s) => s.addObject);
   const objects = useStore((s) => s.objects);
   const viewMode = useStore((s) => s.viewMode); // ✨ NOUVEAU
+  const selectedObjectId = useStore((s) => s.selectedObjectId);
 
   const [userName, setUserName] = useState<string | null>(null);
   const [subscription, setSubscription] = useState<string>('FREE');
@@ -72,6 +74,8 @@ const VanPlannerLayout: React.FC = () => {
   };
 
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
+  const [editingFurnitureId, setEditingFurnitureId] = useState<string | null>(null);
+
   const predefinedElements = [
     { name: 'Table', icon: '🪑', color: '#ef4444', type: 'table' },
     { name: 'Cuisine', icon: '🍳', color: '#10b981', type: 'kitchen' },
@@ -345,9 +349,15 @@ const VanPlannerLayout: React.FC = () => {
             <div className="canvas-container">
               {vanType ? (
                 viewMode === '2D' ? (
-                  <VanCanvas2D />
+                  <VanCanvas2D
+                    onSelectObject={(id) => useStore.setState({ selectedObjectId: id })}
+                    onEdit={(id) => setEditingFurnitureId(id)}
+                    selectedObjectId={selectedObjectId}
+                  />
                 ) : (
-                  <VanCanvas3D />
+                  <VanCanvas3D
+                    onEdit={(id) => setEditingFurnitureId(id)}
+                  />
                 )
               ) : (
                 <div className="canvas-empty">
@@ -616,6 +626,16 @@ const VanPlannerLayout: React.FC = () => {
           </aside>
         </div>
       </div>
+
+      {/* Modale d'édition */}
+      <FurnitureEditModal
+        isOpen={!!editingFurnitureId}
+        furniture={objects.find(o => o.id === editingFurnitureId) || null}
+        onClose={() => setEditingFurnitureId(null)}
+        onSave={(id, updates) => {
+          useStore.getState().updateObject(id, updates);
+        }}
+      />
     </div>
   );
 };

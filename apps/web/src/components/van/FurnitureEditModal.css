@@ -1,0 +1,144 @@
+/* apps/web/src/components/van/FurnitureEditModal.css */
+
+.furniture-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.furniture-modal-content {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    font-family: system-ui, sans-serif;
+}
+
+.furniture-modal-header {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.furniture-modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1f2937;
+}
+
+.furniture-modal-header p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.furniture-form-group {
+    margin-bottom: 1rem;
+}
+
+.furniture-form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.furniture-form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.furniture-form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.furniture-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-cancel {
+    padding: 0.5rem 1rem;
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #e5e7eb;
+}
+
+.btn-save {
+    padding: 0.5rem 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-save:hover {
+    background-color: #2563eb;
+}
+
+/* Dark Mode */
+body.dark-theme .furniture-modal-content {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+body.dark-theme .furniture-modal-header h2 {
+    color: #f3f4f6;
+}
+
+body.dark-theme .furniture-modal-header p {
+    color: #9ca3af;
+}
+
+body.dark-theme .furniture-form-group label {
+    color: #e5e7eb;
+}
+
+body.dark-theme .furniture-form-group input {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f3f4f6;
+}
+
+body.dark-theme .furniture-form-group input:focus {
+    border-color: #60a5fa;
+}
+
+body.dark-theme .btn-cancel {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+}
+
+body.dark-theme .btn-cancel:hover {
+    background-color: #4b5563;
+}

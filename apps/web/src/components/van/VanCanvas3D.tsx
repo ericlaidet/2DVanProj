@@ -72,7 +72,7 @@ const Stats3DOverlay: React.FC = () => {
 };
 
 // ✨ Composant principal VanCanvas3D
-export const VanCanvas3D: React.FC = () => {
+export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdit }) => {
   const objects = useStore(s => s.objects);
   const vanType = useStore(s => s.vanType);
   const addObject = useStore(s => s.addObject);
@@ -214,6 +214,7 @@ export const VanCanvas3D: React.FC = () => {
               furniture={obj}
               selectedId={selectedFurnitureId}
               onSelect={handleSelectFurniture}
+              onEdit={onEdit}
             />
           ))}
 
@@ -255,6 +256,7 @@ export const VanCanvas3D: React.FC = () => {
           {showControls && (
             <div className="controls-list">
               <p><strong>🎯 Clic sur meuble</strong> : Sélectionner</p>
+              <p><strong>🖱️ Double-clic</strong> : Éditer</p>
               <p><strong>🎯 Glisser meuble</strong> : Déplacer (horizontal)</p>
               <p><strong>⬆️ Shift + Glisser</strong> : Déplacer (hauteur)</p>
               <p><strong>🎯 Ctrl + Glisser</strong> : Déplacer (profondeur)</p>

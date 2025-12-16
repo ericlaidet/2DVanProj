@@ -320,3 +320,30 @@ body.dark-theme .van-canvas.empty {
 body.dark-theme .van-canvas.empty p {
     color: #9ca3af;
 }
+
+/* ==========================================
+   CONTROLS BAR (Flex Layout)
+   ========================================== */
+
+.canvas-controls-bar {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+    font-size: 12px;
+    color: #1f2937;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+body.dark-theme .canvas-controls-bar {
+    background: rgba(31, 41, 55, 0.8);
+    color: #f3f4f6; /* White-ish text for dark mode */
+    border: 1px solid #374151;
+}
+
+body.dark-theme .canvas-controls-bar strong {
+    color: #ffffff;
+}

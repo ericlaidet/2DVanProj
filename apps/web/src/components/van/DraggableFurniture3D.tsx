@@ -24,23 +24,26 @@ interface DraggableFurniture3DProps {
   };
   selectedId?: string | null;
   onSelect?: (id: string) => void;
+  onEdit?: (id: string) => void;
 }
 
 export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
   furniture,
   selectedId,
-  onSelect
+  onSelect,
+  onEdit
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [dragPlane, setDragPlane] = useState<'horizontal' | 'vertical' | 'depth'>('horizontal');
+  const [dragOffset3D, setDragOffset3D] = useState<THREE.Vector3 | null>(null);
 
   const { camera, gl } = useThree();
+
   const vanType = useStore(s => s.vanType);
   const updateObject = useStore(s => s.updateObject);
   const removeObject = useStore(s => s.removeObject);
-  const objects = useStore(s => s.objects);
 
   const isSelected = selectedId === furniture.id;
 
@@ -65,31 +68,70 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
   const rotY = THREE.MathUtils.degToRad(furniture.rotation?.y || 0);
   const rotZ = THREE.MathUtils.degToRad(furniture.rotation?.z || 0);
 
-  // Gestion de la sélection
+  // State pour gérer le double-clic manuel
+  const [lastClickTime, setLastClickTime] = useState(0);
+
+  // Gestion du clic et double-clic manuel (plus fiable en 3D)
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    if (onSelect) {
-      onSelect(furniture.id);
+
+    const now = Date.now();
+    const DOUBLE_CLICK_DELAY = 300; // ms
+
+    if (now - lastClickTime < DOUBLE_CLICK_DELAY) {
+      // C'est un double-clic !
+      if (onEdit) {
+        onEdit(furniture.id);
+      }
+      setLastClickTime(0); // Reset
+    } else {
+      // C'est un simple clic
+      setLastClickTime(now);
+      if (onSelect) {
+        onSelect(furniture.id);
+      }
     }
   };
 
   // Drag & Drop amélioré avec plan horizontal ou vertical
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
+    // Si on commence un drag, on reset le timer de double clic pour éviter des faux positifs
+    if (Date.now() - lastClickTime > 300) {
+      // On ne fait rien de spécial, mais on pourrait reset le timer ici si besoin
+    }
+
     e.stopPropagation();
 
     if (e.button === 0) { // Clic gauche seulement
       setIsDragging(true);
       gl.domElement.style.cursor = 'grabbing';
 
-      // Shift = déplacement vertical (hauteur)
-      // Ctrl = déplacement en profondeur
-      // Sinon = déplacement horizontal (sol)
-      if (e.shiftKey) {
-        setDragPlane('vertical');
-      } else if (e.ctrlKey) {
-        setDragPlane('depth');
-      } else {
-        setDragPlane('horizontal');
+      // 1. Déterminer le plan de drag
+      let plane: 'horizontal' | 'vertical' | 'depth' = 'horizontal';
+      if (e.shiftKey) plane = 'vertical';
+      else if (e.ctrlKey) plane = 'depth';
+      setDragPlane(plane);
+
+      // 2. Initialiser le Raycaster à la position du clic
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -(e.clientY / window.innerHeight) * 2 + 1
+      );
+      raycaster.setFromCamera(mouse, camera);
+
+      // 3. Calculer l'offset entre le point cliqué et le centre du meuble
+      // Cela évite que le meuble "saute" pour centrer sur la souris
+      const intersectPoint = new THREE.Vector3();
+      const dragPlaneObj = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); // Plan sol par défaut
+
+      raycaster.ray.intersectPlane(dragPlaneObj, intersectPoint);
+
+      if (intersectPoint) {
+        // Offset = Position Actuelle (Centre en 3D) - Point Cliqué
+        // Note: pos3D est déjà calculé plus haut comme le centre 3D
+        const currentPos = new THREE.Vector3(pos3D.x, pos3D.y, pos3D.z);
+        setDragOffset3D(currentPos.sub(intersectPoint));
       }
 
       if (onSelect) {
@@ -114,49 +156,50 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
 
     let intersectPoint = new THREE.Vector3();
 
-    if (dragPlane === 'horizontal') {
+    if (dragPlane === 'horizontal' || dragPlane === 'depth') {
       // Plan horizontal (Y = 0, le sol)
       const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       raycaster.ray.intersectPlane(plane, intersectPoint);
 
-      if (intersectPoint) {
-        const pos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
+      if (intersectPoint && dragOffset3D) {
+        // Appliquer l'offset pour obtenir la nouvelle position du CENTRE
+        const newCenter3D = intersectPoint.add(dragOffset3D);
+
+        // Convertir le centre 3D en coordonnées 2D (mm)
+        const centerPos2D = convert3DTo2D(newCenter3D.x, furniture.z || 0, newCenter3D.z, vanType);
+
+        // Convertir CENTRE -> COIN SUPÉRIEUR GAUCHE (x, y sont top-left)
+        // C'est ici que se situait le bug "glissement"
+        const topLeftX = centerPos2D.x - furniture.width / 2;
+        const topLeftY = centerPos2D.y - furniture.height / 2;
 
         const constrained = constrainToVan({
           ...furniture,
-          x: pos2D.x,
-          y: pos2D.y,
+          x: topLeftX,
+          y: topLeftY,
         }, vanType);
 
-        // ✅ Pas de collision check pour fluidité maximale
-        updateObject(furniture.id, { x: constrained.x, y: constrained.y });
+        if (dragPlane === 'horizontal') {
+          updateObject(furniture.id, { x: constrained.x, y: constrained.y });
+        } else {
+          // Depth mode (Ctrl) : on ne change que Y (profondeur dans le van = Z en 3D)
+          updateObject(furniture.id, { y: constrained.y });
+        }
       }
     } else if (dragPlane === 'vertical') {
+      // ... Logique verticale inchangée pour le moment ...
       const cameraDir = new THREE.Vector3();
       camera.getWorldDirection(cameraDir);
       const planeNormal = cameraDir.clone().normalize();
-      const plane = new THREE.Plane(planeNormal, -planeNormal.dot(pos3D));
+      const plane = new THREE.Plane(planeNormal, -planeNormal.dot(pos3D)); // Plan face caméra
 
       raycaster.ray.intersectPlane(plane, intersectPoint);
 
       if (intersectPoint) {
+        // Pour la hauteur, on peut garder la logique absolue ou ajouter un offset si besoin
+        // Ici on garde l'absolu simple pour l'instant
         const newZ = Math.max(0, Math.min(2000, intersectPoint.y * 1000));
         updateObject(furniture.id, { z: newZ });
-      }
-    } else if (dragPlane === 'depth') {
-      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-      raycaster.ray.intersectPlane(plane, intersectPoint);
-
-      if (intersectPoint) {
-        const centerPos2D = convert3DTo2D(intersectPoint.x, furniture.z || 0, intersectPoint.z, vanType);
-        const cornerY = centerPos2D.y - furniture.height / 2;
-
-        const constrained = constrainToVan({
-          ...furniture,
-          y: cornerY,
-        }, vanType);
-
-        updateObject(furniture.id, { y: constrained.y });
       }
     }
   };
