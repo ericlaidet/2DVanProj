@@ -8,11 +8,9 @@ on:
 
 jobs:
   full-stack-test:
-    name: Build & Test (Full Stack)
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
-    # Service PostgreSQL pour les tests d'intégration API
     services:
       postgres:
         image: postgres:15
@@ -22,7 +20,6 @@ jobs:
           POSTGRES_DB: vanplanner
         ports:
           - 5432:5432
-        # Health check pour s'assurer que la DB est prête avant de lancer les steps
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -30,82 +27,65 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v3
         with:
           version: 9
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - name: Cache pnpm
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
           path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-#      - name: Lint Code
-#        run: pnpm lint
-
-      - name: Generate Prisma Client
-        working-directory: apps/api
-        run: npx prisma generate
-
-      - name: Build Project
+      - name: Build
         run: pnpm build
 
-      - name: Run Unit Tests
+      - name: Unit tests
         run: pnpm test:ui --run
 
-      - name: Setup Database Schema
+      - name: Prisma schema
         working-directory: apps/api
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner?schema=public
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner
         run: npx prisma db push
 
-      - name: Install Playwright Browsers
+      # Backend uniquement
+      - name: Start API
+        working-directory: apps/api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner
+          JWT_SECRET: super_secret_test_key
+          PORT: 3000
+        run: node dist/main.js &
+
+      - name: Wait for API
+        run: npx wait-on http://localhost:3000/health
+
+      - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Run E2E Tests (Integration)
+      # Playwright démarre Vite via webServer
+      - name: E2E tests
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner?schema=public
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner
           VITE_API_URL: http://localhost:3000
-          # JWT Secret si nécessaire (à ajouter dans Secrets GitHub plus tard)
-          JWT_SECRET: super_secret_test_key
-        run: |
-          echo "🚀 Starting Full Stack Environment for E2E Tests..."
-          
-          # 1. Démarrer le Backend (API) en background
-          # On utilise node dist/main.js car le build a déjà été fait
-          cd apps/api && node dist/main.js &
-          API_PID=$!
-          echo "API started with PID $API_PID"
+          CI: true
+        run: pnpm test:e2e
 
-          # 2. Démarrer le Frontend (Web) en background
-          # On utilise Vite dev server pour servir le front sur 5173
-          cd apps/web && pnpm dev --port 5173 &
-          WEB_PID=$!
-          echo "Web started with PID $WEB_PID"
-
-          # 3. Attendre que les services soient prêts (TCP check pour éviter les erreurs 401 sur le backend)
-          echo "⏳ Waiting for services to be ready..."
-          npx wait-on tcp:localhost:3000 tcp:localhost:5173 --timeout 60000
-
-          # 4. Lancer les tests Playwright
-          echo "🧪 Running Playwright Tests..."
-          pnpm test:e2e
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
