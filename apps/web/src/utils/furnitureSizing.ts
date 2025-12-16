@@ -31,29 +31,29 @@ type FurnitureSizes = {
  */
 const ADAPTIVE_SIZES: FurnitureSizes = {
     bed: {
-        compact: { width: 900, height: 1800, depth: 400 },   // Lit simple
-        medium: { width: 1200, height: 1900, depth: 400 },   // Lit double petit
-        large: { width: 1400, height: 2000, depth: 400 },    // Lit double
+        compact: { width: 1200, height: 1850, depth: 400 },   // Lit simple 185×120cm
+        medium: { width: 1400, height: 1900, depth: 400 },   // Lit double 190×140cm
+        large: { width: 1600, height: 2000, depth: 400 },    // Grand lit 200×160cm
     },
     kitchen: {
-        compact: { width: 900, height: 450, depth: 600 },    // Kitchenette compacte
-        medium: { width: 1000, height: 500, depth: 600 },    // Cuisine standard
-        large: { width: 1200, height: 600, depth: 600 },     // Grande cuisine
+        compact: { width: 500, height: 1000, depth: 850 },    // Cuisine compacte 100×50cm H85
+        medium: { width: 550, height: 1200, depth: 900 },    // Cuisine standard 120×55cm H90
+        large: { width: 600, height: 1400, depth: 900 },     // Grande cuisine 140×60cm H90
     },
     table: {
-        compact: { width: 600, height: 1500, depth: 600 },   // Table carrée
-        medium: { width: 700, height: 1500, depth: 600 },    // Table ronde
-        large: { width: 800, height: 1600, depth: 600 },     // Grande table
+        compact: { width: 400, height: 600, depth: 700 },   // Table 60×40cm H70
+        medium: { width: 500, height: 800, depth: 720 },    // Table 80×50cm H72
+        large: { width: 600, height: 1000, depth: 750 },     // Table 100×60cm H75
     },
     bathroom: {
-        compact: { width: 700, height: 700, depth: 2000 },   // Douche compacte
-        medium: { width: 800, height: 800, depth: 2000 },    // Douche standard
-        large: { width: 900, height: 900, depth: 2000 },     // Grande douche
+        compact: { width: 700, height: 700, depth: 1900 },   // Douche 70×70cm H190
+        medium: { width: 800, height: 800, depth: 1950 },    // Douche 80×80cm H195
+        large: { width: 900, height: 900, depth: 2000 },     // Douche 90×90cm H200
     },
     storage: {
-        compact: { width: 500, height: 350, depth: 400 },    // Rangement compact
-        medium: { width: 600, height: 400, depth: 400 },     // Rangement standard
-        large: { width: 700, height: 450, depth: 400 },      // Grand rangement
+        compact: { width: 350, height: 600, depth: 500 },    // Rangement Prof.30-40 H40-60
+        medium: { width: 450, height: 800, depth: 700 },     // Rangement Prof.40-50 H60-80
+        large: { width: 500, height: 1000, depth: 800 },      // Grand rangement Prof.50 H80
     },
     seat: {
         compact: { width: 400, height: 400, depth: 500 },    // Siège compact
