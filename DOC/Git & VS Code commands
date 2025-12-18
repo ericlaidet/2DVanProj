@@ -31,15 +31,13 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 
 
-
 __________________________________________________________________________________
 
-1️⃣ Avec l’invite de commandes (cmd), pour supprimer un dossier et tout son contenu :
+Avec l’invite de commandes (cmd), pour supprimer un dossier et tout son contenu :
 
 rmdir /s /q "C:\chemin\important"
 
 ou via VsCode : Remove-Item -Path .\node_modules\ -Recurse -Force
-
 
 __________________________________________________________________________________
 
@@ -50,5 +48,6 @@ je veux un lit transversal à l'arrière, une kitchenette compact côté droit, 
 
 
 pnpm install --filter ./apps/api... && pnpm build
+
 
 
