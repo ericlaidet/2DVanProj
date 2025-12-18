@@ -21,7 +21,6 @@ jobs:
           POSTGRES_DB: vanplanner
         ports:
           - 5432:5432
-																					
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -58,9 +57,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-						
-					   
-
       - name: Generate Prisma Client
         working-directory: apps/api
         run: npx prisma generate
@@ -89,8 +85,6 @@ jobs:
         working-directory: apps/api
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/vanplanner?schema=public
-											 
-																				
           JWT_SECRET: super_secret_test_key
           PORT: 3000
         run: |
