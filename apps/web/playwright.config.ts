@@ -3,13 +3,13 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  
+
   /* Timeout par test */
   timeout: 60000,
-  
+
   /* Retry en cas d'échec */
   retries: process.env.CI ? 2 : 0,
-  
+
   /* Workers - 1 seul en CI pour éviter les conflits */
   workers: process.env.CI ? 1 : undefined,
 
@@ -24,7 +24,7 @@ export default defineConfig({
   /* Configuration du serveur Web */
   webServer: process.env.CI ? {
     // ✅ En CI: Playwright démarre Vite automatiquement
-    command: 'npm run dev',
+    command: 'npm run dev:web',
     url: 'http://localhost:5173',
     reuseExistingServer: false, // Ne pas réutiliser car on veut un serveur propre
     timeout: 120 * 1000,
@@ -45,7 +45,7 @@ export default defineConfig({
   ],
 
   /* Reporters */
-  reporter: process.env.CI 
-    ? [['html', { outputFolder: 'playwright-report', open: 'never' }], ['github']] 
+  reporter: process.env.CI
+    ? [['html', { outputFolder: 'playwright-report', open: 'never' }], ['github']]
     : [['list'], ['html', { outputFolder: 'playwright-report', open: 'never' }]],
 });

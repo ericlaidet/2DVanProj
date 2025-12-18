@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
-														  
     services:
       postgres:
         image: postgres:15
