@@ -24,7 +24,7 @@ export const VanModelWireframe: React.FC<VanModelWireframeProps> = ({
     lineWidth = 2,
     showMesh = false,
     meshOpacity = 0.1,
-    scale = 0.01, // 🚀 Augmenté de 0.003 à 0.01 pour meilleure visibilité
+    scale = 0.01,
     vanDimensions,
 }) => {
     const groupRef = useRef<THREE.Group>(null);
@@ -32,31 +32,40 @@ export const VanModelWireframe: React.FC<VanModelWireframeProps> = ({
     // Charger le modèle GLB Mercedes-Benz Sprinter
     const { scene } = useGLTF('/assets/Van3DConfig/mercedes-benz_sprinter.glb');
 
-    // 📐 Calculer le scale adaptatif basé sur les dimensions du van
-    // Le Sprinter de base mesure environ: L=5900mm, W=1993mm, H=1940mm (intérieur)
-    const BASE_SPRINTER_DIMENSIONS = { length: 5900, width: 1993, height: 1940 };
-
-    const calculateAdaptiveScale = (): [number, number, number] => {
-        if (!vanDimensions) {
-            // Scale uniforme si pas de dimensions spécifiées
-            return [scale, scale, scale];
-        }
-
-        // Calculer les ratios pour étirer sur chaque axe
-        const scaleX = (vanDimensions.width / BASE_SPRINTER_DIMENSIONS.width) * scale;
-        const scaleY = (vanDimensions.height / BASE_SPRINTER_DIMENSIONS.height) * scale;
-        const scaleZ = (vanDimensions.length / BASE_SPRINTER_DIMENSIONS.length) * scale;
-
-        return [scaleX, scaleY, scaleZ];
-    };
-
-    const adaptiveScale = calculateAdaptiveScale();
-
     useEffect(() => {
         if (!groupRef.current || !scene) return;
 
         // Cloner la scène pour ne pas modifier l'original
         const clonedScene = scene.clone();
+
+        // 📏 Calcul de l'échelle dynamique basé sur la BoundingBox réelle du modèle
+        // D'abord, on réinitialise l'échelle pour mesurer les dimensions brutes
+        clonedScene.scale.set(1, 1, 1);
+
+        // Calculer la boîte englobante (Bounding Box)
+        const box = new THREE.Box3().setFromObject(clonedScene);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+
+        // Appliquer l'échelle
+        if (vanDimensions && size.x > 0 && size.y > 0 && size.z > 0) {
+            // Conversion mm -> mètres (le monde 3D est en mètres)
+            // Note: GLB width (X) = Van Width, Height (Y) = Van Height, Length (Z) = Van Length
+            // Vérifier l'orientation du modèle : Souvent Z est la longueur (avant/arrière)
+
+            const targetWidthInMeters = vanDimensions.width / 1000;
+            const targetHeightInMeters = vanDimensions.height / 1000;
+            const targetLengthInMeters = vanDimensions.length / 1000;
+
+            const scaleX = targetWidthInMeters / size.x;
+            const scaleY = targetHeightInMeters / size.y;
+            const scaleZ = targetLengthInMeters / size.z;
+
+            clonedScene.scale.set(scaleX, scaleY, scaleZ);
+        } else {
+            // Fallback si pas de dimensions : on utilise le scale prop par défaut
+            clonedScene.scale.setScalar(scale);
+        }
 
         // Parcourir tous les meshes et appliquer le matériau wireframe
         clonedScene.traverse((child) => {
@@ -116,10 +125,10 @@ export const VanModelWireframe: React.FC<VanModelWireframeProps> = ({
                 }
             });
         };
-    }, [scene, wireframeColor, lineWidth, showMesh, meshOpacity]);
+    }, [scene, wireframeColor, lineWidth, showMesh, meshOpacity, vanDimensions, scale]);
 
     return (
-        <group ref={groupRef} scale={adaptiveScale} rotation-y={Math.PI}>
+        <group ref={groupRef} rotation-y={Math.PI / 2}>
             {/* Le modèle sera ajouté dynamiquement via useEffect */}
         </group>
     );

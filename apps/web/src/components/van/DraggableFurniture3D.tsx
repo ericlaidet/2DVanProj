@@ -25,13 +25,15 @@ interface DraggableFurniture3DProps {
   selectedId?: string | null;
   onSelect?: (id: string) => void;
   onEdit?: (id: string) => void;
+  locked?: boolean;
 }
 
 export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
   furniture,
   selectedId,
   onSelect,
-  onEdit
+  onEdit,
+  locked = false
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -103,6 +105,12 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
     e.stopPropagation();
 
     if (e.button === 0) { // Clic gauche seulement
+      // 🔒 Si verrouillé : On ne bouge PAS si ce n'est pas déjà sélectionné
+      if (locked && !isSelected) {
+        if (onSelect) onSelect(furniture.id);
+        return;
+      }
+
       setIsDragging(true);
       gl.domElement.style.cursor = 'grabbing';
 

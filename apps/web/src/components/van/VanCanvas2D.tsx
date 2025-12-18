@@ -547,6 +547,40 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
           }}
         />
 
+        {/* 🏷️ Labels Avant/Arrière pour orientation */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '20px',
+          transform: 'translateY(-50%)',
+          fontWeight: '900',
+          color: 'rgba(0,0,0,0.15)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          fontSize: 'clamp(1rem, 5vw, 2.5rem)',
+          writingMode: 'vertical-rl',
+          textOrientation: 'upright',
+          letterSpacing: '0.2em'
+        }}>
+          ARRIÈRE
+        </div>
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          right: '20px',
+          transform: 'translateY(-50%)',
+          fontWeight: '900',
+          color: 'rgba(0,0,0,0.15)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          fontSize: 'clamp(1rem, 5vw, 2.5rem)',
+          writingMode: 'vertical-rl',
+          textOrientation: 'upright',
+          letterSpacing: '0.2em'
+        }}>
+          AVANT
+        </div>
+
         {/* Meubles avec images réalistes */}
         {objects.map((obj) => (
           <RealisticFurniture2D

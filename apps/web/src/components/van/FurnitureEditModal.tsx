@@ -30,11 +30,12 @@ export const FurnitureEditModal: React.FC<FurnitureEditModalProps> = ({
 
     useEffect(() => {
         if (furniture) {
+            // Conversion mm -> cm avec arrondissement à 1 décimale
             setFormData({
-                width: furniture.width,
-                height: furniture.height, // 2D Height = 3D Depth (Length in 2D)
-                depth: furniture.depth || furniture.height, // Usually depth is the 3D height
-                z: furniture.z || 0
+                width: parseFloat((furniture.width / 10).toFixed(1)),
+                height: parseFloat((furniture.height / 10).toFixed(1)), // 2D Height = 3D Depth
+                depth: parseFloat(((furniture.depth || furniture.height) / 10).toFixed(1)),
+                z: parseFloat(((furniture.z || 0) / 10).toFixed(1))
             });
         }
     }, [furniture]);
@@ -43,11 +44,12 @@ export const FurnitureEditModal: React.FC<FurnitureEditModalProps> = ({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        // Conversion cm -> mm (x10) et on assure un entier pour la cohérence
         onSave(furniture.id, {
-            width: Number(formData.width),
-            height: Number(formData.height),
-            depth: Number(formData.depth),
-            z: Number(formData.z)
+            width: Math.round(Number(formData.width) * 10),
+            height: Math.round(Number(formData.height) * 10),
+            depth: Math.round(Number(formData.depth) * 10),
+            z: Math.round(Number(formData.z) * 10)
         });
         onClose();
     };
@@ -70,46 +72,50 @@ export const FurnitureEditModal: React.FC<FurnitureEditModalProps> = ({
 
                 <form onSubmit={handleSubmit}>
                     <div className="furniture-form-group">
-                        <label>Largeur (mm)</label>
+                        <label>Largeur (cm)</label>
                         <input
                             type="number"
                             name="width"
                             value={formData.width}
                             onChange={handleChange}
-                            min="10"
+                            min="1"
+                            step="0.1"
                         />
                     </div>
 
                     <div className="furniture-form-group">
-                        <label>Longueur / Profondeur 2D (mm)</label>
+                        <label>Longueur / Profondeur 2D (cm)</label>
                         <input
                             type="number"
                             name="height"
                             value={formData.height}
                             onChange={handleChange}
-                            min="10"
+                            min="1"
+                            step="0.1"
                         />
                     </div>
 
                     <div className="furniture-form-group">
-                        <label>Hauteur 3D (mm)</label>
+                        <label>Hauteur 3D (cm)</label>
                         <input
                             type="number"
                             name="depth"
                             value={formData.depth}
                             onChange={handleChange}
-                            min="10"
+                            min="1"
+                            step="0.1"
                         />
                     </div>
 
                     <div className="furniture-form-group">
-                        <label>Élévation du sol (mm)</label>
+                        <label>Élévation du sol (cm)</label>
                         <input
                             type="number"
                             name="z"
                             value={formData.z}
                             onChange={handleChange}
                             min="0"
+                            step="0.1"
                         />
                     </div>
 

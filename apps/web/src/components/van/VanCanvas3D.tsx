@@ -83,6 +83,7 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string | null>(null);
   const [transformMode, setTransformMode] = useState<'translate' | 'rotate' | 'scale'>('translate');
   const [cameraLocked, setCameraLocked] = useState(true); // 🔒 Caméra verrouillée par défaut
+  const [objectsLocked, setObjectsLocked] = useState(false); // 🧱 Objets déverrouillés par défaut (Click & Drag)
   const [showControls, setShowControls] = useState(false); // Dropdown des commandes fermé par défaut
   const orbitControlsRef = useRef<any>(null);
 
@@ -215,6 +216,7 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
               selectedId={selectedFurnitureId}
               onSelect={handleSelectFurniture}
               onEdit={onEdit}
+              locked={objectsLocked}
             />
           ))}
 
@@ -274,12 +276,21 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
         📊
       </button>
 
+      {/* Toggle Verrouillage Objets */}
+      <button
+        className="object-lock-toggle"
+        onClick={() => setObjectsLocked(!objectsLocked)}
+        title={objectsLocked ? "Déverrouiller les objets" : "Verrouiller les objets (Protection déplacements)"}
+      >
+        {objectsLocked ? '🧱' : '🖐️'}
+      </button>
+
       <button
         className="camera-lock-toggle"
         onClick={() => setCameraLocked(!cameraLocked)}
         title={cameraLocked ? "Déverrouiller la caméra (C)" : "Verrouiller la caméra (C)"}
       >
-        {cameraLocked ? '🔒' : '🔓'}
+        {cameraLocked ? '🎥' : '📷'}
       </button>
     </div>
   );

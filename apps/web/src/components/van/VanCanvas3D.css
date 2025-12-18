@@ -263,6 +263,39 @@
   transform: scale(0.95) rotate(0deg);
 }
 
+/* 🔒 Objects Lock Toggle */
+.object-lock-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.object-lock-toggle:hover {
+  background: rgba(16, 185, 129, 0.9);
+  /* Green for objects/furniture */
+  border-color: rgba(16, 185, 129, 1);
+  transform: scale(1.1);
+}
+
+.object-lock-toggle:active {
+  transform: scale(0.95);
+}
+
 /* 🔒 Camera Lock Toggle */
 .camera-lock-toggle {
   position: absolute;
