@@ -96,7 +96,7 @@ jobs:
       - name: Wait for API to be ready
         run: |
           echo "⏳ Waiting for API..."
-          npx wait-on http://localhost:3000/health --timeout 60000
+          timeout 60s bash -c 'until curl --output /dev/null --silent --head --fail http://localhost:3000/health; do printf "."; sleep 1; done'
           echo "✅ API is ready!"
 
       - name: Install Playwright Browsers
