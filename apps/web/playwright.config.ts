@@ -24,7 +24,7 @@ export default defineConfig({
   /* Configuration du serveur Web */
   webServer: process.env.CI ? {
     // ✅ En CI: Playwright démarre Vite automatiquement
-    command: 'npm run dev:web',
+    command: 'npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: false, // Ne pas réutiliser car on veut un serveur propre
     timeout: 120 * 1000,
