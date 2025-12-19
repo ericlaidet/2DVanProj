@@ -551,32 +551,32 @@ export const VanCanvas2D: React.FC<VanCanvas2DProps> = ({
         <div style={{
           position: 'absolute',
           top: '50%',
-          left: '20px',
+          left: '8px',
           transform: 'translateY(-50%)',
           fontWeight: '900',
           color: 'rgba(0,0,0,0.15)',
           pointerEvents: 'none',
           userSelect: 'none',
-          fontSize: 'clamp(1rem, 5vw, 2.5rem)',
+          fontSize: `${Math.floor(canvasHeight / 9)}px`,
           writingMode: 'vertical-rl',
           textOrientation: 'upright',
-          letterSpacing: '0.2em'
+          letterSpacing: '0.1em'
         }}>
           ARRIÈRE
         </div>
         <div style={{
           position: 'absolute',
           top: '50%',
-          right: '20px',
+          right: '8px',
           transform: 'translateY(-50%)',
           fontWeight: '900',
           color: 'rgba(0,0,0,0.15)',
           pointerEvents: 'none',
           userSelect: 'none',
-          fontSize: 'clamp(1rem, 5vw, 2.5rem)',
+          fontSize: `${Math.floor(canvasHeight / 9)}px`,
           writingMode: 'vertical-rl',
           textOrientation: 'upright',
-          letterSpacing: '0.2em'
+          letterSpacing: '0.1em'
         }}>
           AVANT
         </div>
