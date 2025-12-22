@@ -9,7 +9,7 @@ interface PlanToolbarProps {
 
 const PlanToolbar: React.FC<PlanToolbarProps> = ({ onAdd, onDelete, onExport }) => {
   return (
-    <div className="flex flex-wrap gap-2 mb-4">
+    <div className="flex-row flex-wrap gap-2 mb-4">
       {onAdd && <Button variant="green" onClick={onAdd}>Ajouter</Button>}
       {onDelete && <Button variant="red" onClick={onDelete}>Supprimer</Button>}
       {onExport && <Button variant="blue" onClick={onExport}>Exporter</Button>}

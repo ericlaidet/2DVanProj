@@ -1,6 +1,7 @@
 // apps/web/src/components/modals/ModalContents.tsx
 import React, { useState } from 'react';
 import Button from '@/components/buttons/Button';
+import './ModalContents.css';
 
 // ========== CONFIRM MODAL CONTENT ==========
 interface ConfirmModalContentProps {
@@ -21,14 +22,14 @@ export const ConfirmModalContent: React.FC<ConfirmModalContentProps> = ({
   variant = 'danger',
 }) => {
   return (
-    <div className="text-center">
-      <p className="mb-6 text-gray-700 dark:text-gray-300">{message}</p>
-      <div className="flex gap-3 justify-center">
+    <div className="modal-content-wrapper">
+      <p className="modal-text">{message}</p>
+      <div className="modal-flex-row">
         <Button variant="gray" onClick={onCancel}>
           {cancelText}
         </Button>
-        <Button 
-          variant={variant === 'danger' ? 'red' : variant === 'warning' ? 'yellow' : 'blue'} 
+        <Button
+          variant={variant === 'danger' ? 'red' : variant === 'warning' ? 'yellow' : 'blue'}
           onClick={onConfirm}
         >
           {confirmText}
@@ -63,8 +64,8 @@ export const RenameModalContent: React.FC<RenameModalContentProps> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <div className="modal-form-group">
+        <label className="modal-label">
           Nouveau nom
         </label>
         <input
@@ -72,13 +73,11 @@ export const RenameModalContent: React.FC<RenameModalContentProps> = ({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder={placeholder}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-                     focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          className="modal-input"
           autoFocus
         />
       </div>
-      <div className="flex gap-3 justify-end">
+      <div className="modal-flex-row modal-flex-end">
         <Button variant="gray" onClick={onCancel} type="button">
           Annuler
         </Button>
@@ -105,15 +104,15 @@ export const SubscriptionModalContent: React.FC<SubscriptionModalContentProps> =
   onClose,
 }) => {
   return (
-    <div className="text-center">
-      <div className="text-5xl mb-4">🔒</div>
-      <p className="mb-4 text-gray-700 dark:text-gray-300">{message}</p>
+    <div className="modal-content-wrapper">
+      <div className="modal-icon-large">🔒</div>
+      <p className="modal-text">{message}</p>
       {requiredPlan && (
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-          Abonnement requis : <span className="font-semibold">{requiredPlan}</span>
+        <p className="modal-subtext">
+          Abonnement requis : <span className="modal-highlight">{requiredPlan}</span>
         </p>
       )}
-      <div className="flex gap-3 justify-center">
+      <div className="modal-flex-row">
         <Button variant="gray" onClick={onClose}>
           Fermer
         </Button>
@@ -158,8 +157,8 @@ export const InputModalContent: React.FC<InputModalContentProps> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <div className="modal-form-group">
+        <label className="modal-label">
           {label}
         </label>
         {multiline ? (
@@ -167,9 +166,7 @@ export const InputModalContent: React.FC<InputModalContentProps> = ({
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder={placeholder}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-                       focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                       bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            className="modal-textarea"
             rows={4}
             autoFocus
           />
@@ -179,14 +176,12 @@ export const InputModalContent: React.FC<InputModalContentProps> = ({
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder={placeholder}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-                       focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                       bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+            className="modal-input"
             autoFocus
           />
         )}
       </div>
-      <div className="flex gap-3 justify-end">
+      <div className="modal-flex-row modal-flex-end">
         <Button variant="gray" onClick={onCancel} type="button">
           Annuler
         </Button>

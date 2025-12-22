@@ -1,0 +1,56 @@
+/* apps/web/src/components/plan/PlanCard.css */
+
+.plan-card-container {
+    padding: 0.75rem;
+    transition: shadow 0.2s, transform 0.2s;
+}
+
+.plan-card-container:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.plan-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.plan-card-info {
+    flex: 1;
+}
+
+.plan-card-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+body.dark-theme .plan-card-name {
+    color: #f3f4f6;
+}
+
+.plan-card-subtitle {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+body.dark-theme .plan-card-subtitle {
+    color: #9ca3af;
+}
+
+.plan-card-expiry {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.75rem;
+}
+
+body.dark-theme .plan-card-expiry {
+    color: #9ca3af;
+}
+
+.plan-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}

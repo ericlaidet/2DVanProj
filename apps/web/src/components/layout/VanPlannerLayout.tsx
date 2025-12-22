@@ -179,13 +179,11 @@ const VanPlannerLayout: React.FC = () => {
     if (!window.confirm(`Supprimer le plan "${plan.name}" ?`)) return;
 
     try {
-      await fetch(`/api/plans/${selectedPlanId}`, { method: 'DELETE' });
-      removePlan(selectedPlanId);
+      await removePlan(selectedPlanId, plan.name);
       useStore.setState({ objects: [], vanType: '' });
       setSelectedPlanId(null);
-      notify.success(`Plan "${plan.name}" supprimé`);
     } catch (err) {
-      notify.error('Erreur lors de la suppression');
+      // Le hook gère déjà les erreurs
     }
   };
 

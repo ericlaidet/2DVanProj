@@ -1,0 +1,75 @@
+/* apps/web/src/components/VanSelector.css */
+
+.van-selector-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.van-selector-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #4b5563;
+}
+
+body.dark-theme .van-selector-title {
+    color: #9ca3af;
+}
+
+.van-select {
+    padding: 0.6rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #111827;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+body.dark-theme .van-select {
+    border-color: #374151;
+    background-color: #1a1a1a;
+    color: #f3f4f6;
+}
+
+.van-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.available-plans-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+body.dark-theme .available-plans-title {
+    color: #9ca3af;
+}
+
+.available-plans-list {
+    list-style: none;
+    padding: 0;
+}
+
+.available-plan-item {
+    padding: 0.5rem 0.75rem;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+body.dark-theme .available-plan-item {
+    background-color: #262626;
+    border-color: #333;
+    color: #d1d5db;
+}

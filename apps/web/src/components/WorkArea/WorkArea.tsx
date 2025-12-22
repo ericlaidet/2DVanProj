@@ -1,23 +1,24 @@
 import React from "react";
 import VanSelector from "../van/VanSelector";
 import FurniturePalette from "../van/FurniturePalette";
+import "./WorkArea.css";
 
 const WorkArea: React.FC = () => {
   return (
-    <section className="bg-gray-100 rounded-xl p-6 shadow">
-      <h2 className="text-lg font-semibold mb-4">Espace travail Van</h2>
-      <div className="grid grid-cols-2 gap-6">
-        <div>
+    <section className="section-card workarea-container">
+      <h2 className="section-title">Espace travail Van</h2>
+      <div className="grid-cols-2">
+        <div className="workarea-left-col">
           <VanSelector userSubscription="PRO1" />
         </div>
-        <div>
-          <h3 className="font-medium mb-2">Palette d’objets</h3>
+        <div className="workarea-right-col">
+          <h3 className="workarea-palette-title">Palette d’objets</h3>
           <FurniturePalette />
         </div>
       </div>
 
-      <div className="mt-6 bg-gray-300 h-80 rounded-xl flex items-center justify-center">
-        <span className="text-gray-600">Zone de dessin 2D</span>
+      <div className="workarea-canvas-placeholder">
+        <span className="placeholder-text">Zone de dessin 2D</span>
       </div>
     </section>
   );

@@ -95,7 +95,7 @@ export const usePlanManager = () => {
   // ----------------------------------------------------------------------------
   // DELETE PLAN
   // ----------------------------------------------------------------------------
-  const removePlan = async (id: number) => {
+  const removePlan = async (id: number, name?: string) => {
     try {
       await apiFetch(`/plans/${id}`, {
         method: 'DELETE',
@@ -105,7 +105,8 @@ export const usePlanManager = () => {
         plans: useStore.getState().plans.filter((p) => p.id !== id),
       });
 
-      notify.success('🗑️ Plan supprimé');
+      const message = name ? `🗑️ Plan "${name}" supprimé` : '🗑️ Plan supprimé';
+      notify.success(message);
     } catch (err: any) {
       console.error('Delete plan error:', err);
       notify.error(err.message || 'Impossible de supprimer');

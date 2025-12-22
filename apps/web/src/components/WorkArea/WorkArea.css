@@ -1,0 +1,30 @@
+/* apps/web/src/components/WorkArea/WorkArea.css */
+
+.workarea-palette-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.workarea-canvas-placeholder {
+    margin-top: 1.5rem;
+    background-color: #e5e7eb;
+    height: 20rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.dark-theme .workarea-canvas-placeholder {
+    background-color: #2d2d2d;
+}
+
+.placeholder-text {
+    color: #4b5563;
+    font-weight: 500;
+}
+
+body.dark-theme .placeholder-text {
+    color: #9ca3af;
+}

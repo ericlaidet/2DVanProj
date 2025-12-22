@@ -527,23 +527,23 @@ body {
 /* ✅ CORRECTION 1: Grille d'éléments prédéfinis */
 .predefined-elements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
 .element-card {
   background: #ffffff;
-  border: 2px solid #d1d5db;
-  border-radius: 8px;
-  padding: 0.75rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.5rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .element-card:hover {
@@ -558,7 +558,7 @@ body {
 }
 
 .element-icon {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .element-name {
@@ -753,6 +753,7 @@ button[disabled] {
   .prompt-row {
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
   }
@@ -771,7 +772,20 @@ button[disabled] {
   }
 
   .predefined-elements-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+  }
+
+  .element-card {
+    padding: 0.35rem;
+  }
+
+  .element-name {
+    font-size: 0.75rem;
+  }
+
+  .element-icon {
+    font-size: 1.1rem;
   }
 }
 

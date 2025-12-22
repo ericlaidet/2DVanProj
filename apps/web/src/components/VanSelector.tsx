@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStore } from '../store/store';
 import { VAN_TYPES } from '../constants/vans';
+import './VanSelector.css';
 
 interface VanSelectorProps {
   userSubscription: string | undefined;
@@ -26,9 +27,9 @@ const VanSelector: React.FC<VanSelectorProps> = ({ userSubscription }) => {
   };
 
   return (
-    <div>
-      <h3>Choisir un van :</h3>
-      <select value={vanType} onChange={handleSelect} className="w-full p-2 border rounded">
+    <div className="van-selector-container">
+      <h3 className="van-selector-title">Choisir un van :</h3>
+      <select value={vanType} onChange={handleSelect} className="van-select w-full">
         <option value="">-- Sélectionner --</option>
         {VAN_TYPES.map((vt) => (
           <option key={vt.vanType} value={vt.vanType}>
@@ -37,12 +38,12 @@ const VanSelector: React.FC<VanSelectorProps> = ({ userSubscription }) => {
         ))}
       </select>
 
-      <h4>Plans disponibles pour ce van :</h4>
-      <ul>
+      <h4 className="available-plans-title">Plans disponibles :</h4>
+      <ul className="available-plans-list">
         {plans
           ?.filter((p) => p.vanType === vanType)
           .map((p) => (
-            <li key={p.id}>{p.name}</li>
+            <li key={p.id} className="available-plan-item">{p.name}</li>
           ))}
       </ul>
     </div>
