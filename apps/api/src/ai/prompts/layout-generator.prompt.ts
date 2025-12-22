@@ -29,10 +29,11 @@ Dimensions EXACTES du van:
 - Largeur (axe Y): ${van.width}mm (de 0 à ${van.width}mm)
 
 🚨 SYSTÈME DE COORDONNÉES (TRÈS IMPORTANT):
-- L'origine (0,0) est au coin AVANT-GAUCHE du van
-- L'axe X va de l'AVANT (0mm) vers l'ARRIÈRE (${van.length}mm)
+- L'origine (0,0) est au coin ARRIÈRE-GAUCHE du van
+- L'axe X va de l'ARRIÈRE (0mm) vers l'AVANT (${van.length}mm)
 - L'axe Y va de GAUCHE (0mm) vers DROITE (${van.width}mm)
-- Pour placer un meuble "à l'arrière": x doit être proche de ${van.length - 2000}mm à ${van.length - 1900}mm
+- Pour placer un meuble "à l'arrière": x doit être proche de 0mm à 1000mm
+- Pour placer un meuble "à l'avant": x doit être proche de ${van.length - 2000}mm à ${van.length}mm
 - Pour centrer un meuble horizontalement: y = (${van.width} - hauteur_meuble) / 2
 
 🚨 DIMENSIONS DES MEUBLES (width = longueur dans le van, height = largeur dans le van):
@@ -51,7 +52,7 @@ Génère un JSON avec cette structure:
   "layout": [
     {
       "type": "bed|kitchen|storage|bathroom|table|seat",
-      "x": number (position sur l'axe avant-arrière, 0 = avant, ${van.length} = arrière),
+      "x": number (position sur l'axe arrière-avant, 0 = arrière, ${van.length} = avant),
       "y": number (position sur l'axe gauche-droite, 0 = gauche, ${van.width} = droite),
       "width": number (longueur du meuble dans le sens avant-arrière),
       "height": number (largeur du meuble dans le sens gauche-droite),
@@ -88,17 +89,17 @@ Génère un JSON avec cette structure:
    ⚠️ EXCEPTION: Si l'utilisateur dit "sur", "au-dessus", "superposé" → respecte sa demande même si chevauchement
 
 4. **PLACEMENT "DEVANT" / "DERRIÈRE"** (pour TOUS les types de meubles):
-   - "à l'arrière" = x proche de ${van.length - 2000}mm (fond du van)
-   - "devant" = x proche de 0mm à 1000mm (avant du van)
-   - "devant X" = placer à x < X.x (plus proche de l'avant que l'élément X)
-   - "derrière X" = placer à x > X.x + X.width (plus loin de l'avant que l'élément X)
+   - "à l'arrière" = x proche de 0mm à 1000mm (fond du van côté arrière)
+   - "à l'avant" ou "devant" = x proche de ${van.length - 2000}mm à ${van.length}mm (côté cabine)
+   - "devant X" = placer à x > X.x + X.width (plus proche de l'avant/cabine que l'élément X)
+   - "derrière X" = placer à x < X.x (plus proche de l'arrière que l'élément X)
    - "à côté de X" = même x, mais y différent
 
 5. **Pour placer N'IMPORTE QUEL meuble "à l'arrière, centré"**:
-   - x = ${van.length} - meuble.width (pour coller au fond)
+   - x = 100 (pour laisser un espace au mur arrière)
    - y = (${van.width} - meuble.height) / 2 (pour centrer horizontalement)
-   - Exemple lit: x=${van.length - 1900}, y=${Math.floor((van.width - 1400) / 2)}
-   - Exemple rangement: x=${van.length - 800}, y=${Math.floor((van.width - 400) / 2)}
+   - Exemple lit: x=100, y=${Math.floor((van.width - 1400) / 2)}
+   - Exemple rangement: x=100, y=${Math.floor((van.width - 400) / 2)}
 
 6. **ESPACE DE CIRCULATION**: Laisse min 600mm de largeur pour circuler
 
@@ -111,7 +112,7 @@ Génère un JSON avec cette structure:
 🚨 **EXEMPLE CONCRET 1**: Lit double à l'arrière centré
 {
   "type": "bed",
-  "x": ${van.length - 1900},
+  "x": 100,
   "y": ${Math.floor((van.width - 1400) / 2)},
   "width": 1900,
   "height": 1400,
@@ -123,7 +124,7 @@ Pour "lit à l'arrière avec rangement devant":
 [
   {
     "type": "bed",
-    "x": ${van.length - 1900},  // Arrière
+    "x": 100,  // Arrière
     "y": ${Math.floor((van.width - 900) / 2)},  // Centré (lit simple)
     "width": 1900,
     "height": 900,
@@ -131,7 +132,7 @@ Pour "lit à l'arrière avec rangement devant":
   },
   {
     "type": "storage",
-    "x": ${van.length - 1900 - 800 - 100},  // CALCUL: lit.x - storage.width - 100mm d'espace
+    "x": 2000,  // CALCUL: lit.x + lit.width + 100mm d'espace = 100 + 1900 + 100 = 2100
     "y": ${Math.floor((van.width - 400) / 2)},  // Centré
     "width": 800,
     "height": 400,
@@ -139,6 +140,5 @@ Pour "lit à l'arrière avec rangement devant":
   }
 ]
 
-⚠️ NOTE: Le rangement est à x = ${van.length - 1900 - 800 - 100} pour être DEVANT le lit (x plus petit)
-et ne PAS chevaucher (lit.x - storage.width - espace_sécurité)
+⚠️ NOTE: Le rangement est à x = 2000 pour être DEVANT le lit (x plus grand = plus vers l'avant)
 `;

@@ -32,27 +32,29 @@ enum SubscriptionType {
 }
 
 model Van {
-  id          Int      @id @default(autoincrement())
-  vanType     VanType  @unique
+  id          Int     @id @default(autoincrement())
+  vanType     VanType @unique
   displayName String
   category    String
   length      Int
   width       Int
-  height      Int      // Interior height in mm
+  height      Int? // Interior height in mm (optional)
 
-  planVans    PlanVan[]
+  planVans PlanVan[]
 }
 
 model User {
-  id           Int              @id @default(autoincrement())
-  email        String           @unique
-  password     String
-  name         String
-  subscription SubscriptionType
-  settings	   Json?
-  sessions     Session[]
-  plans        Plan[]
-  aiUsages     AIUsage[]
+  id                   Int              @id @default(autoincrement())
+  email                String           @unique
+  password             String
+  name                 String
+  subscription         SubscriptionType @default(FREE)
+  reportsUsedThisMonth Int              @default(0)
+  reportQuotaResetAt   DateTime?
+  settings             Json?
+  sessions             Session[]
+  plans                Plan[]
+  aiUsages             AIUsage[]
 }
 
 model Plan {
@@ -95,8 +97,8 @@ model AIUsage {
   tokens    Int
   cost      Float
   createdAt DateTime @default(now())
-  
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([createdAt])

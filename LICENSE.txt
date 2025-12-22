@@ -1,4 +1,4 @@
-© 2025 Eric Laidet. All rights reserved.
+© 2025 Eric Laidet Consulting. All rights reserved.
 
 This software and its source code are proprietary and confidential. 
 You may not copy, modify, distribute, or use this software for any purpose 
@@ -7,5 +7,5 @@ without the explicit written permission of the copyright holder.
 Commercial use, resale, or redistribution of this software is strictly prohibited 
 unless a separate commercial license agreement has been granted by the copyright holder.
 
-For inquiries regarding licensing or commercial use, please contact: erik.laidet@gmail.com
+For inquiries regarding licensing or commercial use, please contact: EricLaidetConsulting@gmail.com
 

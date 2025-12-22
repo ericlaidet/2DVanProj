@@ -1,6 +1,7 @@
 .plans-page {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 .plans-page h2 {
@@ -201,18 +202,19 @@
   cursor: pointer;
 }
 
-.back-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background: #ddd;
-  border-radius: 8px;
+.back-btn {
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background: #6b7280;
+  color: white;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
+  transition: background 0.2s;
 }
 
-.back-button:hover {
-  background: #ccc;
+.back-btn:hover {
+  background: #4b5563;
 }
 
 /* ========================================
@@ -300,14 +302,11 @@ body.dark-theme .cancel-btn {
   color: #e0e0e0;
 }
 
-body.dark-theme .back-btn,
-body.dark-theme .back-button {
+body.dark-theme .back-btn {
   background: #2a2a2a;
   color: #e0e0e0;
 }
 
-body.dark-theme .back-btn:hover,
-body.dark-theme .back-button:hover {
+body.dark-theme .back-btn:hover {
   background: #374151;
 }
-

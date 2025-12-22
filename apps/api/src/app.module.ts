@@ -10,6 +10,7 @@ import { join } from 'path';
 import { HealthModule } from './health/health.module';
 import { AppLoggerModule } from './logger.module'; // ✅ import du logger
 import { AIModule } from './ai/ai.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -18,11 +19,12 @@ import { AIModule } from './ai/ai.module';
       envFilePath: join(__dirname, '../../..', '.env'), // ✅ va chercher le .env racine
     }),
     AuthModule,
-	UsersModule, // ✅ AJOUT - Module Users
+    UsersModule, // ✅ AJOUT - Module Users
     PlansModule,
     HealthModule, // ✅ nouveau module de monitoring
     AppLoggerModule,
     AIModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -32,4 +34,4 @@ import { AIModule } from './ai/ai.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

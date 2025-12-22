@@ -25,11 +25,16 @@ export class PlansController {
     return this.plansService.createPlanForUser(req.user.id, dto);
   }
 
-  @Get()
-  async findAll(@Request() req: any) {
-    console.log('REQ.USER =', req.user);
-    return this.plansService.findAllForUser(req.user.id);
+@Get()
+async findAll(@Request() req: any) {
+  try {
+    console.log('🔍 Getting plans for user:', req.user.id);
+    return await this.plansService.findAllForUser(req.user.id);
+  } catch (error) {
+    console.error('❌ PLANS ERROR:', error);
+    throw error;
   }
+}
 
   @Get(':id')
   async findOne(@Request() req: any, @Param('id', ParseIntPipe) id: number) {
