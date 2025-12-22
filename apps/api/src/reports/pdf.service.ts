@@ -33,25 +33,36 @@ export class PdfService {
      * Generate PDF report
      */
     async generatePdf(data: ExportData): Promise<Buffer> {
+        // ✅ Use standard fonts (Helvetica) that don't require external files
         const fonts = {
-            Roboto: {
-                normal: 'node_modules/pdfmake/build/vfs_fonts.js',
-                bold: 'node_modules/pdfmake/build/vfs_fonts.js',
-            },
+            Helvetica: {
+                normal: 'Helvetica',
+                bold: 'Helvetica-Bold',
+                italics: 'Helvetica-Oblique',
+                bolditalics: 'Helvetica-BoldOblique'
+            }
         };
 
         const printer = new PdfPrinter(fonts);
 
-        const docDefinition = this.createDocumentDefinition(data);
-        const pdfDoc = printer.createPdfKitDocument(docDefinition);
+        try {
+            const docDefinition = this.createDocumentDefinition(data);
+            const pdfDoc = printer.createPdfKitDocument(docDefinition);
 
-        return new Promise((resolve, reject) => {
-            const chunks: Buffer[] = [];
-            pdfDoc.on('data', (chunk: Buffer) => chunks.push(chunk));
-            pdfDoc.on('end', () => resolve(Buffer.concat(chunks)));
-            pdfDoc.on('error', reject);
-            pdfDoc.end();
-        });
+            return new Promise((resolve, reject) => {
+                const chunks: Buffer[] = [];
+                pdfDoc.on('data', (chunk: Buffer) => chunks.push(chunk));
+                pdfDoc.on('end', () => resolve(Buffer.concat(chunks)));
+                pdfDoc.on('error', (err) => {
+                    console.error('❌ PDF Generation Stream Error:', err);
+                    reject(err);
+                });
+                pdfDoc.end();
+            });
+        } catch (error) {
+            console.error('❌ PDF docDefinition Error:', error);
+            throw error;
+        }
     }
 
     private createDocumentDefinition(data: ExportData): TDocumentDefinitions {
@@ -63,6 +74,9 @@ export class PdfService {
         });
 
         return {
+            defaultStyle: {
+                font: 'Helvetica'
+            },
             pageSize: 'A4',
             pageMargins: [40, 60, 40, 80],
 

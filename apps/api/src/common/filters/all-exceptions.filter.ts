@@ -26,7 +26,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getResponse()
         : 'Erreur interne du serveur';
 
-    this.logger.error(`[${request.method}] ${request.url} → ${JSON.stringify(message)}`);
+    // Log the error with stack trace if available
+    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
+      this.logger.error(
+        `[${request.method}] ${request.url} → 500 Internal Server Error`,
+        exception instanceof Error ? exception.stack : JSON.stringify(exception),
+      );
+    } else {
+      this.logger.error(`[${request.method}] ${request.url} → ${JSON.stringify(message)}`);
+    }
 
     response.status(status).json({
       statusCode: status,

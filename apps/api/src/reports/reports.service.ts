@@ -71,10 +71,15 @@ export class ReportsService {
             throw new HttpException('Van non trouvé pour ce plan', HttpStatus.BAD_REQUEST);
         }
 
-        // Parse furniture data
+        // Parse furniture data with safe defaults for dimensions
         const furniture = (Array.isArray(plan.jsonData)
             ? plan.jsonData
-            : []) as unknown as FurnitureItem[];
+            : []).map((item: any) => ({
+                ...item,
+                width: item.width || 500,
+                height: item.height || 500,
+                name: item.name || item.type || 'Meuble inconnu',
+            })) as unknown as FurnitureItem[];
 
         // Generate PDF
         const pdfBuffer = await this.pdfService.generatePdf({
