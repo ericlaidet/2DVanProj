@@ -1,15 +1,13 @@
 /* apps/web/src/components/van/ViewModeToggle.css */
 
 .view-mode-toggle-container {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 4px;
+  /* Plus compact */
 }
 
 /* ==========================================
@@ -22,12 +20,13 @@
   gap: 16px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
-  padding: 12px 20px;
+  padding: 8px 16px;
+  /* Plus compact */
   border-radius: 50px;
   border: 2px solid rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.1),
     0 0 0 0 rgba(102, 126, 234, 0);
   position: relative;
@@ -36,7 +35,7 @@
 
 .view-mode-toggle:hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 6px 16px rgba(0, 0, 0, 0.15),
     0 0 0 4px rgba(102, 126, 234, 0.1);
   border-color: rgba(102, 126, 234, 0.3);
@@ -70,8 +69,8 @@
 }
 
 .mode-icon svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   transition: all 0.3s ease;
 }
 
@@ -81,7 +80,7 @@
 }
 
 .mode-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -95,16 +94,29 @@
 }
 
 /* ==========================================
-   TOGGLE SLIDER
+   VMT SLIDER (Scant prefix for isolation)
    ========================================== */
-
-.toggle-slider {
+.vmt-slider {
   position: relative;
-  width: 60px;
-  height: 32px;
+  width: 54px;
+  height: 30px;
   background: #e2e8f0;
-  border-radius: 16px;
+  border-radius: 15px;
   transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+.vmt-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+  z-index: 2;
 }
 
 /* Active mode visual feedback */
@@ -118,20 +130,20 @@
   transform: scale(1.1);
 }
 
-.view-mode-toggle[data-active-mode="2D"] .toggle-slider {
+.view-mode-toggle[data-active-mode="2D"] .vmt-slider {
   background: #e2e8f0;
 }
 
-.view-mode-toggle[data-active-mode="3D"] .toggle-slider {
+.view-mode-toggle[data-active-mode="3D"] .vmt-slider {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.view-mode-toggle[data-active-mode="2D"] .slider-thumb {
+.view-mode-toggle[data-active-mode="2D"] .vmt-thumb {
   transform: translateX(0);
 }
 
-.view-mode-toggle[data-active-mode="3D"] .slider-thumb {
-  transform: translateX(28px);
+.view-mode-toggle[data-active-mode="3D"] .vmt-thumb {
+  transform: translateX(24px);
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
@@ -189,10 +201,10 @@
 /* ==========================================
    RESPONSIVE
    ========================================== */
-
 @media (max-width: 768px) {
   .view-mode-toggle-container {
-    top: 60px;
+    top: 0;
+    margin: 5px auto;
   }
 
   .view-mode-toggle {
@@ -213,17 +225,19 @@
     font-size: 0.65rem;
   }
 
-  .toggle-slider {
+  .vmt-slider {
     width: 50px;
     height: 28px;
   }
 
-  .slider-thumb {
+  .vmt-thumb {
     width: 20px;
     height: 20px;
+    top: 4px;
+    left: 4px;
   }
 
-  .view-mode-toggle.3D .slider-thumb {
+  .view-mode-toggle[data-active-mode="3D"] .vmt-thumb {
     transform: translateX(22px);
   }
 
@@ -274,11 +288,12 @@
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-20px);
+    transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -286,9 +301,11 @@
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
+
   100% {
     transform: scale(1);
   }
@@ -299,9 +316,11 @@
     opacity: 0;
     transform: scale(0);
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -312,6 +331,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -323,7 +343,7 @@
 
 .view-mode-toggle:focus {
   outline: none;
-  box-shadow: 
+  box-shadow:
     0 6px 16px rgba(0, 0, 0, 0.15),
     0 0 0 4px rgba(102, 126, 234, 0.3);
 }
@@ -335,6 +355,7 @@
 
 /* Préférence de mouvement réduit */
 @media (prefers-reduced-motion: reduce) {
+
   .view-mode-toggle,
   .mode-icon,
   .slider-thumb,

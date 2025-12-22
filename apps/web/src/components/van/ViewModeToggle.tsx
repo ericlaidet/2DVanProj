@@ -13,15 +13,16 @@ export const ViewModeToggle: React.FC = () => {
   const objects = useStore(s => s.objects);
 
   const handleToggle = () => {
-    // Animation de feedback
+    // Animation de feedback visuel immédiat par classe CSS
     const button = document.querySelector('.view-mode-toggle');
     button?.classList.add('toggling');
+
+    // On bascule l'état global
+    toggleViewMode();
 
     setTimeout(() => {
       button?.classList.remove('toggling');
     }, 400);
-
-    toggleViewMode();
   };
 
   // Raccourci clavier V pour basculer
@@ -62,9 +63,9 @@ export const ViewModeToggle: React.FC = () => {
         </div>
 
         {/* Switch slider */}
-        <div className="toggle-slider">
-          <div className="slider-track" />
-          <div className="slider-thumb" />
+        <div className="vmt-slider">
+          <div className="vmt-track" />
+          <div className="vmt-thumb" />
         </div>
 
         {/* Icône 3D */}

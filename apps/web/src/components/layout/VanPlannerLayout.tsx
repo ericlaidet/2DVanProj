@@ -309,33 +309,39 @@ const VanPlannerLayout: React.FC = () => {
         <div className="layout-grid">
           {/* ===== COLONNE GAUCHE : WORKSPACE VAN ===== */}
           <section className="workspace-left">
-            {/* ✨ NOUVEAU : En-tête avec toggle 2D/3D */}
-            <div className="workspace-header-with-toggle">
+            <div className="workspace-header-simple">
               <h2 className="section-title">Espace travail Van</h2>
-              {vanType && <ViewModeToggle />}
             </div>
 
-            {/* Van Selector + Dimension */}
-            <div className="van-controls">
-              <div className="van-selector-container">
-                <label className="selector-label-block">Sélectionner un van</label>
-                <VanModalSelector
-                  selectedVan={
-                    vanType
-                      ? VAN_TYPES.find((v) => v.vanType === vanType)?.displayName || vanType
-                      : undefined
-                  }
-                  onSelect={(vanType) => setVanType(vanType)}
-                />
+            {/* Van Selector + Dimension GRID (Layout conforme au schéma V3) */}
+            <div className="van-controls-grid">
+              <div className="van-controls-left">
+                <div className="van-selection-box">
+                  <span className="control-label">Véhicule</span>
+                  <VanModalSelector
+                    selectedVan={
+                      vanType
+                        ? VAN_TYPES.find((v) => v.vanType === vanType)?.displayName || vanType
+                        : undefined
+                    }
+                    onSelect={(vanType) => setVanType(vanType)}
+                  />
+                </div>
+
+                {vanType && (
+                  <div className="van-dimension-box">
+                    <span className="control-label">Dimension van</span>
+                    <span className="dimension-value-text">
+                      {VAN_TYPES.find((v) => v.vanType === vanType)?.length} x{' '}
+                      {VAN_TYPES.find((v) => v.vanType === vanType)?.width}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {vanType && (
-                <div className="dimension-info">
-                  <span className="dimension-label">Dimension van</span>
-                  <span className="dimension-value">
-                    {VAN_TYPES.find((v) => v.vanType === vanType)?.length} x{' '}
-                    {VAN_TYPES.find((v) => v.vanType === vanType)?.width}
-                  </span>
+                <div className="van-controls-right-card">
+                  <ViewModeToggle />
                 </div>
               )}
             </div>
