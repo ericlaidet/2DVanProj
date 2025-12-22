@@ -1,0 +1,60 @@
+/* apps/web/src/components/reports/QuotaDisplay.css */
+.quota-display {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.quota-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.quota-label {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.quota-value {
+    color: #f8fafc;
+    font-weight: 700;
+}
+
+.quota-value.exhausted {
+    color: #ef4444;
+}
+
+.quota-bar-container {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.quota-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.quota-warning {
+    font-size: 0.75rem;
+    color: #f59e0b;
+    font-style: italic;
+    text-align: right;
+}
+
+.quota-exhausted {
+    font-size: 0.75rem;
+    color: #ef4444;
+    font-weight: 600;
+    text-align: right;
+}

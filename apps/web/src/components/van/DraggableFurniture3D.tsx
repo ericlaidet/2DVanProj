@@ -129,15 +129,23 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
       raycaster.setFromCamera(mouse, camera);
 
       // 3. Calculer l'offset entre le point cliqué et le centre du meuble
-      // Cela évite que le meuble "saute" pour centrer sur la souris
       const intersectPoint = new THREE.Vector3();
-      const dragPlaneObj = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); // Plan sol par défaut
+      let dragPlaneObj: THREE.Plane;
+
+      if (plane === 'horizontal' || plane === 'depth') {
+        dragPlaneObj = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); // Plan sol
+      } else {
+        // Plan vertical face caméra
+        const cameraDir = new THREE.Vector3();
+        camera.getWorldDirection(cameraDir);
+        const planeNormal = new THREE.Vector3(cameraDir.x, 0, cameraDir.z).normalize().negate();
+        const pos3DVec = new THREE.Vector3(pos3D.x, pos3D.y, pos3D.z);
+        dragPlaneObj = new THREE.Plane(planeNormal, -planeNormal.dot(pos3DVec));
+      }
 
       raycaster.ray.intersectPlane(dragPlaneObj, intersectPoint);
 
       if (intersectPoint) {
-        // Offset = Position Actuelle (Centre en 3D) - Point Cliqué
-        // Note: pos3D est déjà calculé plus haut comme le centre 3D
         const currentPos = new THREE.Vector3(pos3D.x, pos3D.y, pos3D.z);
         setDragOffset3D(currentPos.sub(intersectPoint));
       }
@@ -195,18 +203,21 @@ export const DraggableFurniture3D: React.FC<DraggableFurniture3DProps> = ({
         }
       }
     } else if (dragPlane === 'vertical') {
-      // ... Logique verticale inchangée pour le moment ...
+      // Plan vertical face caméra (re-calculé pour être cohérent avec PointerDown)
       const cameraDir = new THREE.Vector3();
       camera.getWorldDirection(cameraDir);
-      const planeNormal = cameraDir.clone().normalize();
-      const plane = new THREE.Plane(planeNormal, -planeNormal.dot(pos3D)); // Plan face caméra
+      const planeNormal = new THREE.Vector3(cameraDir.x, 0, cameraDir.z).normalize().negate();
+      const pos3DVec = new THREE.Vector3(pos3D.x, pos3D.y, pos3D.z);
+      const plane = new THREE.Plane(planeNormal, -planeNormal.dot(pos3DVec));
 
       raycaster.ray.intersectPlane(plane, intersectPoint);
 
-      if (intersectPoint) {
-        // Pour la hauteur, on peut garder la logique absolue ou ajouter un offset si besoin
-        // Ici on garde l'absolu simple pour l'instant
-        const newZ = Math.max(0, Math.min(2000, intersectPoint.y * 1000));
+      if (intersectPoint && dragOffset3D) {
+        // Position du centre = Point d'intersection + Offset
+        const newCenter3D = intersectPoint.add(dragOffset3D);
+
+        // La hauteur (z en mm) est la différence entre Y 3D et le plancher
+        const newZ = Math.max(0, Math.min(2000, (newCenter3D.y - VAN_FLOOR_HEIGHT) * 1000));
         updateObject(furniture.id, { z: newZ });
       }
     }

@@ -1,7 +1,7 @@
 // apps/web/src/components/van/VanCanvas3D.tsx
 import React, { Suspense, useState, useCallback, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Grid, Environment, Stats } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, Grid, Environment } from '@react-three/drei';
 import { useStore } from '../../store/store';
 import { VAN_TYPES } from '../../constants/vans';
 import { VanModelWireframe } from './models/VanModelWireframe';
@@ -79,7 +79,7 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
   const updateObject = useStore(s => s.updateObject);
   const removeObject = useStore(s => s.removeObject);
 
-  const [showStats, setShowStats] = useState(false);
+  /* showStats removed */
   const [selectedFurnitureId, setSelectedFurnitureId] = useState<string | null>(null);
   const [transformMode, setTransformMode] = useState<'translate' | 'rotate' | 'scale'>('translate');
   const [cameraLocked, setCameraLocked] = useState(true); // 🔒 Caméra verrouillée par défaut
@@ -171,9 +171,10 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
         <Canvas
           camera={{ position: [8, 6, 8], fov: 50 }}
           gl={{
-            antialias: false,  // ⚡ Désactivé pour performance
+            antialias: false,
             alpha: false,
-            powerPreference: 'high-performance'
+            powerPreference: 'high-performance',
+            preserveDrawingBuffer: true
           }}
           onClick={handleDeselectAll}
         >
@@ -220,7 +221,8 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
             />
           ))}
 
-          {showStats && <Stats />}
+
+          {/* showStats check removed */}
         </Canvas>
       </Suspense>
 
@@ -240,11 +242,6 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
 
       {/* Controls - bottom left */}
       <div className="canvas-3d-controls-bottom">
-        {/* Camera unlock hint - always visible */}
-        <div className="camera-hint">
-          <strong>⌨️ C</strong> : {cameraLocked ? 'Déverrouiller' : 'Verrouiller'} caméra
-        </div>
-
         {/* Collapsible controls */}
         <div className="controls-dropdown">
           <button
@@ -268,29 +265,13 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
         </div>
       </div>
 
-      <button
-        className="stats-toggle"
-        onClick={() => setShowStats(!showStats)}
-        title="Afficher/masquer les stats FPS"
-      >
-        📊
-      </button>
-
-      {/* Toggle Verrouillage Objets */}
+      {/* Toggle Verrouillage Objets (Bottom Right) */}
       <button
         className="object-lock-toggle"
         onClick={() => setObjectsLocked(!objectsLocked)}
         title={objectsLocked ? "Déverrouiller les objets" : "Verrouiller les objets (Protection déplacements)"}
       >
         {objectsLocked ? '🧱' : '🖐️'}
-      </button>
-
-      <button
-        className="camera-lock-toggle"
-        onClick={() => setCameraLocked(!cameraLocked)}
-        title={cameraLocked ? "Déverrouiller la caméra (C)" : "Verrouiller la caméra (C)"}
-      >
-        {cameraLocked ? '🎥' : '📷'}
       </button>
     </div>
   );

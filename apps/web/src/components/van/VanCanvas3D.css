@@ -118,22 +118,7 @@
   animation: slideInLeft 0.4s ease-out;
 }
 
-.camera-hint {
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
-  padding: 10px 16px;
-  color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-
-.camera-hint strong {
-  color: #60a5fa;
-  font-weight: 600;
-}
+/* camera-hint styles removed */
 
 /* Camera status - centered bottom */
 .camera-status-centered {
@@ -231,37 +216,7 @@
   }
 }
 
-/* Toggle FPS Stats button */
-.stats-toggle {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  width: 44px;
-  height: 44px;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  color: white;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.stats-toggle:hover {
-  background: rgba(59, 130, 246, 0.9);
-  border-color: rgba(59, 130, 246, 1);
-  transform: scale(1.1) rotate(10deg);
-}
-
-.stats-toggle:active {
-  transform: scale(0.95) rotate(0deg);
-}
+/* stats-toggle styles removed */
 
 /* 🔒 Objects Lock Toggle */
 .object-lock-toggle {
@@ -296,37 +251,7 @@
   transform: scale(0.95);
 }
 
-/* 🔒 Camera Lock Toggle */
-.camera-lock-toggle {
-  position: absolute;
-  top: 70px;
-  left: 16px;
-  width: 44px;
-  height: 44px;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  color: white;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.camera-lock-toggle:hover {
-  background: rgba(245, 158, 11, 0.9);
-  border-color: rgba(245, 158, 11, 1);
-  transform: scale(1.1);
-}
-
-.camera-lock-toggle:active {
-  transform: scale(0.95);
-}
+/* camera-lock-toggle styles removed */
 
 /* Animations */
 @keyframes fadeInScale {

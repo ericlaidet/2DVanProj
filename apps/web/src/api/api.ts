@@ -29,7 +29,7 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
       let errorMessage = `Erreur ${res.status}`;
       try {
         const data = await res.json();
-        
+
         // Extract error message from various backend formats
         if (typeof data.message === 'string') {
           errorMessage = data.message;
@@ -51,6 +51,11 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
     const contentType = res.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
       return res.json();
+    }
+
+    // Handle PDF / Blob
+    if (contentType.includes('application/pdf')) {
+      return res.blob();
     }
 
     return res.text();

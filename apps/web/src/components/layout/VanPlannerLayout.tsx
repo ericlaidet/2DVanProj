@@ -12,12 +12,15 @@ import Button from '@/components/buttons/Button';
 import { VAN_TYPES } from '@/constants/vans';
 import VanModalSelector from '@/components/van/VanModalSelector';
 import { FurnitureEditModal } from '@/components/van/FurnitureEditModal';
+import QuotaDisplay from '@/components/reports/QuotaDisplay';
 import { v4 as uuidv4 } from 'uuid';
 import './VanPlannerLayout.css';
 import { notify } from '@/utils/notify';
 import { convertAILayoutToFurniture } from '@/utils/aiLayoutConverter';
 import { findAvailablePosition } from '@/utils/furniturePlacement';
 import { getAdaptiveFurnitureSize } from '@/utils/furnitureSizing';
+import html2canvas from 'html2canvas';
+import reportsService from '@/services/reports.service';
 
 const VanPlannerLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -46,11 +49,7 @@ const VanPlannerLayout: React.FC = () => {
   const { plans, loadPlans, addPlan, updatePlan, removePlan } = usePlanManager();
 
   const [prompt, setPrompt] = useState('');
-  const [hasCouchage, setHasCouchage] = useState(true);
-  const [hasCuisine, setHasCuisine] = useState(true);
-  const [hasRangements, setHasRangements] = useState(true);
-  const [couchage, setCouchage] = useState('2');
-  const [style, setStyle] = useState('minin');
+  /* redundant AI states removed */
 
   const [elementName, setElementName] = useState('');
   const [elementDimensions, setElementDimensions] = useState('');
@@ -74,6 +73,8 @@ const VanPlannerLayout: React.FC = () => {
 
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
   const [editingFurnitureId, setEditingFurnitureId] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [activeTab, setActiveTab] = useState<'main' | 'alternatives' | 'improvements'>('main');
 
   const predefinedElements = [
     { name: 'Table', icon: '🪑', color: '#ef4444', type: 'table' },
@@ -102,12 +103,9 @@ const VanPlannerLayout: React.FC = () => {
       vanType,
       userDescription: prompt,
       preferences: {
-        sleepingCapacity: hasCouchage ? Number(couchage) : 0,
-        hasCooking: hasCuisine,
-        hasStorage: hasRangements,
-        style: style === 'minin' ? 'minimalist' : style === 'moderne' ? 'modern' : 'rustic',
+        // Simplified preferences, relying on prompt
+        style: 'modern',
       },
-      existingLayout: objects,  // ✅ Envoie les meubles déjà présents
     });
   };
 
@@ -138,6 +136,12 @@ const VanPlannerLayout: React.FC = () => {
     });
 
     notify.success(`${newObjects.length} meuble(s) ajouté(s) !`);
+  };
+
+  const handleTryAlternative = (altText: string) => {
+    setPrompt(altText);
+    notify.info(`Remplacement du prompt par : "${altText}"`);
+    // On pourrait aussi déclencher handleGenerateLayout() automatiquement ici
   };
 
   const handleSavePlan = async () => {
@@ -228,6 +232,74 @@ const VanPlannerLayout: React.FC = () => {
       notify.success(`✅ Plan "${plan.name}" mis à jour`);
     } catch (error: any) {
       notify.error(error.message || 'Erreur lors de la mise à jour du plan');
+    }
+  };
+
+  const handleExportPdf = async () => {
+    if (!selectedPlanId) {
+      notify.error("Veuillez charger ou sélectionner un plan pour l'exporter.");
+      return;
+    }
+
+    setIsExporting(true);
+    const loadingToast = notify.loading('Génération du rapport PDF...');
+
+    try {
+      // 1. On s'assure d'avoir la capture 2D
+      const originalMode = viewMode;
+      let screenshot2D = '';
+
+      const capture2D = async () => {
+        const element = document.querySelector('.van-canvas') as HTMLElement;
+        if (!element) return '';
+        const canvas = await html2canvas(element, {
+          useCORS: true,
+          scale: 2,
+          backgroundColor: '#ffffff'
+        });
+        return canvas.toDataURL('image/png');
+      };
+
+      if (originalMode !== '2D') {
+        useStore.setState({ viewMode: '2D' });
+        await new Promise(resolve => setTimeout(resolve, 600));
+        screenshot2D = await capture2D();
+        useStore.setState({ viewMode: originalMode });
+      } else {
+        screenshot2D = await capture2D();
+      }
+
+      // 2. Capture 3D
+      let screenshots3D: any = {};
+      const capture3D = () => {
+        const canvas3D = document.querySelector('.van-canvas-3d canvas') as HTMLCanvasElement;
+        if (!canvas3D) return '';
+        return canvas3D.toDataURL('image/png');
+      };
+
+      if (originalMode !== '3D') {
+        useStore.setState({ viewMode: '3D' });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        screenshots3D.iso = capture3D();
+        useStore.setState({ viewMode: originalMode });
+      } else {
+        screenshots3D.iso = capture3D();
+      }
+
+      // 3. Appel au service d'export
+      await reportsService.exportPdf({
+        planId: selectedPlanId,
+        screenshot2D,
+        screenshots3D
+      });
+
+      notify.success('Rapport PDF généré avec succès !');
+    } catch (error) {
+      console.error('Export error:', error);
+      notify.error("Erreur lors de la génération du PDF");
+    } finally {
+      setIsExporting(false);
+      notify.dismiss(loadingToast);
     }
   };
 
@@ -437,7 +509,18 @@ const VanPlannerLayout: React.FC = () => {
                 >
                   Mettre à jour
                 </Button>
+                <Button
+                  variant="blue"
+                  size="small"
+                  onClick={handleExportPdf}
+                  disabled={!selectedPlanId || isExporting}
+                >
+                  {isExporting ? 'Export...' : 'Exporter PDF'}
+                </Button>
               </div>
+
+              {/* Quota Display */}
+              <QuotaDisplay />
             </div>
           </section>
 
@@ -483,82 +566,89 @@ const VanPlannerLayout: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="prompt-options-line">
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={hasCouchage}
-                        onChange={(e) => setHasCouchage(e.target.checked)}
-                        disabled={aiLoading}
-                      />
-                      Couchage
-                      {hasCouchage && (
-                        <select
-                          value={couchage}
-                          onChange={(e) => setCouchage(e.target.value)}
-                          className="selector-input"
-                          disabled={aiLoading}
-                          style={{ marginLeft: '8px' }}
-                        >
-                          <option value="1">1 pers</option>
-                          <option value="2">2 pers</option>
-                        </select>
-                      )}
-                    </label>
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={hasCuisine}
-                        onChange={(e) => setHasCuisine(e.target.checked)}
-                        disabled={aiLoading}
-                      />
-                      Cuisine
-                    </label>
-                    <label className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={hasRangements}
-                        onChange={(e) => setHasRangements(e.target.checked)}
-                        disabled={aiLoading}
-                      />
-                      Rangements
-                    </label>
-                  </div>
+                  {/* prompt-options-line removed */}
 
                   {suggestion && (
                     <div className="ai-suggestion">
-                      <h4 className="suggestion-title">💡 Suggestion IA</h4>
-                      <p className="suggestion-explanation">{suggestion.explanation}</p>
+                      <div className="suggestion-header-tabs">
+                        <button
+                          className={`tab-btn ${activeTab === 'main' ? 'active' : ''}`}
+                          onClick={() => setActiveTab('main')}
+                        >
+                          Disposition
+                        </button>
+                        <button
+                          className={`tab-btn ${activeTab === 'alternatives' ? 'active' : ''}`}
+                          onClick={() => setActiveTab('alternatives')}
+                          disabled={!suggestion.alternatives || suggestion.alternatives.length === 0}
+                        >
+                          Alternatives
+                        </button>
+                        <button
+                          className={`tab-btn ${activeTab === 'improvements' ? 'active' : ''}`}
+                          onClick={() => setActiveTab('improvements')}
+                          disabled={!suggestion.improvements || suggestion.improvements.length === 0}
+                        >
+                          Optimisations
+                        </button>
+                      </div>
 
-                      {suggestion.alternatives && suggestion.alternatives.length > 0 && (
-                        <div className="suggestion-alternatives">
-                          <strong>Alternatives :</strong>
-                          <ul>
-                            {suggestion.alternatives.map((alt, i) => (
-                              <li key={i}>{alt}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                      <div className="suggestion-tab-content">
+                        {activeTab === 'main' && (
+                          <div className="tab-pane active fade-in">
+                            <h4 className="suggestion-title">💡 Suggestion IA</h4>
+                            <p className="suggestion-explanation">{suggestion.explanation}</p>
+                            <Button
+                              variant="green"
+                              onClick={handleApplySuggestion}
+                              className="apply-suggestion-btn"
+                            >
+                              ✅ Appliquer ce plan
+                            </Button>
+                          </div>
+                        )}
 
-                      {suggestion.improvements && suggestion.improvements.length > 0 && (
-                        <div className="suggestion-improvements">
-                          <strong>Améliorations :</strong>
-                          <ul>
-                            {suggestion.improvements.map((imp, i) => (
-                              <li key={i}>{imp}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                        {activeTab === 'alternatives' && suggestion.alternatives && (
+                          <div className="tab-pane active fade-in">
+                            <p className="tab-info-text">Ces variantes modifient votre prompt pour explorer d'autres approches :</p>
+                            <ul className="alternatives-action-list">
+                              {suggestion.alternatives.map((alt, i) => (
+                                <li key={i} className="alt-action-item">
+                                  <span>{alt}</span>
+                                  <button
+                                    className="btn-try-alt"
+                                    onClick={() => handleTryAlternative(alt)}
+                                  >
+                                    Essayer
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
 
-                      <Button
-                        variant="green"
-                        onClick={handleApplySuggestion}
-                        className="apply-suggestion-btn"
-                      >
-                        ✅ Appliquer cette suggestion
-                      </Button>
+                        {activeTab === 'improvements' && suggestion.improvements && (
+                          <div className="tab-pane active fade-in">
+                            <p className="tab-info-text">Améliorations suggérées pour votre aménagement :</p>
+                            <ul className="improvements-list">
+                              {suggestion.improvements.map((imp, i) => (
+                                <li key={i}>{imp}</li>
+                              ))}
+                            </ul>
+                            <div className="tab-actions-bottom">
+                              <Button
+                                variant="blue"
+                                size="small"
+                                onClick={handleOptimizePlan}
+                                disabled={aiLoading || !isPro2Plus}
+                                title={!isPro2Plus ? "PRO2+ requis" : ""}
+                              >
+                                🔧 Lancer l'optimisation IA
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </>
