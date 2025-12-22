@@ -7,6 +7,7 @@ import VanPlannerLayout from "@/components/layout/VanPlannerLayout";
 import PlansPage from "@/pages/PlansPage";
 import ProfilePage from "@/pages/ProfilePage";
 import SettingsPage from "@/pages/SettingsPage";
+import MainLayout from "@/components/layout/MainLayout";
 
 const App = () => {
   const { loggedIn, loading, checkAuth } = useAuth();
@@ -32,11 +33,13 @@ const App = () => {
         <Login onLogin={handleLogin} />
       ) : (
         <Routes>
-          <Route path="/" element={<VanPlannerLayout />} />
-          <Route path="/plans" element={<PlansPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<VanPlannerLayout />} />
+            <Route path="/plans" element={<PlansPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Route>
         </Routes>
       )}
     </BrowserRouter>

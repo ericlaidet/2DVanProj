@@ -15,7 +15,6 @@ import { FurnitureEditModal } from '@/components/van/FurnitureEditModal';
 import { v4 as uuidv4 } from 'uuid';
 import './VanPlannerLayout.css';
 import { notify } from '@/utils/notify';
-import Header from "@/components/layout/Header";
 import { convertAILayoutToFurniture } from '@/utils/aiLayoutConverter';
 import { findAvailablePosition } from '@/utils/furniturePlacement';
 import { getAdaptiveFurnitureSize } from '@/utils/furnitureSizing';
@@ -308,8 +307,6 @@ const VanPlannerLayout: React.FC = () => {
 
   return (
     <div className="van-planner-layout-new">
-      <Header />
-
       <div className="layout-wrapper">
         <div className="layout-grid">
           {/* ===== COLONNE GAUCHE : WORKSPACE VAN ===== */}
@@ -389,7 +386,8 @@ const VanPlannerLayout: React.FC = () => {
                   </select>
 
                   <Button
-                    variant="yellow"
+                    variant="gray"
+                    size="small"
                     onClick={handleRenamePlan}
                     disabled={!selectedPlanId}
                     className="rename-btn"
@@ -405,27 +403,31 @@ const VanPlannerLayout: React.FC = () => {
               <div className="plans-actions">
                 <Button
                   variant="blue"
+                  size="small"
                   onClick={handleLoadPlan}
                   disabled={!selectedPlanId}
                 >
                   Charger
                 </Button>
                 <Button
-                  variant="green"
+                  variant="blue"
+                  size="small"
                   onClick={handleSavePlan}
                   disabled={!vanType || objects.length === 0}
                 >
                   Sauvegarder
                 </Button>
                 <Button
-                  variant="red"
+                  variant="gray"
+                  size="small"
                   onClick={handleDeletePlan}
                   disabled={!selectedPlanId}
                 >
                   Supprimer
                 </Button>
                 <Button
-                  variant="yellow"
+                  variant="gray"
+                  size="small"
                   onClick={handleUpdatePlan}
                   disabled={!selectedPlanId || objects.length === 0}
                 >
