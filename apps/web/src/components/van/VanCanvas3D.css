@@ -118,7 +118,17 @@
   animation: slideInLeft 0.4s ease-out;
 }
 
-/* camera-hint styles removed */
+/* Hint for camera shortcut */
+.camera-hint {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 10px;
+  border-radius: 4px;
+  pointer-events: none;
+  animation: fadeIn 0.4s ease-out;
+}
 
 /* Camera status - centered bottom */
 .camera-status-centered {

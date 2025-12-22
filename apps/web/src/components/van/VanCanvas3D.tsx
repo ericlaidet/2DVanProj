@@ -263,6 +263,11 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
             </div>
           )}
         </div>
+
+        {/* Camera block hint */}
+        <div className="camera-hint">
+          ⌨️ C : {cameraLocked ? 'Déverrouiller' : 'Verrouiller'} caméra
+        </div>
       </div>
 
       {/* Toggle Verrouillage Objets (Bottom Right) */}
@@ -273,6 +278,6 @@ export const VanCanvas3D: React.FC<{ onEdit?: (id: string) => void }> = ({ onEdi
       >
         {objectsLocked ? '🧱' : '🖐️'}
       </button>
-    </div>
+    </div >
   );
 };

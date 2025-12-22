@@ -13,14 +13,14 @@ export type FurnitureObject = {
   height: number;     // Hauteur (mm) - Dimension Z (en 2D) ou Y (en 3D si pas de depth)
   depth?: number;     // Profondeur (mm) - Dimension Y en 3D ⚠️ IMPORTANT
   color: string;      // Couleur principale du meuble
-  
+
   // ✨ Rotation sur 3 axes (en degrés)
   rotation?: {
     x?: number;       // Rotation X (pitch) - Basculement avant/arrière
     y?: number;       // Rotation Y (yaw) - Rotation horizontale
     z?: number;       // Rotation Z (roll) - Rotation latérale
   };
-  
+
   // 🔮 Fonctionnalités futures
   model3D?: string;        // URL du modèle 3D personnalisé (.glb/.gltf)
   texture?: string;        // URL de la texture personnalisée
@@ -43,6 +43,11 @@ export type Plan = {
   thumbnail?: string;      // Miniature du plan
   createdAt?: string;      // Date de création
   updatedAt?: string;      // Date de dernière modification
+  planVans?: Array<{
+    van: {
+      vanType: string;
+    }
+  }>;
 };
 
 export type UserSettings = {
@@ -84,16 +89,16 @@ type StoreState = {
   // SETTINGS
   // ==========================================
   settings: UserSettings;
-  
+
   // ==========================================
   // VUE 2D/3D
   // ==========================================
   viewMode: ViewMode;
-  
+
   // ✨ NOUVEAU : Sélection et transformation 3D
   selectedObjectId: string | null;
   transformMode: TransformMode;
-  
+
   // ✨ NOUVEAU : Historique (Undo/Redo)
   history: FurnitureObject[][];
   historyIndex: number;
@@ -107,7 +112,7 @@ type StoreState = {
   removeObject: (id: string) => void;
   duplicateObject: (id: string) => void;
   clearAllObjects: () => void;
-  
+
   // ==========================================
   // ACTIONS - PLANS
   // ==========================================
@@ -130,17 +135,17 @@ type StoreState = {
   // ==========================================
   setSettings: (settings: Partial<UserSettings>) => void;
   applyTheme: () => void;
-  
+
   // ==========================================
   // ACTIONS - VUE 2D/3D
   // ==========================================
   setViewMode: (mode: ViewMode) => void;
   toggleViewMode: () => void;
-  
+
   // ✨ NOUVEAU : Sélection et transformation
   setSelectedObjectId: (id: string | null) => void;
   setTransformMode: (mode: TransformMode) => void;
-  
+
   // ✨ NOUVEAU : Historique
   undo: () => void;
   redo: () => void;
@@ -166,27 +171,27 @@ export const useStore = create<StoreState>((set, get) => ({
       return name;
     } catch { return null; }
   })(),
-  
+
   subscription: (() => {
     const u = localStorage.getItem("user");
     if (!u) return "FREE";
-    try { 
-      return JSON.parse(u).subscription || "FREE"; 
-    } catch { 
-      return "FREE"; 
+    try {
+      return JSON.parse(u).subscription || "FREE";
+    } catch {
+      return "FREE";
     }
   })(),
-  
+
   userEmail: (() => {
     const u = localStorage.getItem("user");
     if (!u) return null;
-    try { 
-      return JSON.parse(u).email || null; 
-    } catch { 
-      return null; 
+    try {
+      return JSON.parse(u).email || null;
+    } catch {
+      return null;
     }
   })(),
-  
+
   loggedIn: !!localStorage.getItem("token"),
 
   // Settings par défaut
@@ -201,14 +206,14 @@ export const useStore = create<StoreState>((set, get) => ({
     antialias: true,
     fps: false
   },
-  
+
   // Vue par défaut
   viewMode: '2D',
-  
+
   // Sélection et transformation
   selectedObjectId: null,
   transformMode: 'translate',
-  
+
   // Historique (Undo/Redo)
   history: [[]],
   historyIndex: 0,
@@ -216,68 +221,68 @@ export const useStore = create<StoreState>((set, get) => ({
   // ==========================================
   // ACTIONS - VAN & OBJECTS
   // ==========================================
-  
+
   setVanType: (vt) => {
     console.log('🟢 [STORE] setVanType:', vt);
     set({ vanType: vt, objects: [], selectedObjectId: null });
   },
-  
+
   addObject: (o) => {
     console.log('🟢 [STORE] addObject:', o);
     set((s) => {
       const newObjects = [...s.objects, o];
-      
+
       // Ajouter à l'historique
       const newHistory = s.history.slice(0, s.historyIndex + 1);
       newHistory.push(newObjects);
-      
-      return { 
+
+      return {
         objects: newObjects,
         history: newHistory,
         historyIndex: newHistory.length - 1
       };
     });
   },
-  
+
   updateObject: (id, props) => {
     console.log('🟢 [STORE] updateObject:', id, props);
     set((s) => {
-      const newObjects = s.objects.map((o) => 
+      const newObjects = s.objects.map((o) =>
         o.id === id ? { ...o, ...props } : o
       );
-      
+
       // Ajouter à l'historique seulement si changement significatif
       // (pas pour chaque mouvement de souris)
-      const shouldAddToHistory = 
-        props.x !== undefined || 
-        props.y !== undefined || 
+      const shouldAddToHistory =
+        props.x !== undefined ||
+        props.y !== undefined ||
         props.z !== undefined ||
         props.rotation !== undefined;
-      
+
       if (shouldAddToHistory) {
         const newHistory = s.history.slice(0, s.historyIndex + 1);
         newHistory.push(newObjects);
-        
+
         return {
           objects: newObjects,
           history: newHistory,
           historyIndex: newHistory.length - 1
         };
       }
-      
+
       return { objects: newObjects };
     });
   },
-  
+
   removeObject: (id) => {
     console.log('🟢 [STORE] removeObject:', id);
     set((s) => {
       const newObjects = s.objects.filter((o) => o.id !== id);
-      
+
       // Ajouter à l'historique
       const newHistory = s.history.slice(0, s.historyIndex + 1);
       newHistory.push(newObjects);
-      
+
       return {
         objects: newObjects,
         selectedObjectId: s.selectedObjectId === id ? null : s.selectedObjectId,
@@ -286,13 +291,13 @@ export const useStore = create<StoreState>((set, get) => ({
       };
     });
   },
-  
+
   duplicateObject: (id) => {
     console.log('🟢 [STORE] duplicateObject:', id);
     set((s) => {
       const obj = s.objects.find((o) => o.id === id);
       if (!obj) return s;
-      
+
       const newObj: FurnitureObject = {
         ...obj,
         id: `${obj.type}-${Date.now()}`,
@@ -300,13 +305,13 @@ export const useStore = create<StoreState>((set, get) => ({
         x: obj.x + 100,
         y: obj.y + 100
       };
-      
+
       const newObjects = [...s.objects, newObj];
-      
+
       // Ajouter à l'historique
       const newHistory = s.history.slice(0, s.historyIndex + 1);
       newHistory.push(newObjects);
-      
+
       return {
         objects: newObjects,
         selectedObjectId: newObj.id,
@@ -315,13 +320,13 @@ export const useStore = create<StoreState>((set, get) => ({
       };
     });
   },
-  
+
   clearAllObjects: () => {
     console.log('🔴 [STORE] clearAllObjects');
     set((s) => {
       const newHistory = s.history.slice(0, s.historyIndex + 1);
       newHistory.push([]);
-      
+
       return {
         objects: [],
         selectedObjectId: null,
@@ -334,26 +339,26 @@ export const useStore = create<StoreState>((set, get) => ({
   // ==========================================
   // ACTIONS - PLANS
   // ==========================================
-  
+
   addPlan: (p) => {
     console.log('🟢 [STORE] addPlan:', p);
     set((s) => ({ plans: [...s.plans, p] }));
   },
-  
+
   updatePlan: (p) => {
     console.log('🟢 [STORE] updatePlan:', p);
-    set((s) => ({ 
-      plans: s.plans.map((x) => (x.id === p.id ? p : x)) 
+    set((s) => ({
+      plans: s.plans.map((x) => (x.id === p.id ? p : x))
     }));
   },
-  
+
   removePlan: (id) => {
     console.log('🔴 [STORE] removePlan:', id);
-    set((s) => ({ 
-      plans: s.plans.filter((p) => p.id !== id) 
+    set((s) => ({
+      plans: s.plans.filter((p) => p.id !== id)
     }));
   },
-  
+
   loadPlan: (plan) => {
     console.log('🟢 [STORE] loadPlan:', plan);
     set({
@@ -368,22 +373,22 @@ export const useStore = create<StoreState>((set, get) => ({
   // ==========================================
   // ACTIONS - AUTH
   // ==========================================
-  
+
   setLoggedIn: (val) => {
     console.log('🟢 [STORE] setLoggedIn:', val);
     set({ loggedIn: val });
   },
-  
+
   setUserName: (name) => {
     console.log('🟢 [STORE] setUserName:', name);
     set({ userName: name });
   },
-  
+
   setSubscription: (sub) => {
     console.log('🟢 [STORE] setSubscription:', sub);
     set({ subscription: sub });
   },
-  
+
   setUserEmail: (email) => {
     console.log('🟢 [STORE] setUserEmail:', email);
     set({ userEmail: email });
@@ -421,7 +426,7 @@ export const useStore = create<StoreState>((set, get) => ({
   // ==========================================
   // ACTIONS - SETTINGS
   // ==========================================
-  
+
   setSettings: (newSettings) => {
     console.log('🟢 [STORE] setSettings:', newSettings);
     set((state) => {
@@ -446,41 +451,41 @@ export const useStore = create<StoreState>((set, get) => ({
       document.body.classList.remove('dark-theme');
     }
   },
-  
+
   // ==========================================
   // ACTIONS - VUE 2D/3D
   // ==========================================
-  
+
   setViewMode: (mode) => {
     console.log('🟢 [STORE] setViewMode:', mode);
     set({ viewMode: mode });
   },
-  
+
   toggleViewMode: () => {
     const current = get().viewMode;
     const newMode = current === '2D' ? '3D' : '2D';
     console.log('🟢 [STORE] toggleViewMode:', current, '→', newMode);
     set({ viewMode: newMode });
   },
-  
+
   // ==========================================
   // ACTIONS - SÉLECTION ET TRANSFORMATION
   // ==========================================
-  
+
   setSelectedObjectId: (id) => {
     console.log('🟢 [STORE] setSelectedObjectId:', id);
     set({ selectedObjectId: id });
   },
-  
+
   setTransformMode: (mode) => {
     console.log('🟢 [STORE] setTransformMode:', mode);
     set({ transformMode: mode });
   },
-  
+
   // ==========================================
   // ACTIONS - HISTORIQUE (UNDO/REDO)
   // ==========================================
-  
+
   undo: () => {
     const state = get();
     if (state.historyIndex > 0) {
@@ -493,7 +498,7 @@ export const useStore = create<StoreState>((set, get) => ({
       });
     }
   },
-  
+
   redo: () => {
     const state = get();
     if (state.historyIndex < state.history.length - 1) {
@@ -506,11 +511,11 @@ export const useStore = create<StoreState>((set, get) => ({
       });
     }
   },
-  
+
   canUndo: () => {
     return get().historyIndex > 0;
   },
-  
+
   canRedo: () => {
     const state = get();
     return state.historyIndex < state.history.length - 1;

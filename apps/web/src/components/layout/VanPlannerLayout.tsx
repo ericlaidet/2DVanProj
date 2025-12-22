@@ -77,12 +77,12 @@ const VanPlannerLayout: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'main' | 'alternatives' | 'improvements'>('main');
 
   const predefinedElements = [
-    { name: 'Table', icon: '🪑', color: '#ef4444', type: 'table' },
-    { name: 'Cuisine', icon: '🍳', color: '#10b981', type: 'kitchen' },
-    { name: 'Douche', icon: '🚿', color: '#8b5cf6', type: 'bathroom' },
-    { name: 'Bureau', icon: '💼', color: '#3b82f6', type: 'storage' },
-    { name: 'Lit', icon: '🛏️', color: '#3b82f6', type: 'bed' },
-    { name: 'Rangement', icon: '📦', color: '#f59e0b', type: 'storage' },
+    { name: 'Table', icon: '🪑', color: '#ef4444', type: 'table', width: 800, height: 600 },
+    { name: 'Cuisine', icon: '🍳', color: '#10b981', type: 'kitchen', width: 1200, height: 600 },
+    { name: 'Douche', icon: '🚿', color: '#8b5cf6', type: 'bathroom', width: 800, height: 800 },
+    { name: 'Bureau', icon: '💼', color: '#3b82f6', type: 'storage', width: 1000, height: 500 },
+    { name: 'Lit', icon: '🛏️', color: '#3b82f6', type: 'bed', width: 1400, height: 1900 },
+    { name: 'Rangement', icon: '📦', color: '#f59e0b', type: 'storage', width: 600, height: 600 },
   ];
 
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
@@ -171,7 +171,7 @@ const VanPlannerLayout: React.FC = () => {
 
     useStore.setState({
       objects: plan.jsonData || [],
-      vanType: plan.planVans?.[0]?.van?.vanType || '',
+      vanType: plan.vanType || plan.planVans?.[0]?.van?.vanType || '',
     });
     notify.success(`✅ Plan "${plan.name}" chargé`);
   };
@@ -225,8 +225,8 @@ const VanPlannerLayout: React.FC = () => {
 
       console.log('✏️ Updating plan:', payload);
 
-      if (typeof addPlan === 'function') {
-        await addPlan(payload, selectedPlanId);
+      if (typeof updatePlan === 'function') {
+        await updatePlan(selectedPlanId, payload);
       }
 
       notify.success(`✅ Plan "${plan.name}" mis à jour`);
@@ -456,7 +456,7 @@ const VanPlannerLayout: React.FC = () => {
                     <option value="">-- Sélectionner un plan --</option>
                     {plans.map((plan) => (
                       <option key={plan.id} value={plan.id}>
-                        {plan.name} - {plan.planVans?.[0]?.van?.vanType || 'Sans van'}
+                        {plan.name} - {plan.vanType || plan.planVans?.[0]?.van?.vanType || 'Sans van'}
                       </option>
                     ))}
                   </select>
@@ -723,10 +723,9 @@ const VanPlannerLayout: React.FC = () => {
         </div>
       </div>
 
-      {/* Modale d'édition */}
       <FurnitureEditModal
         isOpen={!!editingFurnitureId}
-        furniture={objects.find(o => o.id === editingFurnitureId) || null}
+        furniture={(objects.find(o => o.id === editingFurnitureId) as any) || null}
         onClose={() => setEditingFurnitureId(null)}
         onSave={(id, updates) => {
           useStore.getState().updateObject(id, updates);

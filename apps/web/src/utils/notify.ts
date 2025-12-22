@@ -37,4 +37,18 @@ export const notify = {
         fontSize: '0.9rem',
       },
     }),
+
+  loading: (msg: string) =>
+    toast.loading(msg, {
+      position: 'top-center',
+      style: {
+        background: '#1f2937',
+        color: '#fff',
+        borderRadius: '8px',
+        padding: '10px 14px',
+        fontSize: '0.9rem',
+      },
+    }),
+
+  dismiss: (toastId?: string) => toast.dismiss(toastId),
 };
