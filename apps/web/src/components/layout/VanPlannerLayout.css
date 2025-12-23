@@ -273,6 +273,44 @@ body.dark-theme .van-controls-right-card {
   box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.4);
 }
 
+/* --- Export Bar (New Visibility) --- */
+.export-bar-container {
+  background: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+body.dark-theme .export-bar-container {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.export-controls-left {
+  display: flex;
+  align-items: center;
+}
+
+.export-pdf-btn-main {
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+  padding: 0.6rem 1.5rem !important;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+}
+
+.export-controls-right {
+  display: flex;
+  align-items: center;
+  min-width: 200px;
+}
+
 /* Ajustement pour le toggle sur fond sombre */
 .van-controls-right-card .view-mode-toggle-container {
   margin-bottom: 0.5rem;

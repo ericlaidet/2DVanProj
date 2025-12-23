@@ -40,6 +40,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       path: request.url,
       message,
+      error: exception instanceof Error ? {
+        name: exception.name,
+        message: exception.message,
+        stack: exception.stack
+      } : exception,
       timestamp: new Date().toISOString(),
     });
   }

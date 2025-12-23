@@ -7,6 +7,8 @@ import rateLimit from 'express-rate-limit';
 import { Logger } from 'nestjs-pino';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter'; // ⚡ à créer
 
+import { json, urlencoded } from 'express';
+
 async function bootstrap() {
   // ✅ Charger les variables d'environnement depuis apps/api/.env
   dotenv.config({ path: 'apps/api/.env' });
@@ -14,6 +16,10 @@ async function bootstrap() {
   // ✅ Création de l'application avec logger intégré
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.useLogger(app.get(Logger));
+
+  // ✅ Augmenter la limite de taille du payload pour les captures d'écran
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   // ==============================
   // 🛡️ Sécurité de base

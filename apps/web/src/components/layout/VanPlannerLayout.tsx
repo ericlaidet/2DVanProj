@@ -254,10 +254,11 @@ const VanPlannerLayout: React.FC = () => {
         if (!element) return '';
         const canvas = await html2canvas(element, {
           useCORS: true,
-          scale: 2,
+          scale: 1.5, // 📉 Réduit de 2 à 1.5 pour alléger le PDF
           backgroundColor: '#ffffff'
         });
-        return canvas.toDataURL('image/png');
+        // 📉 Utilisation de JPEG (0.8) au lieu de PNG pour diviser la taille par 10
+        return canvas.toDataURL('image/jpeg', 0.8);
       };
 
       if (originalMode !== '2D') {
@@ -274,7 +275,8 @@ const VanPlannerLayout: React.FC = () => {
       const capture3D = () => {
         const canvas3D = document.querySelector('.van-canvas-3d canvas') as HTMLCanvasElement;
         if (!canvas3D) return '';
-        return canvas3D.toDataURL('image/png');
+        // 📉 Utilisation de JPEG (0.8) pour la 3D également
+        return canvas3D.toDataURL('image/jpeg', 0.8);
       };
 
       if (originalMode !== '3D') {
@@ -418,6 +420,26 @@ const VanPlannerLayout: React.FC = () => {
               )}
             </div>
 
+            {/* 📤 Barre d'Export et Quota - Visible quand un van est sélectionné */}
+            {vanType && (
+              <div className="export-bar-container fade-in">
+                <div className="export-controls-left">
+                  <Button
+                    variant="blue"
+                    size="small"
+                    onClick={handleExportPdf}
+                    disabled={!selectedPlanId || isExporting}
+                    className="export-pdf-btn-main"
+                  >
+                    {isExporting ? '⏳ Exportation en cours...' : '📥 Exporter mon aménagement (PDF)'}
+                  </Button>
+                </div>
+                <div className="export-controls-right">
+                  <QuotaDisplay />
+                </div>
+              </div>
+            )}
+
             {/* ✨ Canvas : Affichage conditionnel 2D ou 3D */}
             <div className="canvas-container">
               {vanType ? (
@@ -509,18 +531,7 @@ const VanPlannerLayout: React.FC = () => {
                 >
                   Mettre à jour
                 </Button>
-                <Button
-                  variant="blue"
-                  size="small"
-                  onClick={handleExportPdf}
-                  disabled={!selectedPlanId || isExporting}
-                >
-                  {isExporting ? 'Export...' : 'Exporter PDF'}
-                </Button>
               </div>
-
-              {/* Quota Display */}
-              <QuotaDisplay />
             </div>
           </section>
 
