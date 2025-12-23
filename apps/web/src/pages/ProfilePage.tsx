@@ -11,21 +11,21 @@ import { extractErrorMessage } from '@/utils/errorMessage';
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
-  
+
   // État depuis Zustand
   const userName = useStore(s => s.userName);
   const userEmail = useStore(s => s.userEmail);
   const subscription = useStore(s => s.subscription);
   const setUserName = useStore(s => s.setUserName);
   const setUserEmail = useStore(s => s.setUserEmail);
-  
+
   // États locaux
   const [name, setName] = useState(userName || '');
   const [email, setEmail] = useState(userEmail || '');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // États de validation
   const [nameAvailable, setNameAvailable] = useState<boolean | null>(null);
   const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null);
@@ -41,7 +41,7 @@ const ProfilePage: React.FC = () => {
   // ✅ Vérifier et sauvegarder le nom
   const handleNameBlur = async () => {
     const trimmedValue = name.trim();
-    
+
     if (!trimmedValue || trimmedValue === userName) {
       setNameAvailable(null);
       return;
@@ -49,7 +49,7 @@ const ProfilePage: React.FC = () => {
 
     setCheckingName(true);
     const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-    
+
     try {
       // Vérifier disponibilité
       const res = await fetch(
@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
       );
       const data = await res.json();
       setNameAvailable(data.available);
-      
+
       if (!data.available) {
         notify.error('⚠️ Ce nom d\'utilisateur est déjà pris.');
         setCheckingName(false);
@@ -77,7 +77,7 @@ const ProfilePage: React.FC = () => {
         subscription
       }));
       notify.success('✅ Nom d\'utilisateur mis à jour');
-      
+
     } catch (err) {
       notify.error(extractErrorMessage(err));
     } finally {
@@ -88,7 +88,7 @@ const ProfilePage: React.FC = () => {
   // ✅ Vérifier et sauvegarder l'email
   const handleEmailBlur = async () => {
     const trimmedValue = email.trim().toLowerCase();
-    
+
     if (!trimmedValue || trimmedValue === userEmail?.toLowerCase()) {
       setEmailAvailable(null);
       return;
@@ -96,7 +96,7 @@ const ProfilePage: React.FC = () => {
 
     setCheckingEmail(true);
     const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-    
+
     try {
       // Vérifier disponibilité
       const res = await fetch(
@@ -104,7 +104,7 @@ const ProfilePage: React.FC = () => {
       );
       const data = await res.json();
       setEmailAvailable(data.available);
-      
+
       if (!data.available) {
         notify.error('⚠️ Cet email est déjà utilisé.');
         setCheckingEmail(false);
@@ -124,7 +124,7 @@ const ProfilePage: React.FC = () => {
         subscription
       }));
       notify.success('✅ Email mis à jour');
-      
+
     } catch (err) {
       notify.error(extractErrorMessage(err));
     } finally {
@@ -135,7 +135,7 @@ const ProfilePage: React.FC = () => {
   // ✅ Changement de mot de passe
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (newPassword.length < 8) {
       notify.error('Le mot de passe doit contenir au moins 8 caractères');
       return;
@@ -161,7 +161,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="profile-page">
-      <button className="back-btn" onClick={() => navigate(-1)}>
+      <button className="back-btn" onClick={() => navigate('/')}>
         ← Retour
       </button>
 
@@ -170,7 +170,7 @@ const ProfilePage: React.FC = () => {
       {/* Account Info */}
       <section className="profile-section">
         <h3>Informations du compte</h3>
-        
+
         <div className="form-group">
           <label htmlFor="name">
             Nom d'utilisateur
@@ -218,8 +218,8 @@ const ProfilePage: React.FC = () => {
               {subscription}
             </span>
           </div>
-          <button 
-            className="change-plan-btn" 
+          <button
+            className="change-plan-btn"
             onClick={() => navigate('/plans')}
           >
             📋 Changer de plan

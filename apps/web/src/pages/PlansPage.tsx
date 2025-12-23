@@ -20,20 +20,20 @@ interface PlanTier {
 
 const PlansPage: React.FC = () => {
   const currentSubscription = localStorage.getItem('subscription') || 'FREE';
-  
+
   // ✅ Récupérer la devise depuis le store Zustand
   const storeCurrency = useStore(s => s.settings.currency);
   const [selectedCurrency, setSelectedCurrency] = useState<'EUR' | 'USD'>(storeCurrency);
-  
+
   const [showPayment, setShowPayment] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
-  
+
   // ✅ Synchroniser avec le store au changement
   useEffect(() => {
     setSelectedCurrency(storeCurrency);
   }, [storeCurrency]);
-  
+
   const currencySymbol = selectedCurrency === 'EUR' ? '€' : '$';
   const exchangeRate = selectedCurrency === 'EUR' ? 1 : 1.1;
 
@@ -98,21 +98,21 @@ const PlansPage: React.FC = () => {
   return (
     <div className="plans-page">
       {/* Bouton Retour toujours visible */}
-      <button className="back-btn" onClick={() => navigate(-1)}>
+      <button className="back-btn" onClick={() => navigate('/')}>
         ← Retour
       </button>
 
       <h2>Choisissez votre abonnement</h2>
-      
+
       <div className="currency-selector">
         <label>Devise:</label>
-        <button 
+        <button
           className={selectedCurrency === 'EUR' ? 'active' : ''}
           onClick={() => setSelectedCurrency('EUR')}
         >
           € EUR
         </button>
-        <button 
+        <button
           className={selectedCurrency === 'USD' ? 'active' : ''}
           onClick={() => setSelectedCurrency('USD')}
         >
@@ -122,7 +122,7 @@ const PlansPage: React.FC = () => {
 
       <div className="plans-grid">
         {planTiers.map((plan) => (
-          <div 
+          <div
             key={plan.type}
             className={`plan-card ${plan.type === currentSubscription ? 'current' : ''}`}
             data-plan={plan.type}
@@ -133,7 +133,7 @@ const PlansPage: React.FC = () => {
                 <span className="current-badge">Actuel</span>
               )}
             </div>
-            
+
             <div className="plan-price">
               <span className="price-amount">
                 {(plan.price * exchangeRate).toFixed(2)} {currencySymbol}
@@ -155,7 +155,7 @@ const PlansPage: React.FC = () => {
             </ul>
 
             {plan.type !== currentSubscription && (
-              <button 
+              <button
                 className="upgrade-btn"
                 onClick={() => handleUpgrade(plan.type)}
               >
@@ -172,17 +172,17 @@ const PlansPage: React.FC = () => {
           <div className="payment-modal" onClick={(e) => e.stopPropagation()}>
             <h3>Choisissez votre méthode de paiement</h3>
             <p>Abonnement: <strong>{selectedPlan}</strong></p>
-            
+
             <div className="payment-methods">
-              <button 
+              <button
                 className="payment-btn stripe"
                 onClick={() => handlePayment('stripe')}
               >
                 <span className="payment-icon">💳</span>
                 Payer avec Stripe
               </button>
-              
-              <button 
+
+              <button
                 className="payment-btn paypal"
                 onClick={() => handlePayment('paypal')}
               >
@@ -190,8 +190,8 @@ const PlansPage: React.FC = () => {
                 Payer avec PayPal
               </button>
             </div>
-            
-            <button 
+
+            <button
               className="cancel-btn"
               onClick={() => setShowPayment(false)}
             >

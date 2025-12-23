@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useStore } from "@/store/store";
 import { useAuth } from "@/hooks/useAuth";
 
+import SettingsMenu from "./SettingsMenu";
+
 interface HeaderProps {
   className?: string;
 }
@@ -10,7 +12,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ className }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  
+
   const userName = useStore(s => s.userName);
   const subscription = useStore(s => s.subscription);
 
@@ -30,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <div className="user-info-new">
             <span>Bienvenue, <strong>{userName || "user"}</strong> - Abonnement: <strong>{subscription}</strong></span>
           </div>
-          
+
           <nav className="header-nav-new">
             <button
               className="nav-btn-new"
@@ -45,13 +47,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             >
               Profil
             </button>
-            
-            <button
-              className="nav-btn-new"
-              onClick={() => navigate("/settings")}
-            >
-              Paramètres
-            </button>
+
+            <SettingsMenu />
 
             <button
               className="nav-btn-new nav-btn-logout"

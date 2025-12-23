@@ -16,11 +16,11 @@ interface Settings {
 
 const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
-  
+
   // ✅ Utiliser le store Zustand au lieu de l'état local
   const storeSettings = useStore(s => s.settings);
   const setStoreSettings = useStore(s => s.setSettings);
-  
+
   const [settings, setSettings] = useState<Settings>(storeSettings);
   const [loading, setLoading] = useState(true);
   const [showGuide, setShowGuide] = useState(false);
@@ -107,8 +107,8 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="settings-page">
-      {/* Bouton Retour toujours visible */}
-      <button className="back-btn" onClick={() => navigate(-1)}>
+      {/* Bouton Retour redirigeant vers l'accueil */}
+      <button className="back-btn" onClick={() => navigate('/')}>
         ← Retour
       </button>
 
@@ -117,7 +117,7 @@ const SettingsPage: React.FC = () => {
       {/* Appearance Settings */}
       <section className="settings-section">
         <h3>{t.appearance}</h3>
-        
+
         <div className="setting-item">
           <label className="toggle-label">
             <input
@@ -134,7 +134,7 @@ const SettingsPage: React.FC = () => {
       {/* Language Settings */}
       <section className="settings-section">
         <h3>{t.language}</h3>
-        
+
         <div className="setting-item">
           <select
             name="language"
@@ -150,7 +150,7 @@ const SettingsPage: React.FC = () => {
       {/* Currency Settings */}
       <section className="settings-section">
         <h3>{t.currency}</h3>
-        
+
         <div className="setting-item currency-buttons">
           <button
             className={settings.currency === 'EUR' ? 'active' : ''}
@@ -170,7 +170,7 @@ const SettingsPage: React.FC = () => {
       {/* User Guide */}
       <section className="settings-section">
         <h3>{t.guide}</h3>
-        <button 
+        <button
           className="guide-btn"
           onClick={() => setShowGuide(!showGuide)}
         >
@@ -180,7 +180,7 @@ const SettingsPage: React.FC = () => {
         {showGuide && (
           <div className="guide-content">
             <h4>Comment utiliser l'interface</h4>
-            
+
             <div className="guide-item">
               <h5>1️⃣ Sélectionner un van</h5>
               <p>Cliquez sur le bouton "Sélectionner un van" dans l'espace de travail. Choisissez parmi 21 types de vans avec différentes dimensions.</p>
@@ -215,9 +215,9 @@ const SettingsPage: React.FC = () => {
             <div className="guide-item">
               <h5>6️⃣ Gérer vos plans</h5>
               <p>
-                <strong>📂 Charger:</strong> Ouvrir un plan existant<br/>
-                <strong>✏️ Mettre à jour:</strong> Sauvegarder les modifications<br/>
-                <strong>✏️ Renommer:</strong> Changer le nom du plan<br/>
+                <strong>📂 Charger:</strong> Ouvrir un plan existant<br />
+                <strong>✏️ Mettre à jour:</strong> Sauvegarder les modifications<br />
+                <strong>✏️ Renommer:</strong> Changer le nom du plan<br />
                 <strong>🗑️ Supprimer:</strong> Effacer définitivement
               </p>
             </div>

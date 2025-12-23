@@ -7,6 +7,7 @@ import VanPlannerLayout from "@/components/layout/VanPlannerLayout";
 import PlansPage from "@/pages/PlansPage";
 import ProfilePage from "@/pages/ProfilePage";
 import SettingsPage from "@/pages/SettingsPage";
+import UserGuide from "@/pages/UserGuide";
 import MainLayout from "@/components/layout/MainLayout";
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="/plans" element={<PlansPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/guide" element={<UserGuide />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         </Routes>
